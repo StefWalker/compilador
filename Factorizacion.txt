@@ -1,0 +1,32 @@
+| V-name ":=" Expression
+| Identifier "(" Actual-Parameter-Sequence ")"
+	"skip"
+| "let" Declaration "in" Command "end"
+| "if" Expression "then" Command ("|" Expression "then" Command)*
+	"else" Command "end"
+| "select" Expression "from" Cases "end"
+| "repeat" "while" Expression "do" Command "end"
+| "repeat" "until" Expression "do" Command "end"
+| "repeat" "do" Command "while" Expression "end"
+| "repeat" "do" Command "until" Expression "end"
+| "repeat" "for" Identifier ":=" "range" Expression ".." Expression
+	"do" Command "end"
+| "repeat" "for" Identifier ":=" "range" Expression ".." Expression
+	"while" Expression "do" Command "end"
+| "repeat" "for" Identifier ":=" "range" Expression ".." Expression
+	"until" Expression "do" Command "end"
+| "repeat" "for" Identifier "in" Expression "do" Command "end"
+
+
+
+| V-name ":=" Expression
+| Identifier "(" Actual-Parameter-Sequence ")"
+	"skip"
+| "let" Declaration "in" Command "end"
+| "if" Expression "then" Command ("|" Expression "then" Command)*
+	"else" Command "end"
+| "select" Expression "from" Cases "end"
+| "repeat" ("while"|"until") Expression "do" Command "end"
+| "repeat" "do" Command ("while"|"until") Expression "end"
+| "repeat" "for" Identifier ":=" "range" Expression ".." Expression ("do"|"while"|"until") Command "end"
+| "repeat" "for" Identifier "in" Expression "do" Command "end"
