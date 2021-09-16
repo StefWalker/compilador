@@ -30,3 +30,14 @@
 | "repeat" "do" Command ("while"|"until") Expression "end"
 | "repeat" "for" Identifier ":=" "range" Expression ".." Expression ("do"|"while"|"until") Command "end"
 | "repeat" "for" Identifier "in" Expression "do" Command "end"
+
+| V-name ":=" Expression
+| Identifier "(" Actual-Parameter-Sequence ")"
+	"skip"
+| "let" Declaration "in" Command "end"
+| "if" Expression "then" Command ("|" Expression "then" Command)*
+	"else" Command "end"
+| "select" Expression "from" Cases "end"
+| "repeat" (("while"|"until") Expression "do" Command "end")
+		|  ("do" Command ("while"|"until") Expression "end")
+		|  ("repeat" "for" Identifier ((":=" "range" Expression ".." Expression ("do"|"while"|"until")) | ("in" Expression "do")))  Command "end"
