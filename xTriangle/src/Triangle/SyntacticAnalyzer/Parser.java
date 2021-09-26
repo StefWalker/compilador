@@ -264,6 +264,13 @@ public class Parser {
     return commandAST;
   }
 
+  
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Yosua Andres Blanco Diaz 
+//  Single Command modified  
+//
+///////////////////////////////////////////////////////////////////////////////
   Command parseSingleCommand() throws SyntaxError {
     Command commandAST = null; // in case there's a syntactic error
 
@@ -339,7 +346,7 @@ public class Parser {
     case Token.END:
     case Token.ELSE:
     case Token.IN:
-    case Token.EOT:
+    //case Token.EOT:  
 
       finish(commandPos);
       commandAST = new EmptyCommand(commandPos);
