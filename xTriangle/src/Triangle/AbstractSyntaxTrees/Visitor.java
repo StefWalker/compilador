@@ -100,6 +100,16 @@ public interface Visitor {
   public abstract Object visitDotVname(DotVname ast, Object o);
   public abstract Object visitSimpleVname(SimpleVname ast, Object o);
   public abstract Object visitSubscriptVname(SubscriptVname ast, Object o);
+  
+  // Yosua Blanco Diaz 
+  
+  public abstract Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o);
+  public abstract Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o);
+  public abstract Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o);
+  public abstract Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o);
+  
+ 
+  
 
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
