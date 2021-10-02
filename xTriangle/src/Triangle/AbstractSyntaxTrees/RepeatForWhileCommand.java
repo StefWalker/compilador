@@ -11,18 +11,22 @@ package Triangle.AbstractSyntaxTrees;
  */
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-public class RepeatUntilCommand   extends Command {
+public class RepeatForWhileCommand  extends Command {
 
-  public RepeatUntilCommand(Expression eAST, Command cAST, SourcePosition thePosition) {
+  public RepeatForWhileCommand(Expression e1AST, Expression e2AST, Expression e3AST, Command cAST, SourcePosition thePosition) {
     super (thePosition);
-    E = eAST;
+    E1 = e1AST;
+    E2 = e2AST;
+    E3 = e3AST;
     C = cAST;
   }
 
   public Object visit(Visitor v, Object o) {
-    return v.visitRepeatUntilCommand(this, o);
+    return v.visitRepeatForWhileCommand(this, o);
   }
 
-  public Expression E;
+  public Expression E1;
+  public Expression E2;
+  public Expression E3;
   public Command C;
 }

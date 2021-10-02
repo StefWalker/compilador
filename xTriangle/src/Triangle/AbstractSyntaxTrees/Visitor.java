@@ -108,6 +108,11 @@ public interface Visitor {
   public abstract Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o);
   public abstract Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o);
   
+  public abstract Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o);
+  public abstract Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o);
+  public abstract Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o);
+  public abstract Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o);
+
  
   
 
