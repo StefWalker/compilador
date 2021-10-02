@@ -87,6 +87,17 @@ import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
+// Llamadas a nuevas implementaciones 
+import Triangle.AbstractSyntaxTrees.RepeatDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
+
+
 public final class Checker implements Visitor {
 
   // Commands
@@ -152,6 +163,38 @@ public final class Checker implements Visitor {
       reporter.reportError("Boolean expression expected here", "", ast.E.position);
     ast.C.visit(this, null);
     return null;
+  }
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Single Command modified  
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      return null;
   }
 
   // Expressions

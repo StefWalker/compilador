@@ -70,6 +70,16 @@ import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+// Llamadas a nuevas implementaciones 
+import Triangle.AbstractSyntaxTrees.RepeatDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
+
 /**
  * Implements the Triangle Visitor interface, which is used to
  * visit an entire AST. 
@@ -115,6 +125,40 @@ public class TreeVisitor implements Visitor {
     public Object visitWhileCommand(WhileCommand ast, Object obj) {
         return(createBinary("While Command", ast.E, ast.C));
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Adition of the new commands
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      return (createBinary("RepeatWhileCom.", ast.E, ast.C));
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      return (createBinary("RepeatUntilCom.", ast.E, ast.C));
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      return (createBinary("RepeatDoWhileCom.", ast.C, ast.E));
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      return (createBinary("RepeatDoUntilCom.", ast.C, ast.E));
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      return (createQuaternary("RepeatForDoCom.", ast.I, ast.E1, ast.E2, ast.C));
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      return (createQuinary("RepeatForWhileCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      return (createQuinary("RepeatForUntilCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      return (createTernary("RepeatForInCom.", ast.I, ast.E1, ast.C));
+  }
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Expressions ">
@@ -433,6 +477,35 @@ public class TreeVisitor implements Visitor {
         t.add((DefaultMutableTreeNode)child2.visit(this, null));
         t.add((DefaultMutableTreeNode)child3.visit(this, null));
         t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        
+        return(t);             
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Adition of the new commands
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Creates a quinary tree node.
+     * @param caption The tree's caption (text to be shown when the tree is drawn).
+     * @param child1 The first children node.
+     * @param child2 The second children node.
+     * @param child3 The third children node.
+     * @param child4 The fourth children node.
+     * @param child5 The fifth children node.
+     * @return The tree node.
+     */
+    public DefaultMutableTreeNode createQuinary(String caption, AST child1, AST child2, AST child3, AST child4, AST child5) {
+        DefaultMutableTreeNode t = new DefaultMutableTreeNode(caption);
+        t.add((DefaultMutableTreeNode)child1.visit(this, null));
+        t.add((DefaultMutableTreeNode)child2.visit(this, null));
+        t.add((DefaultMutableTreeNode)child3.visit(this, null));
+        t.add((DefaultMutableTreeNode)child4.visit(this, null));
+        t.add((DefaultMutableTreeNode)child5.visit(this, null));
         
         return(t);             
     }

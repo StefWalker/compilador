@@ -11,8 +11,9 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  */
 public class RepeatForUntilCommand  extends Command {
 
-  public RepeatForUntilCommand(Expression e1AST, Expression e2AST ,Expression e3AST, Command cAST, SourcePosition thePosition) {
+  public RepeatForUntilCommand(Identifier iAst, Expression e1AST, Expression e2AST ,Expression e3AST, Command cAST, SourcePosition thePosition) {
     super (thePosition);
+    I = iAst;
     E1 = e1AST;
     E2 = e2AST;
     E3 = e3AST;
@@ -22,7 +23,8 @@ public class RepeatForUntilCommand  extends Command {
   public Object visit(Visitor v, Object o) {
     return v.visitRepeatForUntilCommand(this, o);
   }
-
+  
+  public Identifier I;
   public Expression E1;
   public Expression E2;
   public Expression E3;

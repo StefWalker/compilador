@@ -81,6 +81,15 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
+// Llamadas a nuevas implementaciones 
+import Triangle.AbstractSyntaxTrees.RepeatDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 
 public class LayoutVisitor implements Visitor {
 
@@ -120,6 +129,41 @@ public class LayoutVisitor implements Visitor {
 
   public Object visitWhileCommand(WhileCommand ast, Object obj) {
     return layoutBinary("WhileCom.", ast.E, ast.C);
+  }
+  
+  
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Adition of the new commands
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      return layoutBinary("RepeatWhileCom.", ast.E, ast.C);
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      return layoutBinary("RepeatUntilCom.", ast.E, ast.C);
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      return layoutBinary("RepeatDoWhileCom.", ast.C, ast.E);
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      return layoutBinary("RepeatDoUntilCom.", ast.C, ast.E);
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      return layoutQuaternary("RepeatForDoCom.", ast.I, ast.E1, ast.E2, ast.C);
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      return layoutQuinary("RepeatForWhileCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C);
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      return layoutQuinary("RepeatForUntilCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C);
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      return layoutTernary("RepeatForInCom.", ast.I, ast.E1, ast.C);
   }
 
 
@@ -417,6 +461,26 @@ public class LayoutVisitor implements Visitor {
     DrawingTree d3 = (DrawingTree) child3.visit(this, null);
     DrawingTree d4 = (DrawingTree) child4.visit(this, null);
     dt.setChildren(new DrawingTree[] {d1, d2, d3, d4});
+    attachParent(dt, join(dt));
+    return dt;
+  }
+  
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Extension for layoutQuinary
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  private DrawingTree layoutQuinary (String name, AST child1, AST child2,
+                                        AST child3, AST child4, AST child5) {
+    DrawingTree dt = layoutCaption(name);
+    DrawingTree d1 = (DrawingTree) child1.visit(this, null);
+    DrawingTree d2 = (DrawingTree) child2.visit(this, null);
+    DrawingTree d3 = (DrawingTree) child3.visit(this, null);
+    DrawingTree d4 = (DrawingTree) child4.visit(this, null);
+    DrawingTree d5 = (DrawingTree) child5.visit(this, null);
+    dt.setChildren(new DrawingTree[] {d1, d2, d3, d4, d4});
     attachParent(dt, join(dt));
     return dt;
   }

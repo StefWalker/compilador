@@ -13,8 +13,9 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class RepeatForWhileCommand  extends Command {
 
-  public RepeatForWhileCommand(Expression e1AST, Expression e2AST, Expression e3AST, Command cAST, SourcePosition thePosition) {
+  public RepeatForWhileCommand(Identifier iAst, Expression e1AST, Expression e2AST, Expression e3AST, Command cAST, SourcePosition thePosition) {
     super (thePosition);
+    I = iAst;
     E1 = e1AST;
     E2 = e2AST;
     E3 = e3AST;
@@ -25,6 +26,7 @@ public class RepeatForWhileCommand  extends Command {
     return v.visitRepeatForWhileCommand(this, o);
   }
 
+  public Identifier I;
   public Expression E1;
   public Expression E2;
   public Expression E3;

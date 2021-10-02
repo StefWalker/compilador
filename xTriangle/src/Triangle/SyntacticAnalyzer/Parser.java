@@ -88,6 +88,10 @@ import Triangle.AbstractSyntaxTrees.RepeatDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 
 public class Parser {
 
@@ -274,7 +278,8 @@ public class Parser {
   
 ///////////////////////////////////////////////////////////////////////////////
 //
-//  Yosua Andres Blanco Diaz 
+//  Yosua Andres Blanco Diaz
+//  Dylan Stef Torres Walker 
 //  Single Command modified  
 //
 ///////////////////////////////////////////////////////////////////////////////
@@ -426,7 +431,7 @@ public class Parser {
                                 Command cAST = parseCommand();
                                 accept(Token.END);
                                 finish(commandPos);
-                            //    commandAST = new RepeatForDoCommand(iAST, eAST, e1AST, cAST, commandPos);
+                                commandAST = new RepeatForDoCommand(iAST, eAST, e1AST, cAST, commandPos);
                             }
                             break;
                             case Token.WHILE: {
@@ -436,7 +441,7 @@ public class Parser {
                                 Command cAST = parseCommand();
                                 accept(Token.END);
                                 finish(commandPos);
-                            //    commandAST = new RepeatForWhileCommand(iAST, eAST, e1AST, e2AST, cAST, commandPos);
+                                commandAST = new RepeatForWhileCommand(iAST, eAST, e1AST, e2AST, cAST, commandPos);
                             }
                             break;
                             case Token.UNTIL: {
@@ -446,7 +451,7 @@ public class Parser {
                                 Command cAST = parseCommand();
                                 accept(Token.END);
                                 finish(commandPos);
-                            //    commandAST = new RepeatForUntilCommand(iAST, eAST, e1AST, e2AST, cAST, commandPos);
+                                commandAST = new RepeatForUntilCommand(iAST, eAST, e1AST, e2AST, cAST, commandPos);
                             }
                             break;
                         }
@@ -458,7 +463,7 @@ public class Parser {
                         Command cAST = parseCommand();
                         accept(Token.END);
                         finish(commandPos);
-                    //    commandAST = new RepeatForInCommand(iAST, eAST, cAST, commandPos);
+                        commandAST = new RepeatForInCommand(iAST, eAST, cAST, commandPos);
                     }
                 }
             }

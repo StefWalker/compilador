@@ -11,8 +11,9 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  */
 public class RepeatForInCommand    extends Command {
 
-  public RepeatForInCommand  (Expression e1AST, Command cAST, SourcePosition thePosition) {
+  public RepeatForInCommand  (Identifier iAst, Expression e1AST, Command cAST, SourcePosition thePosition) {
     super (thePosition);
+    I = iAst;
     E1 = e1AST;
     C = cAST;
   }
@@ -20,7 +21,8 @@ public class RepeatForInCommand    extends Command {
   public Object visit(Visitor v, Object o) {
     return v.visitRepeatForInCommand(this, o);
   }
-
+  
+  public Identifier I;
   public Expression E1;
   public Command C;
 }

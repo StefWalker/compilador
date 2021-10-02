@@ -78,6 +78,16 @@ import Triangle.CodeGenerator.UnknownRoutine;
 import Triangle.CodeGenerator.UnknownValue;
 import javax.swing.table.DefaultTableModel;
 
+// Llamadas a nuevas implementaciones 
+import Triangle.AbstractSyntaxTrees.RepeatDoUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatDoWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
+import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
+
 /**
  * Implements the Triangle Visitor interface, which is used to
  * visit an entire AST. 
@@ -139,6 +149,65 @@ public class TableVisitor implements Visitor {
       ast.C.visit(this, null);
       
       return(null);
+  }
+  
+  
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Single Command modified  
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      ast.C.visit(this, null);
+      ast.E.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      ast.C.visit(this, null);
+      ast.E.visit(this, null);
+      return null;
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
   }
   // </editor-fold>
 
