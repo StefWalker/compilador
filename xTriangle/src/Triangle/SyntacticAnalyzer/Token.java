@@ -86,47 +86,40 @@ final class Token extends Object {
     RANGE               = 19,//nuevo
     RECURSIVE           = 20,//nuevo
     REPEAT              = 21,//nuevo
-    SELECT              = 22,//nuevo
-    SKIP                = 23,//nuevo 
-    THEN    = 24,
-    TO                  = 25,//nuevo
-    TYPE    = 26,
-    UNTIL               = 27,//nuevo
-    VAR     = 28,
-    WHEN                = 29,//nuevo
-    WHILE   = 30,
+//    SELECT              = 22,//nuevo
+    SKIP                = 22,//nuevo 
+    THEN    = 23,
+    TO                  = 24,//nuevo
+    TYPE    = 25,
+    UNTIL               = 26,//nuevo
+    VAR     = 27,
+    WHEN                = 28,//nuevo
+    WHILE   = 29,
 
     // punctuation...
-    DOT     = 31,
-    DDOT                = 32,//nuevo
-    COLON   = 33,
-    SEMICOLON           = 34,
-    COMMA   = 35,
-    BECOMES   = 36,
-    IS      = 37,
-    OR                  = 38,//nuevo
+    DOT     = 30,
+    DDOT                = 31,//nuevo
+    COLON   = 32,
+    SEMICOLON           = 33,
+    COMMA   = 34,
+    BECOMES   = 35,
+    IS      = 36,
+    OR                  = 37,//nuevo
     
 
     // brackets...
-    LPAREN    = 39,
-    RPAREN    = 40,
-    LBRACKET            = 41,
-    RBRACKET            = 42,
-    LCURLY    = 43,
-    RCURLY    = 44,
+    LPAREN    = 38,
+    RPAREN    = 39,
+    LBRACKET            = 40,
+    RBRACKET            = 41,
+    LCURLY    = 42,
+    RCURLY    = 43,
           
 
     // special tokens...
-    EOT     = 45,
-    ERROR   = 46;
+    EOT     = 44,
+    ERROR   = 45;
     
-   
-          
-       
-  
-  
-  
-  
 
   private static String[] tokenTable = new String[] {
     "<int>",
@@ -151,7 +144,7 @@ final class Token extends Object {
     "range",// nuevo
     "recursive",// nuevo
     "repeat",// nuevo
-    "select",// nuevo
+ //   "select",// nuevo
     "skip",// nuevo
     "then",
     "to",// nuevo
