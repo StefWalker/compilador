@@ -74,7 +74,7 @@ final class Token extends Object {
     ELSE    = 7,
     END     = 8,
     FOR                 = 9, // nuevo
-    FORM                = 10,// nuevo
+    FROM                = 10,// nuevo
     FUNC    = 11,
     IF      = 12,
     IN      = 13,
@@ -98,13 +98,13 @@ final class Token extends Object {
 
     // punctuation...
     DOT     = 30,
-    DDOT                = 31,//nuevo
-    COLON   = 32,
-    SEMICOLON           = 33,
-    COMMA   = 34,
-    BECOMES   = 35,
-    IS      = 36,
-    OR                  = 37,//nuevo
+    COLON   = 31,
+    SEMICOLON           = 32,
+    COMMA   = 33,
+    BECOMES   = 34,
+    IS      = 35,
+    OR                  = 36,//nuevo
+    DDOT                = 37,//nuevo
     
 
     // brackets...
@@ -132,7 +132,7 @@ final class Token extends Object {
     "else",
     "end",
     "for",// nuevo
-    "form",// nuevo
+    "from",// nuevo
     "func",
     "if",
     "in",
@@ -154,13 +154,13 @@ final class Token extends Object {
     "when",// nuevo
     "while",
     ".",
-    "..",// nuevo
     ":",
     ";",
     ",",
     ":=",
     "~",
     "|", // nuevo
+    "..",// nuevo
     "(",
     ")",
     "[",
