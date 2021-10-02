@@ -81,6 +81,7 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
+
 public class LayoutVisitor implements Visitor {
 
   private final int BORDER = 5;

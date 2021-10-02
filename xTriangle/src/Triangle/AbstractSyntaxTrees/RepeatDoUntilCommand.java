@@ -13,10 +13,10 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public class RepeatDoUntilCommand extends Command {
 
-  public RepeatDoUntilCommand (Expression eAST, Command cAST, SourcePosition thePosition) {
+  public RepeatDoUntilCommand (Command cAST, Expression eAST, SourcePosition thePosition) {
     super (thePosition);
-    E = eAST;
     C = cAST;
+    E = eAST;
   }
 
   public Object visit(Visitor v, Object o) {

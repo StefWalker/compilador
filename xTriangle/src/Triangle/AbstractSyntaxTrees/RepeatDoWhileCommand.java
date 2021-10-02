@@ -14,8 +14,8 @@ public class RepeatDoWhileCommand   extends Command {
 
   public RepeatDoWhileCommand   (Command cAST,Expression eAST, SourcePosition thePosition) {
     super (thePosition);
-    E = eAST;
     C = cAST;
+    E = eAST;
   }
 
   public Object visit(Visitor v, Object o) {
