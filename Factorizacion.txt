@@ -37,7 +37,6 @@
 | "let" Declaration "in" Command "end"
 | "if" Expression "then" Command ("|" Expression "then" Command)*
 	"else" Command "end"
-| "select" Expression "from" Cases "end"
 | "repeat" (( ("while"|"until") Expression "do" Command )
 		|  ( "do" Command ("while"|"until") Expression )
 		|  ( "for" Identifier ((":=" "range" Expression ".." Expression ("do"|"while"|"until")) | ( "in" )) Expression "do" Command )) "end"
