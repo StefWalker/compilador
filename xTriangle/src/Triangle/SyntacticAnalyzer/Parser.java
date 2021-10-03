@@ -83,7 +83,7 @@ import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 
 
-// Llamadas a nuevas implementaciones 
+// Llamadas a nuevos Comandos 
 import Triangle.AbstractSyntaxTrees.RepeatDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
@@ -92,8 +92,12 @@ import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
+
+// Llamadas a nuevas Declaraciones 
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
-        
+import Triangle.AbstractSyntaxTrees.ProcFunc;
+import Triangle.AbstractSyntaxTrees.ProcFuncs;
+
 public class Parser {
 
   private Scanner lexicalAnalyser;
@@ -1139,39 +1143,39 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
   
-//  Declaration parseCompoundDeclaration() throws SyntaxError {
-//    Declaration declarationAST = null; // in case there's a syntactic error
-//
-//    SourcePosition declarationPos = new SourcePosition();
-//    start(declarationPos);
-//    
-//    switch(currentToken.kind){
-//      case Token.RECURSIVE:
-//      {
-//        acceptIt();
-//        ProcFuncs pfAST = parseProcFuncs();
-//        accept(Token.END);
-//        finish(declarationPos);
-//        declarationAST = new RecursiveDeclaration(pfAST, declarationPos);
-//      }
-//      break;
-//      case Token.LOCAL:
-//      {
-//        acceptIt();
-//        Declaration d1AST = parseDeclaration();
-//        accept(Token.IN);
-//        Declaration d2AST = parseDeclaration();
-//        accept(Token.END);
-//        finish(declarationPos);
-//        declarationAST = new LocalDeclaration(d1AST, d2AST, declarationPos);
-//      }
-//      break;
-//      default:
-//        return declarationAST = parseSingleDeclaration();
-//    }
-//    return declarationAST;
-//
-//  }
+  Declaration parseCompoundDeclaration() throws SyntaxError {
+    Declaration declarationAST = null; // in case there's a syntactic error
+
+    SourcePosition declarationPos = new SourcePosition();
+    start(declarationPos);
+    
+    switch(currentToken.kind){
+      case Token.RECURSIVE:
+      {
+        acceptIt();
+        ProcFuncs pfAST = parseProcFuncs();
+        accept(Token.END);
+        finish(declarationPos);
+        declarationAST = new RecursiveDeclaration(pfAST, declarationPos);
+      }
+      break;
+      case Token.LOCAL:
+      {
+        acceptIt();
+        Declaration d1AST = parseDeclaration();
+        accept(Token.IN);
+        Declaration d2AST = parseDeclaration();
+        accept(Token.END);
+        finish(declarationPos);
+        declarationAST = new LocalDeclaration(d1AST, d2AST, declarationPos);
+      }
+      break;
+      default:
+        return declarationAST = parseSingleDeclaration();
+    }
+    return declarationAST;
+
+  }
   
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -1181,61 +1185,61 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
   
-//  ProcFuncs parseProcFuncs() throws SyntaxError{
-//    ProcFuncs ProcFuncsAST = null; // in case there's a syntactic error
-//
-//    SourcePosition propFuncsPos = new SourcePosition();
-//    start(propFuncsPos);
-//    ProcFunc pf1AST = parseProcFunc();
-//    do {
-//      accept(Token.OR);
-//      ProcFunc pf2AST = parseProcFunc();
-//      pf1AST = new ProcFuncs(pf1AST, pf2AST, propFuncsPos);
-//    } while (currentToken.kind == Token.OR); //"|"
-//    finish(propFuncsPos);
-//    ProcFuncsAST = pf1AST;
-//    return ProcFuncsAST;
-//  }
-//
-//  ProcFunc parseProcFunc() throws SyntaxError {
-//    ProcFunc procFuncsAST = null; // in case there's a syntactic error
-//
-//    SourcePosition procFuncPos = new SourcePosition();
-//    start(procFuncPos);
-//    switch(currentToken.kind){
-//      case Token.PROC:
-//        {
-//          acceptIt();
-//          Identifier iAST = parseIdentifier();
-//          accept(Token.LPAREN);
-//          FormalParameterSequence fpsAST = parseFormalParameterSequence();
-//          accept(Token.RPAREN);
-//          accept(Token.IS);
-//          Command cAST = parseCommand();
-//          accept(Token.END);
-//          finish(procFuncPos);
-//          procFuncsAST = new Proc(iAST, fpsAST, cAST, procFuncPos);
-//        }
-//        break;
-//      case Token.FUNC:
-//      {
-//        acceptIt();
-//        Identifier iAST = parseIdentifier();
-//        accept(Token.LPAREN);
-//        FormalParameterSequence fpsAST = parseFormalParameterSequence();
-//        accept(Token.RPAREN);
-//        accept(Token.COLON);
-//        TypeDenoter tdAST = parseTypeDenoter();
-//        accept(Token.IS);
-//        Expression eAST = parseExpression();
-//        procFuncsAST = new Func(iAST, fpsAST, tdAST, eAST, procFuncPos);
-//      }
-//      break;
-//      default:
-//      syntacticError("\"%\" cannot start a type denoter",
-//                    currentToken.spelling);
-//    }
-//    return procFuncsAST;
-//  }
+  ProcFuncs parseProcFuncs() throws SyntaxError{
+    ProcFuncs ProcFuncsAST = null; // in case there's a syntactic error
+
+    SourcePosition propFuncsPos = new SourcePosition();
+    start(propFuncsPos);
+    ProcFunc pf1AST = parseProcFunc();
+    do {
+      accept(Token.OR);
+      ProcFunc pf2AST = parseProcFunc();
+      pf1AST = new ProcFuncs(pf1AST, pf2AST, propFuncsPos);
+    } while (currentToken.kind == Token.OR); //"|"
+    finish(propFuncsPos);
+    ProcFuncsAST = pf1AST;
+    return ProcFuncsAST;
+  }
+
+  ProcFunc parseProcFunc() throws SyntaxError {
+    ProcFunc procFuncsAST = null; // in case there's a syntactic error
+
+    SourcePosition procFuncPos = new SourcePosition();
+    start(procFuncPos);
+    switch(currentToken.kind){
+      case Token.PROC:
+        {
+          acceptIt();
+          Identifier iAST = parseIdentifier();
+          accept(Token.LPAREN);
+          FormalParameterSequence fpsAST = parseFormalParameterSequence();
+          accept(Token.RPAREN);
+          accept(Token.IS);
+          Command cAST = parseCommand();
+          accept(Token.END);
+          finish(procFuncPos);
+          procFuncsAST = new Proc(iAST, fpsAST, cAST, procFuncPos);
+        }
+        break;
+      case Token.FUNC:
+      {
+        acceptIt();
+        Identifier iAST = parseIdentifier();
+        accept(Token.LPAREN);
+        FormalParameterSequence fpsAST = parseFormalParameterSequence();
+        accept(Token.RPAREN);
+        accept(Token.COLON);
+        TypeDenoter tdAST = parseTypeDenoter();
+        accept(Token.IS);
+        Expression eAST = parseExpression();
+        procFuncsAST = new Func(iAST, fpsAST, tdAST, eAST, procFuncPos);
+      }
+      break;
+      default:
+      syntacticError("\"%\" cannot start a type denoter",
+                    currentToken.spelling);
+    }
+    return procFuncsAST;
+  }
   
 }
