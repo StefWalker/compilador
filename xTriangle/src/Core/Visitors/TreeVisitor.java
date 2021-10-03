@@ -79,6 +79,7 @@ import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
+import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
 /**
  * Implements the Triangle Visitor interface, which is used to
@@ -159,6 +160,11 @@ public class TreeVisitor implements Visitor {
   public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
       return (createTernary("RepeatForInCom.", ast.I, ast.E1, ast.C));
   }
+  public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object o){
+      return (createBinary("VarBecomeDecla", ast.I, ast.E));
+  }
+  
+  
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Expressions ">

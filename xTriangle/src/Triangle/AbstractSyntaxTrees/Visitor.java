@@ -38,6 +38,8 @@ public interface Visitor {
   public abstract Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o);
 
 
+  public abstract Object visitVarBecomesDeclaration (VarBecomesDeclaration ast, Object o);
+
   // Expressions
   public abstract Object visitArrayExpression(ArrayExpression ast, Object o);
   public abstract Object visitBinaryExpression(BinaryExpression ast, Object o);
@@ -116,4 +118,8 @@ public interface Visitor {
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
 
+  
+  
+  
+  
 }

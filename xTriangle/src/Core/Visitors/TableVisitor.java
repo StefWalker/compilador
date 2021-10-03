@@ -209,6 +209,13 @@ public class TableVisitor implements Visitor {
       ast.C.visit(this, null);
       return null;
   }
+  
+    public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object o){
+      ast.I.visit(this, null);
+      ast.E.visit(this, null);
+      return null;
+  }
+    
   // </editor-fold>
 
   // <editor-fold defaultstate="collapsed" desc=" Expressions ">

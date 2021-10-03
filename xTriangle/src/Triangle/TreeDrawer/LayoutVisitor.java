@@ -90,6 +90,7 @@ import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
+import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
 public class LayoutVisitor implements Visitor {
 
@@ -165,6 +166,11 @@ public class LayoutVisitor implements Visitor {
   public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
       return layoutTernary("RepeatForInCom.", ast.I, ast.E1, ast.C);
   }
+
+  public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object obj) {
+    return layoutBinary("VarBecomesDecl.", ast.I, ast.E);
+  }
+
 
 
   // Expressions
