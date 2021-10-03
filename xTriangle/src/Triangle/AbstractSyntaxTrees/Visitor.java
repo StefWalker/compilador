@@ -37,7 +37,11 @@ public interface Visitor {
   public abstract Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o);
   public abstract Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o);
 
-
+  public abstract Object visitProcFuncs(ProcFuncs ast, Object o);
+  public abstract Object visitProc(Proc ast, Object o);
+  public abstract Object visitFunc(Func ast, Object o);
+  
+  
   public abstract Object visitVarBecomesDeclaration (VarBecomesDeclaration ast, Object o);
 
   // Expressions

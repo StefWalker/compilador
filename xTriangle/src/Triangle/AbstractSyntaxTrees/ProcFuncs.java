@@ -19,9 +19,17 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 
 public abstract class ProcFuncs extends Declaration{
 
-  public ProcFuncs(SourcePosition thePosition) {
+  public ProcFuncs(ProcFunc p1AST, ProcFunc p2AST, SourcePosition thePosition) {
     super(thePosition);
+    PF1 = p1AST;
+    PF2 = p2AST ;      
   }
 
-  public abstract Object visitRec(Visitor v, Object o);
+  public Object visit(Visitor v, Object o) {
+    return v.visitProcFuncs(this, o);
+  }
+  
+  public ProcFunc PF1;
+  public ProcFunc PF2;
+
 }

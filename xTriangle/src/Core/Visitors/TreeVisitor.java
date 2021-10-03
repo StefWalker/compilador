@@ -46,6 +46,7 @@ import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
+import Triangle.AbstractSyntaxTrees.ProcFuncs;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
@@ -81,6 +82,8 @@ import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
+import Triangle.AbstractSyntaxTrees.ProcFunc;
+import Triangle.AbstractSyntaxTrees.ProcFuncs;
 /**
  * Implements the Triangle Visitor interface, which is used to
  * visit an entire AST. 
@@ -162,6 +165,10 @@ public class TreeVisitor implements Visitor {
   }
   public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object o){
       return (createBinary("VarBecomeDecla", ast.I, ast.E));
+  }
+  
+  public Object visitProcFuncs(ProcFuncs ast, Object o){
+      return (createBinary("ProcFuncs", ast.PF1, ast.PF2));
   }
   
   

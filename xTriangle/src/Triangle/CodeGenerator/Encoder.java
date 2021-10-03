@@ -101,6 +101,10 @@ import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
+import Triangle.AbstractSyntaxTrees.ProcFuncs;
+import Triangle.AbstractSyntaxTrees.Proc;
+import Triangle.AbstractSyntaxTrees.Func;
+
 public final class Encoder implements Visitor {
 
 
@@ -204,6 +208,20 @@ public final class Encoder implements Visitor {
   public Object visitVarBecomesDeclaration  (VarBecomesDeclaration  ast, Object o){
       return null;
   }
+  
+   public Object visitProcFuncs(ProcFuncs  ast, Object o){
+      return null;
+  }
+   
+     public Object visitProc(Proc  ast, Object o){
+      return null;
+  }
+  
+   public Object visitFunc(Func ast, Object o){
+      return null;
+  }
+
+   
 
   // Expressions
   public Object visitArrayExpression(ArrayExpression ast, Object o) {

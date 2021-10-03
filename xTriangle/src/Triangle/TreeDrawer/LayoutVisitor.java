@@ -58,6 +58,7 @@ import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
+import Triangle.AbstractSyntaxTrees.ProcFuncs;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
@@ -91,6 +92,11 @@ import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
+
+import Triangle.AbstractSyntaxTrees.ProcFuncs;
+import Triangle.AbstractSyntaxTrees.Proc;
+import Triangle.AbstractSyntaxTrees.Func;
+
 
 public class LayoutVisitor implements Visitor {
 
@@ -171,8 +177,21 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("VarBecomesDecl.", ast.I, ast.E);
   }
 
+  public Object visitProcFuncs(ProcFuncs ast, Object obj) {
+    return layoutBinary("ProcFunc", ast.PF1, ast.PF2);
+  }
 
-
+  public Object visitProc(Proc ast, Object obj) {
+    return layoutTernary("Proc", ast.I, ast.FPS, ast.C);
+  }
+  
+   public Object visitFunc(Func ast, Object obj) {
+    return layoutQuaternary("Func", ast.I, ast.FPS , ast.TD, ast.E );
+  }
+  
+    
+  
+//////////////////////////////////////////////////////////////////////
   // Expressions
   public Object visitArrayExpression(ArrayExpression ast, Object obj) {
     return layoutUnary("ArrayExpr.", ast.AA);

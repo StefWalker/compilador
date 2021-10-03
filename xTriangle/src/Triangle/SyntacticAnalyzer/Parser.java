@@ -95,6 +95,8 @@ import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 
 // Llamadas a nuevas Declaraciones 
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
+import Triangle.AbstractSyntaxTrees.Proc;
+import Triangle.AbstractSyntaxTrees.Func;
 import Triangle.AbstractSyntaxTrees.ProcFunc;
 import Triangle.AbstractSyntaxTrees.ProcFuncs;
 
