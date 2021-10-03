@@ -99,7 +99,7 @@ import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
-
+import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
 public final class Encoder implements Visitor {
 
@@ -199,6 +199,9 @@ public final class Encoder implements Visitor {
       return null;
   }
   public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      return null;
+  }
+  public Object visitVarBecomesDeclaration  (VarBecomesDeclaration  ast, Object o){
       return null;
   }
 

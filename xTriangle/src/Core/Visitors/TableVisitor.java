@@ -87,7 +87,7 @@ import Triangle.AbstractSyntaxTrees.RepeatForDoCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
-
+import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 /**
  * Implements the Triangle Visitor interface, which is used to
  * visit an entire AST. 
