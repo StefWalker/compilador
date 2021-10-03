@@ -43,3 +43,388 @@
 | "repeat" (( ("while"|"until") Expression "do" Command )
 		|  ( "do" Command ("while"|"until") Expression )
 		|  ( "for" Identifier ((":=" "range" Expression ".." Expression ("do"|"while"|"until")) | ( "in" )) Expression "do" Command )) "end"
+
+
+Cambios 
+
+LayoutVisit
+
+desde linea 143
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      return layoutBinary("RepeatWhileCom.", ast.E, ast.C);
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      return layoutBinary("RepeatUntilCom.", ast.E, ast.C);
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      return layoutBinary("RepeatDoWhileCom.", ast.C, ast.E);
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      return layoutBinary("RepeatDoUntilCom.", ast.C, ast.E);
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      return layoutQuaternary("RepeatForDoCom.", ast.I, ast.E1, ast.E2, ast.C);
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      return layoutQuinary("RepeatForWhileCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C);
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      return layoutQuinary("RepeatForUntilCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C);
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      return layoutTernary("RepeatForInCom.", ast.I, ast.E1, ast.C);
+
+
+desde linea 476
+
+  private DrawingTree layoutQuinary (String name, AST child1, AST child2,
+                                        AST child3, AST child4, AST child5) {
+    DrawingTree dt = layoutCaption(name);
+    DrawingTree d1 = (DrawingTree) child1.visit(this, null);
+    DrawingTree d2 = (DrawingTree) child2.visit(this, null);
+    DrawingTree d3 = (DrawingTree) child3.visit(this, null);
+    DrawingTree d4 = (DrawingTree) child4.visit(this, null);
+    DrawingTree d5 = (DrawingTree) child5.visit(this, null);
+    dt.setChildren(new DrawingTree[] {d1, d2, d3, d4, d4});
+    attachParent(dt, join(dt));
+    return dt;
+  }
+
+
+
+
+
+
+
+
+TreeVisitor 
+
+desde linea 137
+
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      return (createBinary("RepeatWhileCom.", ast.E, ast.C));
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      return (createBinary("RepeatUntilCom.", ast.E, ast.C));
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      return (createBinary("RepeatDoWhileCom.", ast.C, ast.E));
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      return (createBinary("RepeatDoUntilCom.", ast.C, ast.E));
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      return (createQuaternary("RepeatForDoCom.", ast.I, ast.E1, ast.E2, ast.C));
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      return (createQuinary("RepeatForWhileCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      return (createQuinary("RepeatForUntilCom.", ast.I, ast.E1, ast.E2, ast.E3, ast.C));
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      return (createTernary("RepeatForInCom.", ast.I, ast.E1, ast.C));
+  }
+
+
+
+
+
+
+
+
+
+
+
+TableVisitor 
+
+desde linea 162
+
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      ast.E.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      ast.C.visit(this, null);
+      ast.E.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      ast.C.visit(this, null);
+      ast.E.visit(this, null);
+      return null;
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.E2.visit(this, null);
+      ast.E3.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      ast.I.visit(this, null);
+      ast.E1.visit(this, null);
+      ast.C.visit(this, null);
+      return null;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+Checker 
+
+desde linea 174
+
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      return null;
+  }
+
+
+
+
+
+
+
+
+
+
+
+Encoder 
+
+desde linea 179
+
+  public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
+      return null;
+  }
+  
+  public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o){
+      return null;
+  }
+  public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
+      return null;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  Vistor 
+
+  desde linea 30
+
+  public abstract Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o);
+  public abstract Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o);
+  public abstract Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o);
+  public abstract Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o);
+  
+  public abstract Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o);
+  public abstract Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o);
+  public abstract Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o);
+  public abstract Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o);
+
+
+
+
+
+
+
+
+  Token
+
+  adicion de palabras reservadas y puntuacion
+
+
+
+
+
+
+
+
+
+
+
+  Parser 
+
+  desde linea 370
+
+  case Token.REPEAT: 
+     {
+        acceptIt();
+        switch (currentToken.kind) {
+            case Token.WHILE: {
+                acceptIt();
+                Expression eAST = parseExpression();
+                accept(Token.DO);
+                Command cAST = parseCommand();
+                accept(Token.END);
+                finish(commandPos);
+                commandAST = new RepeatWhileCommand(eAST, cAST, commandPos);
+            }
+            break;
+            case Token.UNTIL: {
+                acceptIt();
+                Expression eAST = parseExpression();
+                accept(Token.DO);
+                Command cAST = parseCommand();
+                accept(Token.END);
+                finish(commandPos);
+                commandAST = new RepeatUntilCommand(eAST, cAST, commandPos);
+            }
+            break;
+            case Token.DO: {
+                acceptIt();
+                Command cAST = parseCommand();
+                switch (currentToken.kind) {
+                    case Token.WHILE: {
+                        acceptIt();
+                        Expression eAST = parseExpression();
+                        accept(Token.END);
+                        finish(commandPos);
+                        commandAST = new RepeatDoWhileCommand(cAST, eAST, commandPos);
+                    }
+                    break;
+                    case Token.UNTIL: {
+                        acceptIt();
+                        Expression eAST = parseExpression();
+                        accept(Token.END);
+                        finish(commandPos);
+                        commandAST = new RepeatDoUntilCommand(cAST, eAST, commandPos);
+                    }
+                    break;
+                }
+            }
+            break;
+            case Token.FOR: 
+            {
+                Identifier iAST = parseIdentifier();
+                switch (currentToken.kind) {
+                    case Token.BECOMES:
+                    {
+                        acceptIt();
+                        accept(Token.RANGE);
+                        Expression eAST = parseExpression();
+                        accept(Token.DDOT);
+                        Expression e1AST = parseExpression();
+                        switch (currentToken.kind) {
+                            case Token.DO: {
+                                acceptIt();
+                                Command cAST = parseCommand();
+                                accept(Token.END);
+                                finish(commandPos);
+                                commandAST = new RepeatForDoCommand(iAST, eAST, e1AST, cAST, commandPos);
+                            }
+                            break;
+                            case Token.WHILE: {
+                                acceptIt();
+                                Expression e2AST = parseExpression();
+                                accept(Token.DO);
+                                Command cAST = parseCommand();
+                                accept(Token.END);
+                                finish(commandPos);
+                                commandAST = new RepeatForWhileCommand(iAST, eAST, e1AST, e2AST, cAST, commandPos);
+                            }
+                            break;
+                            case Token.UNTIL: {
+                                acceptIt();
+                                Expression e2AST = parseExpression();
+                                accept(Token.DO);
+                                Command cAST = parseCommand();
+                                accept(Token.END);
+                                finish(commandPos);
+                                commandAST = new RepeatForUntilCommand(iAST, eAST, e1AST, e2AST, cAST, commandPos);
+                            }
+                            break;
+                        }
+                    }
+                    case Token.IN:{
+                        acceptIt();
+                        Expression eAST = parseExpression();
+                        accept(Token.DO);
+                        Command cAST = parseCommand();
+                        accept(Token.END);
+                        finish(commandPos);
+                        commandAST = new RepeatForInCommand(iAST, eAST, cAST, commandPos);
+                    }
+                }
+            }
+            break;
+        }
+    }

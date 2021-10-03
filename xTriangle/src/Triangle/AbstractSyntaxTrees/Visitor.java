@@ -24,6 +24,18 @@ public interface Visitor {
   public abstract Object visitLetCommand(LetCommand ast, Object o);
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
+  
+    // Yosua Blanco Diaz 
+  
+  public abstract Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o);
+  public abstract Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o);
+  public abstract Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o);
+  public abstract Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o);
+  
+  public abstract Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o);
+  public abstract Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o);
+  public abstract Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o);
+  public abstract Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o);
 
 
   // Expressions
@@ -99,22 +111,7 @@ public interface Visitor {
   // Value-or-variable names
   public abstract Object visitDotVname(DotVname ast, Object o);
   public abstract Object visitSimpleVname(SimpleVname ast, Object o);
-  public abstract Object visitSubscriptVname(SubscriptVname ast, Object o);
-  
-  // Yosua Blanco Diaz 
-  
-  public abstract Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o);
-  public abstract Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o);
-  public abstract Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o);
-  public abstract Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o);
-  
-  public abstract Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o);
-  public abstract Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o);
-  public abstract Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o);
-  public abstract Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o);
-
- 
-  
+  public abstract Object visitSubscriptVname(SubscriptVname ast, Object o);  
 
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
