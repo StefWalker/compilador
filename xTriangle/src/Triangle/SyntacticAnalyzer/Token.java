@@ -62,63 +62,62 @@ final class Token extends Object {
   public static final int
 
     // literals, identifiers, operators...
-    INTLITERAL  = 0,
-    CHARLITERAL = 1,
-    IDENTIFIER  = 2,
-    OPERATOR  = 3,
+    INTLITERAL	= 0,
+    CHARLITERAL	= 1,
+    IDENTIFIER	= 2,
+    OPERATOR	= 3,
 
     // reserved words - must be in alphabetical order...
-    ARRAY   = 4,
-    CONST   = 5,
-    DO      = 6,
-    ELSE    = 7,
-    END     = 8,
-    FOR                 = 9, // nuevo
-    FROM                = 10,// nuevo
-    FUNC    = 11,
-    IF      = 12,
-    IN      = 13,
-    LOCAL               = 14,//nuevo      
-    LET     = 15,
-    OF      = 16,
-    PROC    = 17,
-    RECORD    = 18,
-    RANGE               = 19,//nuevo
-    RECURSIVE           = 20,//nuevo
-    REPEAT              = 21,//nuevo
-//    SELECT              = 22,//nuevo
-    SKIP                = 22,//nuevo 
-    THEN    = 23,
-    TO                  = 24,//nuevo
-    TYPE    = 25,
-    UNTIL               = 26,//nuevo
-    VAR     = 27,
-    WHEN                = 28,//nuevo
-    WHILE   = 29,
+    ARRAY		= 4,
+    CONST		= 5,
+    DO			= 6,
+    ELSE		= 7,
+    END			= 8,
+    FOR                 = 9,  // TOKEN AGREGADO
+    FROM                = 10, // TOKEN AGREGADO
+    FUNC		= 11,
+    IF			= 12,
+    IN			= 13,
+    LET			= 14,
+    LOCAL               = 15, // TOKEN AGREGADO
+    OF			= 16,
+    PROC		= 17,
+    RANGE               = 18, // TOKEN AGREGADO
+    RECORD		= 19,
+    RECURSIVE           = 20, // TOKEN AGREGADO
+    REPEAT              = 21, // TOKEN AGREGADO
+    SELECT              = 22, // TOKEN AGREGADO
+    SKIP                = 23, // TOKEN AGREGADO
+    THEN		= 24,
+    TO                  = 25, // TOKEN AGREGADO
+    TYPE		= 26,
+    UNTIL               = 27, // TOKEN AGREGADO
+    VAR			= 28,
+    WHEN                = 29, // TOKEN AGREGADO
+    WHILE		= 30,
 
     // punctuation...
-    DOT     = 30,
-    COLON   = 31,
-    SEMICOLON           = 32,
-    COMMA   = 33,
-    BECOMES   = 34,
-    IS      = 35,
-    OR                  = 36,//nuevo
-    DDOT                = 37,//nuevo
-    
+    DOT			= 31,
+    COLON		= 32,
+    SEMICOLON           = 33,
+    COMMA		= 34,
+    BECOMES		= 35,
+    IS			= 36,
+    OR                  = 37, // TOKEN AGREGADO
+    DDOT                = 38, // TOKEN AGREGADO
 
     // brackets...
-    LPAREN    = 38,
-    RPAREN    = 39,
-    LBRACKET            = 40,
-    RBRACKET            = 41,
-    LCURLY    = 42,
-    RCURLY    = 43,
+    LPAREN		= 39,
+    RPAREN		= 40,
+    LBRACKET            = 41,
+    RBRACKET            = 42,
+    LCURLY		= 43,
+    RCURLY		= 44,
           
 
     // special tokens...
-    EOT     = 44,
-    ERROR   = 45;
+    EOT			= 45,
+    ERROR		= 46;
     
 
   private static String[] tokenTable = new String[] {
@@ -131,27 +130,27 @@ final class Token extends Object {
     "do",
     "else",
     "end",
-    "for",// nuevo
-    "from",// nuevo
+    "for",       // TOKEN AGREGADO
+    "from",      // TOKEN AGREGADO
     "func",
     "if",
     "in",
-    "local",// nuevo
     "let",
+    "local",     // TOKEN AGREGADO
     "of",
     "proc",
+    "range",     // TOKEN AGREGADO
     "record",
-    "range",// nuevo
-    "recursive",// nuevo
-    "repeat",// nuevo
- //   "select",// nuevo
-    "skip",// nuevo
+    "recursive", // TOKEN AGREGADO
+    "repeat",    // TOKEN AGREGADO
+    "select",    // TOKEN AGREGADO
+    "skip",      // TOKEN AGREGADO
     "then",
-    "to",// nuevo
+    "to",        // TOKEN AGREGADO
     "type",
-    "until",// nuevo
+    "until",     // TOKEN AGREGADO
     "var",
-    "when",// nuevo
+    "when",      // TOKEN AGREGADO 
     "while",
     ".",
     ":",
@@ -159,8 +158,8 @@ final class Token extends Object {
     ",",
     ":=",
     "~",
-    "|", // nuevo
-    "..",// nuevo
+    "|", // TOKEN AGREGADO
+    "..",// TOKEN AGREGADO
     "(",
     ")",
     "[",

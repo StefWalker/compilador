@@ -356,7 +356,7 @@ public class Parser {
         acceptIt();
         Expression eAST = parseExpression();
         accept(Token.THEN);
-        Command c1AST = parseCommand();              // Elimnado de Single
+        Command c1AST = parseCommand();              // Elimnado de Single  
         Command c2AST = parseIfOrElse();
         finish(commandPos);
         commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
@@ -413,11 +413,13 @@ public class Parser {
             break;
             case Token.FOR: 
             {
+                acceptIt();
                 Identifier iAST = parseIdentifier();
                 switch (currentToken.kind) {
                     case Token.BECOMES:
                     {
                         acceptIt();
+                        System.out.println(currentToken);
                         accept(Token.RANGE);
                         Expression eAST = parseExpression();
                         accept(Token.DDOT);
@@ -505,35 +507,37 @@ public class Parser {
   }
   
   
-  Command parseIfOrElse() throws SyntaxError {
-      
-      Command cAST = null;
-      SourcePosition commandPos = new SourcePosition();
-      start(commandPos);
-      
-      switch (currentToken.kind) {
-            case Token.OR:
-            {
+    Command parseIfOrElse() throws SyntaxError {
+
+        Command commandAST = null;
+        SourcePosition commandPos = new SourcePosition();
+        start(commandPos);
+
+        switch (currentToken.kind) {
+            case Token.ELSE: {
+                acceptIt();
+                Command cAST = parseCommand();
+                accept(Token.END);
+                commandAST = cAST;
+            }
+            break;
+            case Token.OR: {  //Elifs("|")
                 acceptIt();
                 Expression eAST = parseExpression();
                 accept(Token.THEN);
-                Command c1AST = parseCommand();
+                Command cAST = parseCommand();
                 Command c2AST = parseIfOrElse();
                 finish(commandPos);
-                cAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
+                commandAST = new IfCommand(eAST, cAST, c2AST, commandPos);
             }
             break;
-            
-            case Token.ELSE:
-            {
-                accept(Token.ELSE);
-                Command c1AST = parseCommand();
-                accept(Token.END);
-                finish(commandPos);
-            }
-            break;
+
+            default:
+                //syntacticError("" % " cannot start a command", currentToken.spelling);
+                break;
         }
-    return cAST;
+        return commandAST;
+    
   }
 
 ///////////////////////////////////////////////////////////////////////////////
