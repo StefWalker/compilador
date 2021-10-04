@@ -1,0 +1,11 @@
+select 1 from
+
+  when range 0 .. 5 then putint (1)
+
+  when 7 then putint(2)
+
+  when range 8 .. 200 then puteol()
+
+end
+
+! OK

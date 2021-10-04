@@ -331,6 +331,13 @@ public class Parser {
 //      accept(Token.END);
 //      break;
 
+    case Token.SKIP:
+    {
+        acceptIt();
+        finish(commandPos);
+        commandAST = new EmptyCommand(commandPos);
+    }
+        break;
     case Token.LET:
       {
         acceptIt();
@@ -349,33 +356,9 @@ public class Parser {
         Expression eAST = parseExpression();
         accept(Token.THEN);
         Command c1AST = parseCommand();              // Elimnado de Single
-        Command c2AST;
-        //
-        switch (currentToken.kind) {
-            case Token.OR:
-            {
-                acceptIt();
-                Expression e1AST = parseExpression();
-                accept(Token.THEN);
-                c2AST = parseCommand();
-                finish(commandPos);
-                commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
-            }
-            case Token.ELSE:
-            {
-                accept(Token.ELSE);
-                c2AST = parseCommand();
-                accept(Token.END);
-                finish(commandPos);
-                commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
-            }
-        }
-
-//        accept(Token.ELSE);
-//        c2AST = parseCommand();              // Elimnado de Single
-//        accept(Token.END);                           //
-//        finish(commandPos);
-//        commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
+        Command c2AST = parseIfOrElse();
+        finish(commandPos);
+        commandAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
 
       }
     break;
@@ -482,6 +465,7 @@ public class Parser {
             }
             break;
         }
+        break;
     }
 
     case Token.WHILE:
@@ -504,8 +488,7 @@ public class Parser {
     case Token.ELSE:
     case Token.IN:
     //case Token.EOT:
-    case Token.SKIP:
-
+      
       finish(commandPos);
       commandAST = new EmptyCommand(commandPos);
       break;
@@ -518,6 +501,38 @@ public class Parser {
     }
 
     return commandAST;
+  }
+  
+  
+  Command parseIfOrElse() throws SyntaxError {
+      
+      Command cAST = null;
+      SourcePosition commandPos = new SourcePosition();
+      start(commandPos);
+      
+      switch (currentToken.kind) {
+            case Token.OR:
+            {
+                acceptIt();
+                Expression eAST = parseExpression();
+                accept(Token.THEN);
+                Command c1AST = parseCommand();
+                Command c2AST = parseIfOrElse();
+                finish(commandPos);
+                cAST = new IfCommand(eAST, c1AST, c2AST, commandPos);
+            }
+            break;
+            
+            case Token.ELSE:
+            {
+                accept(Token.ELSE);
+                Command c1AST = parseCommand();
+                accept(Token.END);
+                finish(commandPos);
+            }
+            break;
+        }
+    return cAST;
   }
 
 ///////////////////////////////////////////////////////////////////////////////

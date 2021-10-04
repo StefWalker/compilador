@@ -1,0 +1,10 @@
+select 10 from
+
+  when range 5 . 6 then putint (1) ! case range debe tener ".." , no ".".
+
+  when 7 then putint(7)
+
+  else  putint (0)
+
+end
+
