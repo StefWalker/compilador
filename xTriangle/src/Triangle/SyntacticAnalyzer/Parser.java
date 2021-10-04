@@ -332,12 +332,13 @@ public class Parser {
 //      break;
 
     case Token.SKIP:
-    {
+      {
         acceptIt();
         finish(commandPos);
         commandAST = new EmptyCommand(commandPos);
-    }
+      }
         break;
+        
     case Token.LET:
       {
         acceptIt();
