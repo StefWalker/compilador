@@ -620,8 +620,8 @@ public class Main extends javax.swing.JFrame {
                 ((FileFrame)desktopPane.getSelectedFrame()).setTree((DefaultMutableTreeNode)treeVisitor.visitProgram(compiler.getAST(), null));
                 //((FileFrame)desktopPane.getSelectedFrame()).setTable(tableVisitor.getTable(compiler.getAST()));
                 
-                runMenuItem.setEnabled(false);
-                buttonRun.setEnabled(false);
+                //runMenuItem.setEnabled(false);
+                //buttonRun.setEnabled(false);
             } else {
                 ((FileFrame)desktopPane.getSelectedFrame()).highlightError(compiler.getErrorPosition());
                 runMenuItem.setEnabled(false);

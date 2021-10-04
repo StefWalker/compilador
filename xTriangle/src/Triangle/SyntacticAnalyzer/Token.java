@@ -104,7 +104,7 @@ final class Token extends Object {
     BECOMES		= 35,
     IS			= 36,
     OR                  = 37, // TOKEN AGREGADO
-    DDOT                = 38, // TOKEN AGREGADO
+    DOUBLEDOT           = 38, // TOKEN AGREGADO
 
     // brackets...
     LPAREN		= 39,

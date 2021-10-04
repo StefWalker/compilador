@@ -419,10 +419,10 @@ public class Parser {
                     case Token.BECOMES:
                     {
                         acceptIt();
-                        System.out.println(currentToken);
                         accept(Token.RANGE);
                         Expression eAST = parseExpression();
-                        accept(Token.DDOT);
+                        System.out.println(currentToken);
+                        accept(Token.DOUBLEDOT);
                         Expression e1AST = parseExpression();
                         switch (currentToken.kind) {
                             case Token.DO: {
