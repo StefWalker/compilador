@@ -7,6 +7,7 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 //  Yosua Andres Blanco Diaz
@@ -15,11 +16,26 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-public abstract class ProcFuncs extends Declaration{
 
-  public ProcFuncs(SourcePosition thePosition) {
+public class SequentialProcFuncs extends ProcFuncs{
+
+  public SequentialProcFuncs(ProcFuncs p1AST, ProcFuncs p2AST, SourcePosition thePosition) {
     super(thePosition);
+    PF1 = p1AST;
+    PF2 = p2AST ;      
   }
 
-  public abstract Object visitPF(Visitor v, Object o);
+  public Object visit(Visitor v, Object o) {
+    return v.visitSequentialProcFuncs(this, o);
+  }
+  
+  public ProcFuncs PF1;
+  public ProcFuncs PF2;
+
+  @Override
+  public Object visitPF(Visitor v, Object o) {
+    return v.visitSequentialProcFuncsPF(this, o);
+  }
+  
+
 }

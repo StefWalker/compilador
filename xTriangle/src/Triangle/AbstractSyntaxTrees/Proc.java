@@ -10,7 +10,7 @@ import Triangle.SyntacticAnalyzer.SourcePosition;
  *
  * @author Yosua Blanco Diaz
  */
-public abstract class Proc extends ProcFunc{
+public class Proc extends ProcFuncs{
     
     public Proc(Identifier iAST, FormalParameterSequence fpsAST, Command cAST,SourcePosition thePosition){
         super(thePosition);
@@ -20,9 +20,17 @@ public abstract class Proc extends ProcFunc{
         
     }
     
-    public abstract Object visitProc(Visitor v, Object o);
+    @Override
+    public Object visit(Visitor v, Object o){
+        return v.visitProc(this, o);
+    }
     
     public Identifier I;
     public FormalParameterSequence FPS;
     public Command C;
+    
+    @Override
+    public Object visitPF(Visitor v, Object o){
+        return v.visitProcPF(this, o);
+    }
 }

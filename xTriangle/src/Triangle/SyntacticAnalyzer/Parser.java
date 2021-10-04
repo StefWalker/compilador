@@ -95,10 +95,15 @@ import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 
 // Llamadas a nuevas Declaraciones 
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
-import Triangle.AbstractSyntaxTrees.Proc;
-import Triangle.AbstractSyntaxTrees.Func;
 import Triangle.AbstractSyntaxTrees.ProcFunc;
 import Triangle.AbstractSyntaxTrees.ProcFuncs;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
+import Triangle.AbstractSyntaxTrees.Proc;
+import Triangle.AbstractSyntaxTrees.Func;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.LocalDeclaration;
+import Triangle.AbstractSyntaxTrees.Visitor;
+
 
 public class Parser {
 
@@ -1192,19 +1197,19 @@ public class Parser {
 
     SourcePosition propFuncsPos = new SourcePosition();
     start(propFuncsPos);
-    ProcFunc pf1AST = parseProcFunc();
+    ProcFuncs pf1AST = parseProcFunc();
     do {
       accept(Token.OR);
-      ProcFunc pf2AST = parseProcFunc();
-      pf1AST = new ProcFuncs(pf1AST, pf2AST, propFuncsPos);
+      ProcFuncs pf2AST = parseProcFuncs();
+      pf1AST = new SequentialProcFuncs(pf1AST, pf2AST, propFuncsPos);
     } while (currentToken.kind == Token.OR); //"|"
     finish(propFuncsPos);
     ProcFuncsAST = pf1AST;
     return ProcFuncsAST;
   }
 
-  ProcFunc parseProcFunc() throws SyntaxError {
-    ProcFunc procFuncsAST = null; // in case there's a syntactic error
+  ProcFuncs parseProcFunc() throws SyntaxError {
+    ProcFuncs procFuncsAST = null; // in case there's a syntactic error
 
     SourcePosition procFuncPos = new SourcePosition();
     start(procFuncPos);

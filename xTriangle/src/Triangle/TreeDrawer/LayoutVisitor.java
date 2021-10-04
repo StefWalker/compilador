@@ -58,7 +58,6 @@ import Triangle.AbstractSyntaxTrees.Operator;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
-import Triangle.AbstractSyntaxTrees.ProcFuncs;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
@@ -93,9 +92,11 @@ import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
-import Triangle.AbstractSyntaxTrees.ProcFuncs;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 import Triangle.AbstractSyntaxTrees.Proc;
 import Triangle.AbstractSyntaxTrees.Func;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.LocalDeclaration;
 
 
 public class LayoutVisitor implements Visitor {
@@ -176,17 +177,29 @@ public class LayoutVisitor implements Visitor {
   public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object obj) {
     return layoutBinary("VarBecomesDecl.", ast.I, ast.E);
   }
-
-  public Object visitProcFuncs(ProcFuncs ast, Object obj) {
-    return layoutBinary("ProcFunc", ast.PF1, ast.PF2);
+  public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object obj) {
+    return layoutBinary("SequentialProcFuncsDecl.", ast.PF1, ast.PF2);
   }
-
+  public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object obj) {
+    return layoutBinary("SequentialProcFuncsPFDecl.", ast.PF1, ast.PF2);
+  }
   public Object visitProc(Proc ast, Object obj) {
-    return layoutTernary("Proc", ast.I, ast.FPS, ast.C);
+    return layoutTernary("ProcDecl.", ast.I, ast.FPS, ast.C);
   }
-  
-   public Object visitFunc(Func ast, Object obj) {
-    return layoutQuaternary("Func", ast.I, ast.FPS , ast.TD, ast.E );
+  public Object visitFunc(Func ast, Object obj) {
+    return layoutQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E );
+  }
+  public Object visitProcPF(Proc ast, Object obj) {
+    return layoutTernary("ProcDecl.", ast.I, ast.FPS, ast.C);
+  }
+  public Object visitFuncPF(Func ast, Object obj) {
+    return layoutQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E );
+  }
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object obj) {
+    return layoutUnary("RecursiveDeclarationDecl.", ast.PF );
+  }
+  public Object visitLocalDeclaration(LocalDeclaration ast, Object obj) {
+    return layoutBinary("LocalDeclarationDecl.", ast.D1, ast.D2);
   }
   
     

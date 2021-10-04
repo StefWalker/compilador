@@ -97,10 +97,13 @@ import Triangle.AbstractSyntaxTrees.RepeatForWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
-import Triangle.AbstractSyntaxTrees.ProcFuncs;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 
 import Triangle.AbstractSyntaxTrees.Proc;
 import Triangle.AbstractSyntaxTrees.Func;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.LocalDeclaration;
+
 
 public final class Checker implements Visitor {
 
@@ -200,18 +203,33 @@ public final class Checker implements Visitor {
   public Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o){
       return null;
   }
+  
+  
   public Object visitVarBecomesDeclaration   (VarBecomesDeclaration  ast, Object o){
       return null;
   }
-    public Object visitProcFuncs  (ProcFuncs  ast, Object o){
+  public Object visitSequentialProcFuncs  (SequentialProcFuncs  ast, Object o){
       return null;
   }
-    
-    public Object visitProc(Proc  ast, Object o){
+  public Object visitSequentialProcFuncsPF  (SequentialProcFuncs  ast, Object o){
+      return null;
+  }    
+  public Object visitProc(Proc  ast, Object o){
         return null;
   }
-  
-   public Object visitFunc(Func ast, Object o){
+  public Object visitFunc(Func ast, Object o){
+      return null;
+  }
+  public Object visitProcPF(Proc  ast, Object o){
+        return null;
+  }
+  public Object visitFuncPF(Func ast, Object o){
+      return null;
+  }
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o){
+      return null;
+  }
+  public Object visitLocalDeclaration(LocalDeclaration ast, Object o){
       return null;
   }
 
