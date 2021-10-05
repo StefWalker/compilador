@@ -455,6 +455,8 @@ public class Parser {
                             break;
                         }
                     }
+                    break;
+                    
                     case Token.IN:{
                         acceptIt();
                         Expression eAST = parseExpression();
@@ -464,13 +466,14 @@ public class Parser {
                         finish(commandPos);
                         commandAST = new RepeatForInCommand(iAST, eAST, cAST, commandPos);
                     }
+                    break;
                 }
             }
             break;
         }
-        break;
+        
     }
-
+    break;
     case Token.WHILE:
       {
         acceptIt();
@@ -776,10 +779,10 @@ public class Parser {
 
     SourcePosition declarationPos = new SourcePosition();
     start(declarationPos);
-    declarationAST = parseSingleDeclaration();
+    declarationAST = parseCompoundDeclaration(); //cambio
     while (currentToken.kind == Token.SEMICOLON) {
       acceptIt();
-      Declaration d2AST = parseSingleDeclaration();
+      Declaration d2AST = parseCompoundDeclaration(); //cambio
       finish(declarationPos);
       declarationAST = new SequentialDeclaration(declarationAST, d2AST,
         declarationPos);
