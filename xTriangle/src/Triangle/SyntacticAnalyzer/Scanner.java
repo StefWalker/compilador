@@ -130,6 +130,10 @@ public final class Scanner {
 
     case '.':
       takeIt();
+       if(currentChar == '.'){ // ".." case
+        takeIt();
+        return Token.DOUBLEDOT;  //new
+      }
       return Token.DOT;
 
     case ':':
@@ -175,6 +179,10 @@ public final class Scanner {
     case '}':
       takeIt();
       return Token.RCURLY;
+      
+    case '|': // nuevo 
+      takeIt();
+      return Token.OR;
 
     case SourceFile.EOT:
       return Token.EOT;
