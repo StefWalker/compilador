@@ -13,6 +13,7 @@ import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.SyntacticAnalyzer.Parser;
 import Triangle.ContextualAnalyzer.Checker;
 import Triangle.CodeGenerator.Encoder;
+import Triangle.SyntacticAnalyzer.Xml;
 
 
 
@@ -52,7 +53,11 @@ public class IDECompiler {
         boolean success = false;
         
         rootAST = parser.parseProgram();
+        scanner.createHTML(sourceName.replace(".tri", ".html"));
         if (report.numErrors == 0) {
+            Xml xmlWriter = new Xml(sourceName.replace(".tri", ".xml"));
+            rootAST.visit(xmlWriter, null);
+            xmlWriter.end();
             //System.out.println("Contextual Analysis ...");
             //Checker checker = new Checker(report);
             //checker.check(rootAST);

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<LetCommand>
+<VarDeclaration>
+<IntegerLiteral value="begin"/>
+<RecordTypeDenoter>
+<IntegerLiteral value="Integer"/>
+</RecordTypeDenoter>
+</VarDeclaration>
+<SequentialCommand>
+<CallCommand>
+<IntegerLiteral value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VarNameExpression>
+<SimpleVname>
+<IntegerLiteral value="begin"/>
+</SimpleVname>
+</VarNameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<CallCommand>
+<IntegerLiteral value="puteol"/>
+<EmptyActualParameterSequence/>
+</CallCommand>
+</SequentialCommand>
+</LetCommand>
+</Program>
