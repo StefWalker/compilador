@@ -195,7 +195,6 @@ public final class Encoder implements Visitor {
   public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
       return null;
   }
-  
   public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
       return null;
   }
@@ -210,37 +209,6 @@ public final class Encoder implements Visitor {
   }
   
   
-  
-  
-  public Object visitVarBecomesDeclaration  (VarBecomesDeclaration  ast, Object o){
-      return null;
-  }
-  public Object visitSequentialProcFuncs(SequentialProcFuncs  ast, Object o){
-      return null;
-  }
-  public Object visitSequentialProcFuncsPF(SequentialProcFuncs  ast, Object o){
-      return null;
-  }
-  public Object visitProc(Proc  ast, Object o){
-      return null;
-  }
-  public Object visitFunc(Func ast, Object o){
-      return null;
-  }
-  public Object visitProcPF(Proc  ast, Object o){
-      return null;
-  }
-  public Object visitFuncPF(Func ast, Object o){
-      return null;
-  }
-  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o){
-      return null;
-  }
-  public Object visitLocalDeclaration(LocalDeclaration ast, Object o){
-      return null;
-  }
-
-   
 
   // Expressions
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
@@ -436,6 +404,41 @@ public final class Encoder implements Visitor {
     ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
     writeTableDetails(ast);
     return new Integer(extraSize);
+  }
+  
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Single Command modified  
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  public Object visitVarBecomesDeclaration  (VarBecomesDeclaration  ast, Object o){
+      return null;
+  }
+  public Object visitSequentialProcFuncs(SequentialProcFuncs  ast, Object o){
+      return null;
+  }
+  public Object visitSequentialProcFuncsPF(SequentialProcFuncs  ast, Object o){
+      return null;
+  }
+  public Object visitProc(Proc  ast, Object o){
+      return null;
+  }
+  public Object visitFunc(Func ast, Object o){
+      return null;
+  }
+  public Object visitProcPF(Proc  ast, Object o){
+      return null;
+  }
+  public Object visitFuncPF(Func ast, Object o){
+      return null;
+  }
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o){
+      return null;
+  }
+  public Object visitLocalDeclaration(LocalDeclaration ast, Object o){
+      return null;
   }
 
 

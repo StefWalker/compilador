@@ -154,7 +154,6 @@ public class TreeVisitor implements Visitor {
   public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
       return (createBinary("RepeatDoUntilCom.", ast.C, ast.E));
   }
-  
   public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
       return (createQuaternary("RepeatForDoCom.", ast.I, ast.E1, ast.E2, ast.C));
   }
@@ -168,35 +167,6 @@ public class TreeVisitor implements Visitor {
       return (createTernary("RepeatForInCom.", ast.I, ast.E1, ast.C));
   }
   
-  
-  
-  public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object o){
-      return (createBinary("VarBecomeDecla", ast.I, ast.E));
-  }
-  public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o){
-      return (createBinary("SequentialProcFuncs", ast.PF1, ast.PF2));
-  }
-  public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object o){
-      return (createBinary("SequentialProcFuncsPF", ast.PF1, ast.PF2));
-  }
-  public Object visitProc(Proc ast, Object obj) {
-    return (createTernary("ProcDecl.", ast.I, ast.FPS, ast.C));
-  }
-  public Object visitFunc(Func ast, Object obj) {
-    return (createQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E ));
-  }
-  public Object visitProcPF(Proc ast, Object obj) {
-    return (createTernary("ProcPFDecl.", ast.I, ast.FPS, ast.C));
-  }
-  public Object visitFuncPF(Func ast, Object obj) {
-    return (createQuaternary("FuncDeclPF.", ast.I, ast.FPS , ast.TD, ast.E ));
-  }
-  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object obj) {
-    return (createUnary("RecursiveDeclarationDecl.", ast.PF ));
-  }
-  public Object visitLocalDeclaration(LocalDeclaration ast, Object obj) {
-    return (createBinary("LocalDeclarationDecl.", ast.D1, ast.D2));
-  }
   
     // </editor-fold>
     
@@ -280,6 +250,43 @@ public class TreeVisitor implements Visitor {
     public Object visitVarDeclaration(VarDeclaration ast, Object obj) {
         return(createBinary("Variable Declaration", ast.I, ast.T));
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Adition of the new commands
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object o){
+        return (createBinary("VarBecomeDecla", ast.I, ast.E));
+    }
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o){
+        return (createBinary("SequentialProcFuncs", ast.PF1, ast.PF2));
+    }
+    public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object o){
+        return (createBinary("SequentialProcFuncsPF", ast.PF1, ast.PF2));
+    }
+    public Object visitProc(Proc ast, Object obj) {
+      return (createTernary("ProcDecl.", ast.I, ast.FPS, ast.C));
+    }
+    public Object visitFunc(Func ast, Object obj) {
+      return (createQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E ));
+    }
+    public Object visitProcPF(Proc ast, Object obj) {
+      return (createTernary("ProcPFDecl.", ast.I, ast.FPS, ast.C));
+    }
+    public Object visitFuncPF(Func ast, Object obj) {
+      return (createQuaternary("FuncDeclPF.", ast.I, ast.FPS , ast.TD, ast.E ));
+    }
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object obj) {
+      return (createUnary("RecursiveDeclarationDecl.", ast.PF ));
+    }
+    public Object visitLocalDeclaration(LocalDeclaration ast, Object obj) {
+      return (createBinary("LocalDeclarationDecl.", ast.D1, ast.D2));
+    }
+    
+    
     // </editor-fold>
     
     // <editor-fold defaultstate="collapsed" desc=" Aggregates ">

@@ -190,7 +190,6 @@ public final class Checker implements Visitor {
   public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o){
       return null;
   }
-  
   public Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o){
       return null;
   }
@@ -204,37 +203,6 @@ public final class Checker implements Visitor {
       return null;
   }
   
-  
-  public Object visitVarBecomesDeclaration   (VarBecomesDeclaration  ast, Object o){
-      return null;
-  }
-  public Object visitSequentialProcFuncs  (SequentialProcFuncs  ast, Object o){
-      return null;
-  }
-  public Object visitSequentialProcFuncsPF  (SequentialProcFuncs  ast, Object o){
-      return null;
-  }    
-  public Object visitProc(Proc  ast, Object o){
-        return null;
-  }
-  public Object visitFunc(Func ast, Object o){
-      return null;
-  }
-  public Object visitProcPF(Proc  ast, Object o){
-        return null;
-  }
-  public Object visitFuncPF(Func ast, Object o){
-      return null;
-  }
-  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o){
-      return null;
-  }
-  public Object visitLocalDeclaration(LocalDeclaration ast, Object o){
-      return null;
-  }
-
-   
-
   // Expressions
 
   // Returns the TypeDenoter denoting the type of the expression. Does
@@ -432,6 +400,41 @@ public final class Checker implements Visitor {
                             ast.I.spelling, ast.position);
 
     return null;
+  }
+  
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Single Command modified  
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  public Object visitVarBecomesDeclaration   (VarBecomesDeclaration  ast, Object o){
+      return null;
+  }
+  public Object visitSequentialProcFuncs  (SequentialProcFuncs  ast, Object o){
+      return null;
+  }
+  public Object visitSequentialProcFuncsPF  (SequentialProcFuncs  ast, Object o){
+      return null;
+  }    
+  public Object visitProc(Proc  ast, Object o){
+        return null;
+  }
+  public Object visitFunc(Func ast, Object o){
+      return null;
+  }
+  public Object visitProcPF(Proc  ast, Object o){
+        return null;
+  }
+  public Object visitFuncPF(Func ast, Object o){
+      return null;
+  }
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o){
+      return null;
+  }
+  public Object visitLocalDeclaration(LocalDeclaration ast, Object o){
+      return null;
   }
 
   // Array Aggregates

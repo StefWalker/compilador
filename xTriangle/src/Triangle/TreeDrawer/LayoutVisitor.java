@@ -174,35 +174,7 @@ public class LayoutVisitor implements Visitor {
       return layoutTernary("RepeatForInCom.", ast.I, ast.E1, ast.C);
   }
 
-  public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object obj) {
-    return layoutBinary("VarBecomesDecl.", ast.I, ast.E);
-  }
-  public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object obj) {
-    return layoutBinary("SequentialProcFuncsDecl.", ast.PF1, ast.PF2);
-  }
-  public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object obj) {
-    return layoutBinary("SequentialProcFuncsPFDecl.", ast.PF1, ast.PF2);
-  }
-  public Object visitProc(Proc ast, Object obj) {
-    return layoutTernary("ProcDecl.", ast.I, ast.FPS, ast.C);
-  }
-  public Object visitFunc(Func ast, Object obj) {
-    return layoutQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E );
-  }
-  public Object visitProcPF(Proc ast, Object obj) {
-    return layoutTernary("ProcDecl.", ast.I, ast.FPS, ast.C);
-  }
-  public Object visitFuncPF(Func ast, Object obj) {
-    return layoutQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E );
-  }
-  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object obj) {
-    return layoutUnary("RecursiveDeclarationDecl.", ast.PF );
-  }
-  public Object visitLocalDeclaration(LocalDeclaration ast, Object obj) {
-    return layoutBinary("LocalDeclarationDecl.", ast.D1, ast.D2);
-  }
   
-    
   
 //////////////////////////////////////////////////////////////////////
   // Expressions
@@ -284,7 +256,44 @@ public class LayoutVisitor implements Visitor {
     return layoutBinary("VarDecl.", ast.I, ast.T);
   }
 
+  
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Adition of the new commands
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object obj) {
+    return layoutBinary("VarBecomesDecl.", ast.I, ast.E);
+  }
+  public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object obj) {
+    return layoutBinary("SequentialProcFuncsDecl.", ast.PF1, ast.PF2);
+  }
+  public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object obj) {
+    return layoutBinary("SequentialProcFuncsPFDecl.", ast.PF1, ast.PF2);
+  }
+  public Object visitProc(Proc ast, Object obj) {
+    return layoutTernary("ProcDecl.", ast.I, ast.FPS, ast.C);
+  }
+  public Object visitFunc(Func ast, Object obj) {
+    return layoutQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E );
+  }
+  public Object visitProcPF(Proc ast, Object obj) {
+    return layoutTernary("ProcDecl.", ast.I, ast.FPS, ast.C);
+  }
+  public Object visitFuncPF(Func ast, Object obj) {
+    return layoutQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E );
+  }
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object obj) {
+    return layoutUnary("RecursiveDeclarationDecl.", ast.PF );
+  }
+  public Object visitLocalDeclaration(LocalDeclaration ast, Object obj) {
+    return layoutBinary("LocalDeclarationDecl.", ast.D1, ast.D2);
+  }
 
+  
+  
   // Array Aggregates
   public Object visitMultipleArrayAggregate(MultipleArrayAggregate ast, Object obj) {
     return layoutBinary("Mult.ArrayAgg.", ast.E, ast.AA);

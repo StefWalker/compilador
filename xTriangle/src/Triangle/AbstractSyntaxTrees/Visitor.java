@@ -31,24 +31,10 @@ public interface Visitor {
   public abstract Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o);
   public abstract Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o);
   public abstract Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o);
-  
   public abstract Object visitRepeatForDoCommand  (RepeatForDoCommand ast, Object o);
   public abstract Object visitRepeatForWhileCommand(RepeatForWhileCommand ast, Object o);
   public abstract Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o);
   public abstract Object visitRepeatForInCommand  (RepeatForInCommand ast, Object o);
-
-  public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
-  public abstract Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object o);
-  public abstract Object visitProc(Proc ast, Object o);
-  public abstract Object visitFunc(Func ast, Object o);
-  public abstract Object visitProcPF(Proc ast, Object o);
-  public abstract Object visitFuncPF(Func ast, Object o);
-  
-  public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
-  public abstract Object visitLocalDeclaration(LocalDeclaration ast, Object o);
-  
-  
-  public abstract Object visitVarBecomesDeclaration (VarBecomesDeclaration ast, Object o);
 
   // Expressions
   public abstract Object visitArrayExpression(ArrayExpression ast, Object o);
@@ -72,6 +58,18 @@ public interface Visitor {
   public abstract Object visitTypeDeclaration(TypeDeclaration ast, Object o);
   public abstract Object visitUnaryOperatorDeclaration(UnaryOperatorDeclaration ast, Object o);
   public abstract Object visitVarDeclaration(VarDeclaration ast, Object o);
+  
+     // Dylan Torres Walker 
+  
+  public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
+  public abstract Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object o);
+  public abstract Object visitProc(Proc ast, Object o);
+  public abstract Object visitFunc(Func ast, Object o);
+  public abstract Object visitProcPF(Proc ast, Object o);
+  public abstract Object visitFuncPF(Func ast, Object o);
+  public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
+  public abstract Object visitLocalDeclaration(LocalDeclaration ast, Object o);
+  public abstract Object visitVarBecomesDeclaration (VarBecomesDeclaration ast, Object o);
 
   // Array Aggregates
   public abstract Object visitMultipleArrayAggregate(MultipleArrayAggregate ast, Object o);
