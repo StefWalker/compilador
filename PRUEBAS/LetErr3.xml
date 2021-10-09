@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<LetCommand>
+<SequentialDeclaration>
+<SequentialDeclaration>
+<SequentialDeclaration>
+<VarDeclaration>
+<IntegerLiteral value="i"/>
+<RecordTypeDenoter>
+<IntegerLiteral value="Char"/>
+</RecordTypeDenoter>
+</VarDeclaration>
+<VarDeclaration>
+<IntegerLiteral value="j"/>
+<RecordTypeDenoter>
+<IntegerLiteral value="Integer"/>
+</RecordTypeDenoter>
+</VarDeclaration>
+</SequentialDeclaration>
+<ConstDeclaration>
+<IntegerLiteral value="k"/>
+<IntegerExpression>
+<IntegerLiteral value="8"/>
+</IntegerExpression>
+</ConstDeclaration>
+</SequentialDeclaration>
+<TypeDeclaration>
+<IntegerLiteral value="dia"/>
+<RecordTypeDenoter>
+<IntegerLiteral value="Integer"/>
+</RecordTypeDenoter>
+</TypeDeclaration>
+</SequentialDeclaration>
+<EmptyCommand/>
+</LetCommand>
+</Program>

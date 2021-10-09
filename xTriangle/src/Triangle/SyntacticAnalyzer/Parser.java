@@ -365,7 +365,7 @@ public class Parser {
     break;
      
     case Token.REPEAT: 
-     {
+    {
         acceptIt();
         switch (currentToken.kind) {
             case Token.WHILE: {
@@ -391,7 +391,7 @@ public class Parser {
             case Token.DO: {
                 acceptIt();
                 Command cAST = parseCommand();
-                switch (currentToken.kind) {
+                switch (currentToken.kind) { //repeat do 
                     case Token.WHILE: {
                         acceptIt();
                         Expression eAST = parseExpression();
@@ -408,6 +408,11 @@ public class Parser {
                         commandAST = new RepeatDoUntilCommand(cAST, eAST, commandPos);
                     }
                     break;
+                    default:{
+                    syntacticError("\"%\" while , until  expected here ",currentToken.spelling);
+
+                    }
+                    break;
                 }
             }
             break;
@@ -415,7 +420,7 @@ public class Parser {
             {
                 acceptIt();
                 Identifier iAST = parseIdentifier();
-                switch (currentToken.kind) {
+                switch (currentToken.kind) { //repeat for
                     case Token.BECOMES:
                     {
                         acceptIt();
@@ -424,7 +429,7 @@ public class Parser {
                         System.out.println(currentToken);
                         accept(Token.DOUBLEDOT);
                         Expression e1AST = parseExpression();
-                        switch (currentToken.kind) {
+                        switch (currentToken.kind) { // repeat for :=
                             case Token.DO: {
                                 acceptIt();
                                 Command cAST = parseCommand();
@@ -453,6 +458,11 @@ public class Parser {
                                 commandAST = new RepeatForUntilCommand(iAST, eAST, e1AST, e2AST, cAST, commandPos);
                             }
                             break;
+                            default:{
+                            syntacticError("\"%\"  do ,  while, until  expected here ",currentToken.spelling);
+
+                            }
+                            break;
                         }
                     }
                     break;
@@ -467,7 +477,18 @@ public class Parser {
                         commandAST = new RepeatForInCommand(iAST, eAST, cAST, commandPos);
                     }
                     break;
+                    default:{
+                    syntacticError("\"%\" in or :=  expected here ",currentToken.spelling);
+
+                    }
+                    break;
                 }
+            }
+            break;
+            
+            default:{
+            syntacticError("\"%\" while, do, until or for expected here ",currentToken.spelling);
+           
             }
             break;
         }
@@ -535,9 +556,10 @@ public class Parser {
             }
             break;
 
-            default:
-                //syntacticError("" % " cannot start a command", currentToken.spelling);
+            default:{
+                syntacticError(" %  cannot start a command", currentToken.spelling);
                 break;
+            }
         }
         return commandAST;
     
