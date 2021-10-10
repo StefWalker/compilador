@@ -32,10 +32,4 @@ public class SequentialProcFuncs extends ProcFuncs{
   public ProcFuncs PF1;
   public ProcFuncs PF2;
 
-  @Override
-  public Object visitPF(Visitor v, Object o) {
-    return v.visitSequentialProcFuncsPF(this, o);
-  }
-  
-
 }

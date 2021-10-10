@@ -62,11 +62,6 @@ public interface Visitor {
      // Dylan Torres Walker 
   
   public abstract Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o);
-  public abstract Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object o);
-  public abstract Object visitProc(Proc ast, Object o);
-  public abstract Object visitFunc(Func ast, Object o);
-  public abstract Object visitProcPF(Proc ast, Object o);
-  public abstract Object visitFuncPF(Func ast, Object o);
   public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
   public abstract Object visitLocalDeclaration(LocalDeclaration ast, Object o);
   public abstract Object visitVarBecomesDeclaration (VarBecomesDeclaration ast, Object o);

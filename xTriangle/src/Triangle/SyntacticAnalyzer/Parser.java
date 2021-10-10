@@ -95,14 +95,8 @@ import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 
 // Llamadas a nuevas Declaraciones 
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
-import Triangle.AbstractSyntaxTrees.ProcFunc;
-import Triangle.AbstractSyntaxTrees.ProcFuncs;
-import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
-import Triangle.AbstractSyntaxTrees.Proc;
-import Triangle.AbstractSyntaxTrees.Func;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.LocalDeclaration;
-import Triangle.AbstractSyntaxTrees.Visitor;
 
 
 public class Parser {
@@ -426,7 +420,6 @@ public class Parser {
                         acceptIt();
                         accept(Token.RANGE);
                         Expression eAST = parseExpression();
-                        System.out.println(currentToken);
                         accept(Token.DOUBLEDOT);
                         Expression e1AST = parseExpression();
                         switch (currentToken.kind) { // repeat for :=
@@ -1205,7 +1198,7 @@ public class Parser {
       case Token.RECURSIVE:
       {
         acceptIt();
-        ProcFuncs pfAST = parseProcFuncs();
+        Declaration pfAST = parseProcFuncs();
         accept(Token.END);
         finish(declarationPos);
         declarationAST = new RecursiveDeclaration(pfAST, declarationPos);
@@ -1237,24 +1230,24 @@ public class Parser {
 //
 ///////////////////////////////////////////////////////////////////////////////
   
-  ProcFuncs parseProcFuncs() throws SyntaxError{
-    ProcFuncs ProcFuncsAST = null; // in case there's a syntactic error
+  Declaration parseProcFuncs() throws SyntaxError{
+    Declaration ProcFuncsAST = null; // in case there's a syntactic error
 
     SourcePosition propFuncsPos = new SourcePosition();
     start(propFuncsPos);
-    ProcFuncs pf1AST = parseProcFunc();
+    Declaration pf1AST = parseProcFunc();
     do {
       accept(Token.OR);
-      ProcFuncs pf2AST = parseProcFuncs();
-      pf1AST = new SequentialProcFuncs(pf1AST, pf2AST, propFuncsPos);
+      Declaration pf2AST = parseProcFuncs();
+      pf1AST = new SequentialDeclaration(pf1AST, pf2AST, propFuncsPos);
     } while (currentToken.kind == Token.OR); //"|"
     finish(propFuncsPos);
     ProcFuncsAST = pf1AST;
     return ProcFuncsAST;
   }
 
-  ProcFuncs parseProcFunc() throws SyntaxError {
-    ProcFuncs procFuncsAST = null; // in case there's a syntactic error
+  Declaration parseProcFunc() throws SyntaxError {
+    Declaration procFuncsAST = null; // in case there's a syntactic error
 
     SourcePosition procFuncPos = new SourcePosition();
     start(procFuncPos);
@@ -1270,7 +1263,7 @@ public class Parser {
           Command cAST = parseCommand();
           accept(Token.END);
           finish(procFuncPos);
-          procFuncsAST = new Proc(iAST, fpsAST, cAST, procFuncPos);
+          procFuncsAST = new ProcDeclaration(iAST, fpsAST, cAST, procFuncPos);
         }
         break;
       case Token.FUNC:
@@ -1284,7 +1277,7 @@ public class Parser {
         TypeDenoter tdAST = parseTypeDenoter();
         accept(Token.IS);
         Expression eAST = parseExpression();
-        procFuncsAST = new Func(iAST, fpsAST, tdAST, eAST, procFuncPos);
+        procFuncsAST = new FuncDeclaration(iAST, fpsAST, tdAST, eAST, procFuncPos);
       }
       break;
       default:

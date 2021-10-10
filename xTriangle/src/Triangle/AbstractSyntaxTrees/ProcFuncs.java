@@ -20,6 +20,4 @@ public abstract class ProcFuncs extends Declaration{
   public ProcFuncs(SourcePosition thePosition) {
     super(thePosition);
   }
-
-  public abstract Object visitPF(Visitor v, Object o);
 }

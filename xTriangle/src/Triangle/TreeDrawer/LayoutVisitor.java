@@ -93,8 +93,6 @@ import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
-import Triangle.AbstractSyntaxTrees.Proc;
-import Triangle.AbstractSyntaxTrees.Func;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.LocalDeclaration;
 
@@ -272,18 +270,6 @@ public class LayoutVisitor implements Visitor {
   }
   public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object obj) {
     return layoutBinary("SequentialProcFuncsPFDecl.", ast.PF1, ast.PF2);
-  }
-  public Object visitProc(Proc ast, Object obj) {
-    return layoutTernary("ProcDecl.", ast.I, ast.FPS, ast.C);
-  }
-  public Object visitFunc(Func ast, Object obj) {
-    return layoutQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E );
-  }
-  public Object visitProcPF(Proc ast, Object obj) {
-    return layoutTernary("ProcDecl.", ast.I, ast.FPS, ast.C);
-  }
-  public Object visitFuncPF(Func ast, Object obj) {
-    return layoutQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E );
   }
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object obj) {
     return layoutUnary("RecursiveDeclarationDecl.", ast.PF );

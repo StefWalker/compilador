@@ -82,8 +82,6 @@ import Triangle.AbstractSyntaxTrees.RepeatForInCommand;
 import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
-import Triangle.AbstractSyntaxTrees.Proc;
-import Triangle.AbstractSyntaxTrees.Func;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.LocalDeclaration;
 
@@ -266,18 +264,6 @@ public class TreeVisitor implements Visitor {
     }
     public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object o){
         return (createBinary("SequentialProcFuncsPF", ast.PF1, ast.PF2));
-    }
-    public Object visitProc(Proc ast, Object obj) {
-      return (createTernary("ProcDecl.", ast.I, ast.FPS, ast.C));
-    }
-    public Object visitFunc(Func ast, Object obj) {
-      return (createQuaternary("FuncDecl.", ast.I, ast.FPS , ast.TD, ast.E ));
-    }
-    public Object visitProcPF(Proc ast, Object obj) {
-      return (createTernary("ProcPFDecl.", ast.I, ast.FPS, ast.C));
-    }
-    public Object visitFuncPF(Func ast, Object obj) {
-      return (createQuaternary("FuncDeclPF.", ast.I, ast.FPS , ast.TD, ast.E ));
     }
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object obj) {
       return (createUnary("RecursiveDeclarationDecl.", ast.PF ));

@@ -92,8 +92,6 @@ import Triangle.AbstractSyntaxTrees.VarBecomesDeclaration;
 
 
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
-import Triangle.AbstractSyntaxTrees.Proc;
-import Triangle.AbstractSyntaxTrees.Func;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.LocalDeclaration;
 
@@ -411,40 +409,6 @@ public class TableVisitor implements Visitor {
       ast.PF1.visit(this, null);
       ast.PF2.visit(this, null);
       return null;
-  }
-  
-  public Object visitProc(Proc ast, Object o) { 
-      ast.I.visit(this, null);
-      ast.FPS.visit(this, null);
-      ast.C.visit(this, null);
-      
-      return(null);
-  }
-  
-  public Object visitFunc(Func ast, Object o) { 
-      ast.I.visit(this, null);
-      ast.FPS.visit(this, null);
-      ast.TD.visit(this, null);
-      ast.E.visit(this, null);
-      
-      return(null);
-  }
-  
-  public Object visitProcPF(Proc ast, Object o) { 
-      ast.I.visit(this, null);
-      ast.FPS.visit(this, null);
-      ast.C.visit(this, null);
-      
-      return(null);
-  }
-  
-  public Object visitFuncPF(Func ast, Object o) { 
-      ast.I.visit(this, null);
-      ast.FPS.visit(this, null);
-      ast.TD.visit(this, null);
-      ast.E.visit(this, null);
-      
-      return(null);
   }
   
   public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) { 

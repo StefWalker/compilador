@@ -30,7 +30,6 @@ import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.ErrorTypeDenoter;
-import Triangle.AbstractSyntaxTrees.Func;
 import Triangle.AbstractSyntaxTrees.FuncActualParameter;
 import Triangle.AbstractSyntaxTrees.FuncDeclaration;
 import Triangle.AbstractSyntaxTrees.FuncFormalParameter;
@@ -49,7 +48,6 @@ import Triangle.AbstractSyntaxTrees.MultipleFieldTypeDenoter;
 import Triangle.AbstractSyntaxTrees.MultipleFormalParameterSequence;
 import Triangle.AbstractSyntaxTrees.MultipleRecordAggregate;
 import Triangle.AbstractSyntaxTrees.Operator;
-import Triangle.AbstractSyntaxTrees.Proc;
 import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
@@ -221,11 +219,11 @@ public class Xml implements Visitor {
     @Override
     public Object visitRepeatForUntilCommand(RepeatForUntilCommand ast, Object o) {
         writeLine("<RepeatForUntilCommand>");
-        ast.C.visit(this, null);
+        ast.I.visit(this, null);
         ast.E1.visit(this, null);
         ast.E2.visit(this, null);
         ast.E3.visit(this, null);
-        ast.I.visit(this, null);
+        ast.C.visit(this, null);
         writeLine("</RepeatForUntilCommand>");
         return null;
     }
@@ -246,26 +244,6 @@ public class Xml implements Visitor {
         return null;
     }
 
-    @Override
-    public Object visitProc(Proc ast, Object o) {
-        writeLine("<Proc>");
-        ast.C.visit(this, null);
-        ast.FPS.visit(this, null);
-        ast.I.visit(this, null);
-        writeLine("</Proc>");
-        return null;
-    }
-
-    @Override
-    public Object visitFunc(Func ast, Object o) {
-        writeLine("<Func>");
-        ast.E.visit(this, null);
-        ast.FPS.visit(this, null);
-        ast.I.visit(this, null);
-        ast.TD.visit(this, null);
-        writeLine("</Func>");
-        return null;
-    }
 
     @Override
     public Object visitVarBecomesDeclaration(VarBecomesDeclaration ast, Object o) {
@@ -716,35 +694,6 @@ public class Xml implements Visitor {
         return null;
     }
 
-    @Override
-    public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object o) {
-        writeLine("<SequentialProcFuncs>");
-        ast.PF1.visit(this, null);
-        ast.PF2.visit(this, null);
-        writeLine("</SequentialProcFuncs>");
-        return null;
-    }
-
-    @Override
-    public Object visitProcPF(Proc ast, Object o) {
-        writeLine("<Proc>");
-        ast.C.visit(this, null);
-        ast.FPS.visit(this, null);
-        ast.I.visit(this, null);
-        writeLine("</Proc>");
-        return null;
-    }
-
-    @Override
-    public Object visitFuncPF(Func ast, Object o) {
-        writeLine("<Func>");
-        ast.E.visit(this, null);
-        ast.FPS.visit(this, null);
-        ast.I.visit(this, null);
-        ast.TD.visit(this, null);
-        writeLine("</Func>");
-        return null;
-    }
 
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
