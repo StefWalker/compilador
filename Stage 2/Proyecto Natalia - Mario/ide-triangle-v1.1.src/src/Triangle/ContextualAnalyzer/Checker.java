@@ -331,7 +331,7 @@ public final class Checker implements Visitor {
       reporter.reportError ("identifier \"%\" already declared",
                             ast.I.spelling, ast.position);
     idTable.openScope();
-    ast.FPS.visit(this, null);
+    ast.FPS.visit(this, null);  
     TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
     idTable.closeScope();
     if (! ast.T.equals(eType))
@@ -1012,10 +1012,28 @@ public final class Checker implements Visitor {
         ast.C.visit(this, null);
         return null;
     }
-
-        @Override
+    // Yosua Blanco
+    //
+    //
+    //-------------------
+    @Override
     public Object visitRepeatForRangeWhile(RepeatForRangeWhile ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType1 = (TypeDenoter) ast.E1.visit(this, null);
+        TypeDenoter eType2 = (TypeDenoter) ast.E2.visit(this, null);
+        
+        if(! eType1.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expression expected here", "", ast.E1.position);
+        if(! eType2.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expression expected here", "", ast.E2.position);
+        
+        idTable.openScope();
+          TypeDenoter idType = (TypeDenoter) ast.R.visit(this, null);
+          if(! idType.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.E2.position);
+          ast.C.visit(this, null);
+
+          return null;
+        
     }
 
     @Override
