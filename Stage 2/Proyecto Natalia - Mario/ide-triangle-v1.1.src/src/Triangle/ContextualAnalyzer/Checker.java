@@ -972,7 +972,10 @@ public final class Checker implements Visitor {
 
   
   // --------------Commands-------------------------------------------------------------
-
+    // Yosua Blanco
+    // Dilan Walker
+    //
+    //-------------------
     @Override
     public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o) {
         //Método implementado para "repeat" "while" Expression "do" Command "end"
@@ -982,7 +985,10 @@ public final class Checker implements Visitor {
         ast.C.visit(this, null);
         return null;
     }
-
+    // Yosua Blanco
+    // Dilan Walker
+    //
+    //-------------------
     @Override
     public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o) {
         //Método implementado para "repeat" "until" Expression "do" Command "end"
@@ -992,7 +998,10 @@ public final class Checker implements Visitor {
         ast.C.visit(this, null);
         return null;
     }
-
+    // Yosua Blanco
+    // Dilan Walker
+    //
+    //-------------------
     @Override
     public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o) {
         //Método implementado para "repeat" "do" Command "while" Expression "end"
@@ -1002,7 +1011,10 @@ public final class Checker implements Visitor {
         ast.C.visit(this, null);
         return null;
     }
-
+    // Yosua Blanco
+    // Dilan Walker
+    //
+    //-------------------
     @Override
     public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o) {
        //Método implementado para "repeat" "do" Command "until" Expression "end"
@@ -1013,14 +1025,13 @@ public final class Checker implements Visitor {
         return null;
     }
     // Yosua Blanco
-    //
+    // Dilan Walker
     //
     //-------------------
     @Override
     public Object visitRepeatForRangeWhile(RepeatForRangeWhile ast, Object o) {
         TypeDenoter eType1 = (TypeDenoter) ast.E1.visit(this, null);
         TypeDenoter eType2 = (TypeDenoter) ast.E2.visit(this, null);
-        
         if(! eType1.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expression expected here", "", ast.E1.position);
         if(! eType2.equals(StdEnvironment.integerType))
@@ -1029,37 +1040,61 @@ public final class Checker implements Visitor {
         idTable.openScope();
           TypeDenoter idType = (TypeDenoter) ast.R.visit(this, null);
           if(! idType.equals(StdEnvironment.integerType))
-            reporter.reportError("Integer expression expected here", "", ast.E2.position);
+            reporter.reportError("Integer expression expected here", "", ast.R.position);
           ast.C.visit(this, null);
-
-          return null;
-        
+        idTable.closeScope();
+        return null; 
     }
-
+    // Yosua Blanco
+    // Dilan Walker
+    //
+    //-------------------
     @Override
     public Object visitRepeatForRange(RepeatForRange ast, Object o) {
-        TypeDenoter eType1 = (TypeDenoter) ast.E1.visit(this, null);
+        TypeDenoter eType1 = (TypeDenoter) ast.E.visit(this, null);
         if(! eType1.equals(StdEnvironment.integerType))
-          reporter.reportError("Integer expression expected here", "", ast.E1.position);
+          reporter.reportError("Integer expression expected here", "", ast.E.position);
         idTable.openScope();
           TypeDenoter idType = (TypeDenoter) ast.R.visit(this, null);
           if(! idType.equals(StdEnvironment.integerType))
-            reporter.reportError("Integer expression expected here", "", ast.E2.position);
+            reporter.reportError("Integer expression expected here", "", ast.R.position);
           ast.C.visit(this, null);
-
-          return null;
-
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        idTable.closeScope();
+        return null;
     }
-
+    // Yosua Blanco
+    // Dilan Walker
+    //
+    //-------------------
     @Override
     public Object visitRepeatForRangeUntil(RepeatForRangeUntil ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TypeDenoter eType1 = (TypeDenoter) ast.E1.visit(this, null);
+        TypeDenoter eType2 = (TypeDenoter) ast.E2.visit(this, null);
+        if(! eType1.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expression expected here", "", ast.E1.position);
+        if(! eType2.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expression expected here", "", ast.E2.position);
+        idTable.openScope();
+          TypeDenoter idType = (TypeDenoter) ast.R.visit(this, null);
+          if(! idType.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.R.position);
+          ast.C.visit(this, null);
+        idTable.closeScope();
+        return null;
     }
-
+    // Yosua Blanco
+    // Dilan Walker
+    //
+    //-------------------
     @Override
     public Object visitRepeatIn(RepeatIn ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      idTable.openScope();
+      TypeDenoter idType = (TypeDenoter) ast.I.visit(this, null);
+      if(! idType.equals(StdEnvironment.integerType))
+        reporter.reportError("Integer expression expected here", "", ast.I.position);
+      ast.C.visit(this, null);
+      idTable.closeScope();
+      return null;
     }
     
     //-----------------------------Declarations--------------------------------------------------
