@@ -116,7 +116,7 @@ public final class Checker implements Visitor {
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);
     if (! eType.equals(vType))
       reporter.reportError ("assignment incompatibilty", "", ast.position);
-    return null;  // Si las partes internas est·n bien
+    return null;  // Si las partes internas est√°n bien
   }
 
 
@@ -150,7 +150,7 @@ public final class Checker implements Visitor {
   }
 
   public Object visitLetCommand(LetCommand ast, Object o) {
-    // Ac· no se hace nada si lo hicimos bien en el contextual
+    // Ac√° no se hace nada si lo hicimos bien en el contextual
     idTable.openScope();
     ast.D.visit(this, null);
     ast.C.visit(this, null);
@@ -159,7 +159,7 @@ public final class Checker implements Visitor {
   }
 
   public Object visitSequentialCommand(SequentialCommand ast, Object o) {
-     // Ac· no se hace nada si lo hicimos bien en el contextual
+     // Ac√° no se hace nada si lo hicimos bien en el contextual
     ast.C1.visit(this, null);
     ast.C2.visit(this, null);
     return null;
@@ -174,7 +174,7 @@ public final class Checker implements Visitor {
     return null; //Todo bien
   }
 
-  //Ac· se agregan el resto de cosas del 
+  //Ac√° se agregan el resto de cosas del 
   
   
   
@@ -978,7 +978,7 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o) {
-        //MÈtodo implementado para "repeat" "while" Expression "do" Command "end"
+        //M√©todo implementado para "repeat" "while" Expression "do" Command "end"
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if(! eType.equals(StdEnvironment.booleanType))
           reporter.reportError("Boolean expression expected here", "", ast.E.position);
@@ -991,7 +991,7 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o) {
-        //MÈtodo implementado para "repeat" "until" Expression "do" Command "end"
+        //M√©todo implementado para "repeat" "until" Expression "do" Command "end"
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if (! eType.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E.position);
@@ -1004,7 +1004,7 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o) {
-        //MÈtodo implementado para "repeat" "do" Command "while" Expression "end"
+        //M√©todo implementado para "repeat" "do" Command "while" Expression "end"
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if(! eType.equals(StdEnvironment.booleanType))
           reporter.reportError("Boolean expression expected here", "", ast.E.position);
@@ -1017,7 +1017,7 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o) {
-       //MÈtodo implementado para "repeat" "do" Command "until" Expression "end"
+       //M√©todo implementado para "repeat" "do" Command "until" Expression "end"
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if(! eType.equals(StdEnvironment.booleanType))
           reporter.reportError("Boolean expression expected here", "", ast.E.position);
@@ -1047,9 +1047,9 @@ public final class Checker implements Visitor {
     }
     // Yosua Blanco
     // Dilan Walker
-    //
+    //visitRepeatForRange falta en enter que el profe mensiona hoy 
     //-------------------
-    @Override
+    @Override 
     public Object visitRepeatForRange(RepeatForRange ast, Object o) {
         TypeDenoter eType1 = (TypeDenoter) ast.E.visit(this, null);
         if(! eType1.equals(StdEnvironment.integerType))
@@ -1100,6 +1100,13 @@ public final class Checker implements Visitor {
     //-----------------------------Declarations--------------------------------------------------
     @Override
     public Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o) {
+      /*ast.T = (TypeDenoter) ast.T.visit(this, null);
+      idTable.enter (ast.I.spelling, ast);
+      if (ast.duplicated)
+        reporter.reportError ("identifier \"%\" already declared",
+                              ast.I.spelling, ast.position);
+        return ast.T;
+  */
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
