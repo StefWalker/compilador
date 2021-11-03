@@ -88,7 +88,7 @@ public class Compiler {
             //}
             
             System.out.println ("Contextual Analysis ...");
-            checker.check(theAST);				// 2nd pass
+            checker.check(theAST);				// 2nd pass llama a la visita del AST
             if (showingAST) {
                 drawer.draw(theAST);
             }
