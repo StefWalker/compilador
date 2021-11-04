@@ -1047,7 +1047,7 @@ public final class Checker implements Visitor {
     }
     // Yosua Blanco
     // Dilan Walker
-    //visitRepeatForRange falta en enter que el profe mensiona hoy 
+    // 
     //-------------------
     @Override 
     public Object visitRepeatForRange(RepeatForRange ast, Object o) {
@@ -1064,7 +1064,7 @@ public final class Checker implements Visitor {
     }
     // Yosua Blanco
     // Dilan Walker
-    //
+    // 
     //-------------------
     @Override
     public Object visitRepeatForRangeUntil(RepeatForRangeUntil ast, Object o) {
@@ -1100,14 +1100,15 @@ public final class Checker implements Visitor {
     //-----------------------------Declarations--------------------------------------------------
     @Override
     public Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o) {
-      /*ast.T = (TypeDenoter) ast.T.visit(this, null);
+      
+      TypeDenoter eType1 = (TypeDenoter) ast.E.visit(this, null);
       idTable.enter (ast.I.spelling, ast);
       if (ast.duplicated)
         reporter.reportError ("identifier \"%\" already declared",
                               ast.I.spelling, ast.position);
-        return ast.T;
-  */
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      return null;
+  
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
