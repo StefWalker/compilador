@@ -910,9 +910,8 @@ public final class Checker implements Visitor {
         } else if (binding instanceof VarFormalParameter) {
             ast.type = ((VarFormalParameter) binding).T;
             ast.variable = true;
-        }
-        else if (binding instanceof VarBecomesDeclaration) {// Yosua Blanco Diaz 
-            ast.type = ((VarBecomesDeclaration) binding).T;
+        } else if (binding instanceof VarBecomesDeclaration) {// Yosua Blanco Diaz 
+            ast.type = ((VarBecomesDeclaration) binding).E.type;
             ast.variable = true;
         } else {
 
