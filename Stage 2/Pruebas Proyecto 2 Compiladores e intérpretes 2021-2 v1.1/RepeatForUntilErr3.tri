@@ -1,0 +1,15 @@
+let
+
+  var k : Boolean
+
+in
+
+  repeat for i := range 1 .. k until i > 5 do ! k deberí­a ser entera
+
+    k := k + 1 ; 
+
+    putint (1) ! no es un error
+
+  end
+
+end

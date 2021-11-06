@@ -381,10 +381,13 @@ public final class Checker implements Visitor {
         }
         TypeDenoter e2Type = (TypeDenoter) ast.E2.visit(this, null);
         TypeDenoter e3Type = (TypeDenoter) ast.E3.visit(this, null);
-        if (!e2Type.equals(e3Type)) {
-            reporter.reportError("incompatible limbs in if-expression", "", ast.position);
-        }
-        ast.type = e2Type;
+        // Yosua Blanco Diaz 
+        TypeDenoter newe2Type = (TypeDenoter) e2Type.visit(this, null);
+        TypeDenoter newe3Type = (TypeDenoter) e3Type.visit(this, null);
+        
+        if (! newe2Type.equals(newe3Type))
+          reporter.reportError ("incompatible limbs in if-expression", "", ast.position);
+        ast.type = newe2Type;
         return ast.type;
     }
 
@@ -907,7 +910,12 @@ public final class Checker implements Visitor {
         } else if (binding instanceof VarFormalParameter) {
             ast.type = ((VarFormalParameter) binding).T;
             ast.variable = true;
+        }
+        else if (binding instanceof VarBecomesDeclaration) {// Yosua Blanco Diaz 
+            ast.type = ((VarBecomesDeclaration) binding).T;
+            ast.variable = true;
         } else {
+
             reporter.reportError("\"%\" is not a const or var identifier",
                     ast.I.spelling, ast.I.position);
         }

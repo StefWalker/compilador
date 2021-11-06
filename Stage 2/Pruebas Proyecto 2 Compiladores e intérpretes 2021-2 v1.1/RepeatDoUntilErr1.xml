@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Program>
+<RepeatDoUntilCommand>
+<CallCommand>
+<IntegerLiteral value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</RepeatDoUntilCommand>
+</Program>
