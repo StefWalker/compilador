@@ -531,19 +531,38 @@ public final class Checker implements Visitor {
         return null;
     }
 
+        // Listo
     public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+        ast.PF1.visit(this, null);
+        ast.PF2.visit(this, null);
+        
         return null;
     }
 
+    // Listo
     public Object visitSequentialProcFuncsPF(SequentialProcFuncs ast, Object o) {
+        ast.PF1.visit(this, null);
+        ast.PF2.visit(this, null);
+        
         return null;
     }
 
+    // Listo
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        ast.PF.visit(this, null);
+        
         return null;
     }
 
+    // REVISAR
     public Object visitLocalDeclaration(LocalDeclaration ast, Object o) {
+//       IdentificationTable tempTable = idTable.copy();
+//        ast.D1.visit(this, null); //visit in idTable
+//        tempTable.beginLocalDeclaration(idTable); //make it local
+//        idTable = tempTable; //idTable has a copy of itself as local
+//        ast.D2.visit(this, null);
+//        idTable.endLocalDeclaration();
+     
         return null;
     }
 
