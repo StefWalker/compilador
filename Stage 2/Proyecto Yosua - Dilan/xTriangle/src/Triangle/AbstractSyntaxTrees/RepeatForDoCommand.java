@@ -19,6 +19,7 @@ public class RepeatForDoCommand extends Command {
     C = cAST;
   }
 
+  @Override
   public Object visit(Visitor v, Object o) {
     return v.visitRepeatForDoCommand(this, o);
   }

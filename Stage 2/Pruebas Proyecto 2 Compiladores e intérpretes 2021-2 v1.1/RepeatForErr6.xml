@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<RepeatForRange>
+<SequentialCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="+"/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</BinaryExpression>
+</AssignCommand>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+</VnameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</SequentialCommand>
+<IntegerExpression>
+<IntegerLiteral value="10"/>
+</IntegerExpression>
+<RangeVarDecl>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+<Identifier value="i"/>
+</RangeVarDecl>
+</RepeatForRange>
+</Program>
