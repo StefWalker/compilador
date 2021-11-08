@@ -20,17 +20,36 @@ public final class IdentificationTable {
 
   private int level;
   private IdEntry latest;
-
+  
+  //local
+  private IdentificationTable currentLocalDeclaration;
+  private boolean retrieveLocally;
+  
   public IdentificationTable () {
     level = 0;
     latest = null;
   }
-
+  
+  public IdentificationTable (int plevel, IdEntry platest, IdentificationTable pIcurrentLocalDeclaration) {
+    level = plevel;
+    latest = platest;
+    currentLocalDeclaration = pIcurrentLocalDeclaration;
+  }
+    
   // Opens a new level in the identification table, 1 higher than the
   // current topmost level.
 
+  public void beginLocalDeclaration(IdentificationTable localTable){
+    this.currentLocalDeclaration = localTable;
+    this.retrieveLocally = true;
+  }
+  
+  public void endLocalDeclaration(){
+    this.currentLocalDeclaration = null;
+    this.retrieveLocally = false;
+  }
+  
   public void openScope () {
-
     level ++;
   }
 
@@ -92,8 +111,10 @@ public final class IdentificationTable {
 
     entry = this.latest;
     while (searching) {
-      if (entry == null)
+      if (entry == null){
         searching = false;
+        attr = retrieveLocally ? retrieveLocally(id) : null;
+      }
       else if (entry.id.equals(id)) {
         present = true;
         searching = false;
@@ -103,6 +124,14 @@ public final class IdentificationTable {
     }
 
     return attr;
+  }
+  
+  public Declaration retrieveLocally(String id){
+    return currentLocalDeclaration.retrieve(id);
+  }
+  
+  public IdentificationTable copyIdTable(){
+    return new IdentificationTable(this.level, this.latest, this.currentLocalDeclaration);
   }
 
 }
