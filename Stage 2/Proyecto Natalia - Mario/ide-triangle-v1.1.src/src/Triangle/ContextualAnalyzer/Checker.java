@@ -728,8 +728,9 @@ public final class Checker implements Visitor {
     ast.variable = false;
     ast.type = StdEnvironment.errorType;
     Declaration binding = (Declaration) ast.I.visit(this, null);
-    if (binding == null)
+    if (binding == null){
       reportUndeclared(ast.I);
+    }
     else
       if (binding instanceof ConstDeclaration) {
         ast.type = ((ConstDeclaration) binding).E.type;
@@ -749,7 +750,14 @@ public final class Checker implements Visitor {
       }else if (binding instanceof InVarDecl) {  //Yosua Blanco Diaz 
         ast.type = StdEnvironment.integerType;
         ast.variable = true;
-      }
+      }else if (binding instanceof VarDeclarationExpression) { 
+        ast.type = ((VarDeclarationExpression) binding).E.type;
+        ast.variable = true; 
+//      }else if (binding instanceof ControlVarDeclaration) { 
+//        ast.type = StdEnvironment.integerType;
+//        ast.variable = true;
+//        ast.control = true;
+      } 
       else
         reporter.reportError ("\"%\" is not a const or var identifier",
                               ast.I.spelling, ast.I.position);
@@ -1126,12 +1134,27 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        IdentificationTable tempTable = idTable.copy();
+        ast.D1.visit(this, null); //visit in idTable
+        tempTable.beginLocalDeclaration(idTable); //make it local
+        idTable = tempTable; //idTable has a copy of itself as local
+        ast.D2.visit(this, null);
+        idTable.endLocalDeclaration();
+     
+        return null;
     }
 
     @Override
     public Object visitLocalProcFuncDeclaration(LocalProcFuncDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        IdentificationTable tempTable = idTable.copy();
+        ast.D1.visit(this, null); //visit in idTable
+        tempTable.beginLocalDeclaration(idTable); //make it local
+        idTable = tempTable; //idTable has a copy of itself as local
+        ast.D2.visit(this, null);
+        idTable.endLocalDeclaration();
+     
+        return null;
     }
 
     @Override
@@ -1142,6 +1165,7 @@ public final class Checker implements Visitor {
             reporter.reportError("identifier \"%\" already declared",
                     ast.I.spelling, ast.position);
         }
+        
         return ast.E.type;
     }
 

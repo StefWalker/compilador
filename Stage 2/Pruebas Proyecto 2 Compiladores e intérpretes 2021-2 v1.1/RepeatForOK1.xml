@@ -1,0 +1,52 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<VarDeclarationExpression>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+<Identifier value="k"/>
+</VarDeclarationExpression>
+<RepeatForRange>
+<SequentialCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="k"/>
+</SimpleVname>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="k"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="+"/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</BinaryExpression>
+</AssignCommand>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</SequentialCommand>
+<IntegerExpression>
+<IntegerLiteral value="10"/>
+</IntegerExpression>
+<RangeVarDecl>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="k"/>
+</SimpleVname>
+</VnameExpression>
+<Identifier value="i"/>
+</RangeVarDecl>
+</RepeatForRange>
+</LetCommand>
+</Program>

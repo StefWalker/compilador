@@ -1,0 +1,53 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<SequentialDeclaration>
+<FuncDeclaration>
+<Identifier value="F"/>
+<EmptyFormalParameterSequence/>
+<IntTypeDenoter/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</FuncDeclaration>
+<ProcDeclaration>
+<Identifier value="P"/>
+<SingleFormalParameterSequence>
+<ConstFormalParameter>
+<Identifier value="x"/>
+<IntTypeDenoter/>
+</ConstFormalParameter>
+</SingleFormalParameterSequence>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="x"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="*"/>
+<IntegerExpression>
+<IntegerLiteral value="2"/>
+</IntegerExpression>
+</BinaryExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</ProcDeclaration>
+</SequentialDeclaration>
+<CallCommand>
+<Identifier value="P"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CallExpression>
+<Identifier value="F"/>
+<EmptyActualParameterSequence/>
+</CallExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</LetCommand>
+</Program>

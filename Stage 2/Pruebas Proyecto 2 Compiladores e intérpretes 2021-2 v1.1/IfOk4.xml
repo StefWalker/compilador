@@ -1,0 +1,54 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<VarDeclaration>
+<Identifier value="a"/>
+<IntTypeDenoter/>
+</VarDeclaration>
+<SequentialCommand>
+<CallCommand>
+<Identifier value="getint"/>
+<SingleActualParameterSequence>
+<VarActualParameter>
+<SimpleVname>
+<Identifier value="a"/>
+</SimpleVname>
+</VarActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<IfCommand>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="a"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value=">"/>
+<IntegerExpression>
+<IntegerLiteral value="0"/>
+</IntegerExpression>
+</BinaryExpression>
+<CallCommand>
+<Identifier value="put"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CharacterExpression>
+<CharacterLiteral value="'M'"/>
+</CharacterExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<CallCommand>
+<Identifier value="put"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CharacterExpression>
+<CharacterLiteral value="'m'"/>
+</CharacterExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</IfCommand>
+</SequentialCommand>
+</LetCommand>
+</Program>

@@ -21,12 +21,21 @@ public final class IdentificationTable {
 
   private int level;
   private IdEntry latest;  // Desde acá se usa la lista enlazada
+  
+  //local declarations
+  private IdentificationTable currentLocalDeclaration;
+  private boolean retrieveLocally;
 
   public IdentificationTable () {
     level = 0;   // En el nivel 0, se establece el ambiente estandar, var.indent predef.
     latest = null;
   }
 
+  private IdentificationTable(int level, IdEntry latest, IdentificationTable currentLocalDeclaration) {
+    this.level = level;
+    this.latest = latest;
+    this.currentLocalDeclaration = currentLocalDeclaration;
+  }
   // Opens a new level in the identification table, 1 higher than the
   // current topmost level.
 
@@ -93,8 +102,10 @@ public final class IdentificationTable {
 
     entry = this.latest;
     while (searching) {
-      if (entry == null)
+      if (entry == null){
         searching = false;
+      attr = retrieveLocally ? retrieveLocally(id) : null;
+    }
       else if (entry.id.equals(id)) {
         present = true;
         searching = false;
@@ -104,6 +115,24 @@ public final class IdentificationTable {
     }
 
     return attr;
+  }
+  
+  public void beginLocalDeclaration(IdentificationTable localTable){
+    this.currentLocalDeclaration = localTable; //new private-local declaration
+    this.retrieveLocally = true;
+  }
+
+  public void endLocalDeclaration(){
+    this.currentLocalDeclaration = null; //end of private-local declaration
+    retrieveLocally = false;
+  }
+
+  public Declaration retrieveLocally(String id){
+    return currentLocalDeclaration.retrieve(id);
+  }
+
+  public IdentificationTable copy(){
+    return new IdentificationTable(this.level, this.latest, this.currentLocalDeclaration);
   }
 
 }

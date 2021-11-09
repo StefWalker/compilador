@@ -1,0 +1,78 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<LocalProcFuncDeclaration>
+<SequentialDeclaration>
+<VarDeclarationExpression>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+<Identifier value="a"/>
+</VarDeclarationExpression>
+<ConstDeclaration>
+<Identifier value="b"/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</ConstDeclaration>
+</SequentialDeclaration>
+<SequentialDeclaration>
+<ProcDeclaration>
+<Identifier value="P"/>
+<EmptyFormalParameterSequence/>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="a"/>
+</SimpleVname>
+</VnameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</ProcDeclaration>
+<FuncDeclaration>
+<Identifier value="m"/>
+<EmptyFormalParameterSequence/>
+<IntTypeDenoter/>
+<BinaryExpression>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="b"/>
+</SimpleVname>
+</VnameExpression>
+<Operator value="+"/>
+<IntegerExpression>
+<IntegerLiteral value="2"/>
+</IntegerExpression>
+</BinaryExpression>
+</FuncDeclaration>
+</SequentialDeclaration>
+</LocalProcFuncDeclaration>
+<SequentialCommand>
+<SequentialCommand>
+<CallCommand>
+<Identifier value="P"/>
+<EmptyActualParameterSequence/>
+</CallCommand>
+<CallCommand>
+<Identifier value="puteol"/>
+<EmptyActualParameterSequence/>
+</CallCommand>
+</SequentialCommand>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CallExpression>
+<Identifier value="m"/>
+<EmptyActualParameterSequence/>
+</CallExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</SequentialCommand>
+</LetCommand>
+</Program>
