@@ -495,7 +495,7 @@ public final class Checker implements Visitor {
     if (! (fp instanceof ConstFormalParameter))
       reporter.reportError ("const actual parameter not expected here", "",
                             ast.position);
-    else if (! eType.equals(((ConstFormalParameter) fp).T))
+    else if (! eType.equals(((ConstFormalParameter) fp).T.visit(this,null)))
       reporter.reportError ("wrong type for const actual parameter", "",
                             ast.E.position);
     return null;
@@ -744,10 +744,10 @@ public final class Checker implements Visitor {
         ast.type = ((RangeVarDecl) binding).E.type;
         ast.variable = true;
       } else if (binding instanceof VarFormalParameter) {
-        ast.type = ((VarFormalParameter) binding).T;
+        ast.type = ((VarFormalParameter) binding).T; //Yosua Blanco Diaz 
         ast.variable = true;
-      }else if (binding instanceof InVarDecl) {
-        ast.type = ((InVarDecl) binding).E.type;
+      }else if (binding instanceof InVarDecl) {  //Yosua Blanco Diaz 
+        ast.type = StdEnvironment.integerType;
         ast.variable = true;
       }
       else
@@ -1045,7 +1045,11 @@ public final class Checker implements Visitor {
           reporter.reportError("Integer expression expected here", "", ast.E2.position);
         
         idTable.openScope();
-          Declaration idType = (Declaration) ast.R.visit(this, null);
+          
+          TypeDenoter idType2 = (TypeDenoter) ast.R.E.visit(this, null);
+          if(! idType2.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.R.E.position);
+          ast.R.visit(this, null);
           ast.C.visit(this, null);
         idTable.closeScope();
         
@@ -1061,7 +1065,10 @@ public final class Checker implements Visitor {
         if(! eType1.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expression expected here", "", ast.E.position);
         idTable.openScope();
-          Declaration idType = (Declaration) ast.R.visit(this, null);
+        TypeDenoter idType2 = (TypeDenoter) ast.R.E.visit(this, null);
+          if(! idType2.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.R.E.position);
+          ast.R.visit(this, null);
           ast.C.visit(this, null);
         idTable.closeScope();
         return null;
@@ -1079,7 +1086,10 @@ public final class Checker implements Visitor {
         if(! eType2.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expression expected here", "", ast.E2.position);
         idTable.openScope();
-          Declaration idType = (Declaration) ast.R.visit(this, null);
+          TypeDenoter idType2 = (TypeDenoter) ast.R.E.visit(this, null);
+          if(! idType2.equals(StdEnvironment.integerType))
+            reporter.reportError("Integer expression expected here", "", ast.R.E.position);
+          ast.R.visit(this, null);
           ast.C.visit(this, null);
         idTable.closeScope();
         return null;
@@ -1090,13 +1100,17 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatIn(RepeatIn ast, Object o) {
-      idTable.openScope();
-        Declaration idType = (Declaration) ast.I.visit(this, null);
+        TypeDenoter eType2 = (TypeDenoter) ast.I.E.visit(this, null);
+        if (!eType2.equals(StdEnvironment.integerType)) {
+            reporter.reportError("Integer expression expected here", "", ast.I.E.position);
+        }
+        idTable.openScope();
+        ast.I.visit(this, null);
         ast.C.visit(this, null);
-      idTable.closeScope();
-      return null;
+        idTable.closeScope();
+        return null;
     }
-    
+
     //-----------------------------Declarations--------------------------------------------------
     @Override
     public Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o) {
@@ -1106,8 +1120,7 @@ public final class Checker implements Visitor {
       if (ast.duplicated)
         reporter.reportError ("identifier \"%\" already declared",
                               ast.I.spelling, ast.position);
-      return null;
-  
+      return ast.E.type;
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -1123,24 +1136,23 @@ public final class Checker implements Visitor {
 
     @Override
     public Object visitRangeVarDecl(RangeVarDecl ast, Object o) {
-        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        
         idTable.enter(ast.I.spelling, ast);
         if (ast.duplicated) {
             reporter.reportError("identifier \"%\" already declared",
                     ast.I.spelling, ast.position);
         }
-        return null;
+        return ast.E.type;
     }
 
     @Override
     public Object visitInVarDecl(InVarDecl ast, Object o) {
-        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         idTable.enter(ast.I.spelling, ast);
         if (ast.duplicated) {
             reporter.reportError("identifier \"%\" already declared",
                     ast.I.spelling, ast.position);
         }
-        return null;
+        return ast.E.type;
     }
 
 }
