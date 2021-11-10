@@ -53,6 +53,7 @@ import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RangeVarDecl;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RepeatDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForRange;
@@ -242,6 +243,15 @@ public class XmlVisitor implements Visitor {
         ast.ARG2.visit(this, null);
         ast.RES.visit(this, null);
         writeLineXML("</BinaryOperatorDeclaration>");
+        return null;
+    }
+    
+    // Yosua Blanco Diaz 
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        writeLineXML("<RecursiveDeclaration>");
+        ast.PF.visit(this, null);
+        writeLineXML("</RecursiveDeclaration>");
         return null;
     }
 
@@ -681,5 +691,7 @@ public class XmlVisitor implements Visitor {
             return operator;
         }
     }
+
+    
 
 }
