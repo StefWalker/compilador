@@ -1,0 +1,39 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<ProcFuncsDeclaration>
+<ProcDeclaration>
+<Identifier value="a"/>
+<EmptyFormalParameterSequence/>
+<CallCommand>
+<Identifier value="put"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CharacterExpression>
+<CharacterLiteral value="'Z'"/>
+</CharacterExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</ProcDeclaration>
+<FuncDeclaration>
+<Identifier value="m"/>
+<EmptyFormalParameterSequence/>
+<IntTypeDenoter/>
+<IntegerExpression>
+<IntegerLiteral value="10"/>
+</IntegerExpression>
+</FuncDeclaration>
+</ProcFuncsDeclaration>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</LetCommand>
+</Program>

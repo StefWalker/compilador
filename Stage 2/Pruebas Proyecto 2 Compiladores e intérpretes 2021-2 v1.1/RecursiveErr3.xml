@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<ProcFuncsDeclaration>
+<ProcFuncsDeclaration>
+<FuncDeclaration>
+<Identifier value="f"/>
+<EmptyFormalParameterSequence/>
+<IntTypeDenoter/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</FuncDeclaration>
+<FuncDeclaration>
+<Identifier value="g"/>
+<SingleFormalParameterSequence>
+<ConstFormalParameter>
+<Identifier value="b"/>
+<IntTypeDenoter/>
+</ConstFormalParameter>
+</SingleFormalParameterSequence>
+<IntTypeDenoter/>
+<IntegerExpression>
+<IntegerLiteral value="3"/>
+</IntegerExpression>
+</FuncDeclaration>
+</ProcFuncsDeclaration>
+<FuncDeclaration>
+<Identifier value="f"/>
+<SingleFormalParameterSequence>
+<ConstFormalParameter>
+<Identifier value="a"/>
+<IntTypeDenoter/>
+</ConstFormalParameter>
+</SingleFormalParameterSequence>
+<IntTypeDenoter/>
+<IntegerExpression>
+<IntegerLiteral value="2"/>
+</IntegerExpression>
+</FuncDeclaration>
+</ProcFuncsDeclaration>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CallExpression>
+<Identifier value="f"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<IntegerExpression>
+<IntegerLiteral value="10"/>
+</IntegerExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</LetCommand>
+</Program>

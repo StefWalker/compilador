@@ -104,7 +104,7 @@ public final class IdentificationTable {
     while (searching) {
       if (entry == null){
         searching = false;
-      attr = retrieveLocally ? retrieveLocally(id) : null;
+        attr = retrieveLocally ? retrieveLocally(id) : null;
     }
       else if (entry.id.equals(id)) {
         present = true;
