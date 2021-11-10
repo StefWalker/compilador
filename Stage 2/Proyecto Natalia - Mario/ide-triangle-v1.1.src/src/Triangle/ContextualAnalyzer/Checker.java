@@ -1076,15 +1076,21 @@ public final class Checker implements Visitor {
     //-------------------
     @Override 
     public Object visitRepeatForRange(RepeatForRange ast, Object o) {
-        TypeDenoter eType1 = (TypeDenoter) ast.E.visit(this, null);
-        if(! eType1.equals(StdEnvironment.integerType))
-          reporter.reportError("Integer expression expected here", "", ast.E.position);
+        TypeDenoter eType3 = (TypeDenoter) ast.R.E.visit(this, null);
+        
+        if(! eType3.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expression expected here", "", ast.R.E.position);
         idTable.openScope();
-        TypeDenoter idType2 = (TypeDenoter) ast.R.E.visit(this, null);
-          if(! idType2.equals(StdEnvironment.integerType))
-            reporter.reportError("Integer expression expected here", "", ast.R.E.position);
-          ast.R.visit(this, null);
-          ast.C.visit(this, null);
+            idTable.enter(ast.R.I.spelling, ast.R);
+            
+            if(ast.R.duplicated)
+                reporter.reportError("identifier \"%\" already declared", ast.R.I.spelling, ast.position);
+            
+            TypeDenoter eType2 = (TypeDenoter) ast.E.visit(this, null);
+            if(! eType2.equals(StdEnvironment.booleanType))
+                reporter.reportError("Boolean expression expected here", "", ast.E.position);
+          
+            ast.C.visit(this, null);
         idTable.closeScope();
         return null;
     }
@@ -1095,17 +1101,25 @@ public final class Checker implements Visitor {
     @Override
     public Object visitRepeatForRangeUntil(RepeatForRangeUntil ast, Object o) {
         TypeDenoter eType1 = (TypeDenoter) ast.E1.visit(this, null);
-        TypeDenoter eType2 = (TypeDenoter) ast.E2.visit(this, null);
+        TypeDenoter eType3 = (TypeDenoter) ast.R.E.visit(this, null);
+        
+        if(! eType3.equals(StdEnvironment.integerType))
+          reporter.reportError("Integer expression expected here", "", ast.R.E.position);
         if(! eType1.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expression expected here", "", ast.E1.position);
-        if(! eType2.equals(StdEnvironment.integerType))
-          reporter.reportError("Integer expression expected here", "", ast.E2.position);
+        
+        
         idTable.openScope();
-          TypeDenoter idType2 = (TypeDenoter) ast.R.E.visit(this, null);
-          if(! idType2.equals(StdEnvironment.integerType))
-            reporter.reportError("Integer expression expected here", "", ast.R.E.position);
-          ast.R.visit(this, null);
-          ast.C.visit(this, null);
+            idTable.enter(ast.R.I.spelling, ast.R);
+            
+            if(ast.R.duplicated)
+                reporter.reportError("identifier \"%\" already declared", ast.R.I.spelling, ast.position);
+            
+            TypeDenoter eType2 = (TypeDenoter) ast.E2.visit(this, null);
+            if(! eType2.equals(StdEnvironment.booleanType))
+                reporter.reportError("Boolean expression expected here", "", ast.E2.position);
+          
+            ast.C.visit(this, null);
         idTable.closeScope();
         return null;
     }
