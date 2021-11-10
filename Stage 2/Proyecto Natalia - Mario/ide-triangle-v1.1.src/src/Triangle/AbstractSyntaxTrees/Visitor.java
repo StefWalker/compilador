@@ -72,6 +72,7 @@ public interface Visitor {
   public abstract Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o);
   public abstract Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o);
   public abstract Object visitLocalProcFuncDeclaration(LocalProcFuncDeclaration ast, Object o);
+  public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
   public abstract Object visitRangeVarDecl(RangeVarDecl ast, Object o);
   public abstract Object visitInVarDecl(InVarDecl ast, Object o);
           

@@ -106,6 +106,7 @@ import Triangle.AbstractSyntaxTrees.VarDeclarationExpression;
 import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 
 public class Parser {
 
@@ -1055,7 +1056,7 @@ public class Parser {
         Declaration pfAST = parseProcFuncs();
         accept(Token.END);
         finish(declarationPos);
-        declarationAST = pfAST;
+        declarationAST = new RecursiveDeclaration(pfAST, declarationPos);;
       }
       break;
 

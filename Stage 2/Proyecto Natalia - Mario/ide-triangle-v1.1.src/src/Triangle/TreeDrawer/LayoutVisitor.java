@@ -103,6 +103,7 @@ import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 
 public class LayoutVisitor implements Visitor {
 
@@ -286,6 +287,21 @@ public class LayoutVisitor implements Visitor {
   public Object visitLocalProcFuncDeclaration(LocalProcFuncDeclaration ast, Object o) {
     return layoutBinary("LocalProcFuncsDecl.", ast.D1, ast.D2);
   }
+  
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Yosua Andres Blanco Diaz
+//  Dylan Stef Torres Walker 
+//  Johel Mora Calderon
+//  Adition if RecursiveDeclaration
+//
+///////////////////////////////////////////////////////////////////////////////
+  @Override
+  public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+    return layoutUnary("RecursiveDeclaration.", ast.PF);
+  }
+  
+  
  //Método de Visit implementado
    @Override
    public Object visitRangeVarDecl(RangeVarDecl ast, Object o) {

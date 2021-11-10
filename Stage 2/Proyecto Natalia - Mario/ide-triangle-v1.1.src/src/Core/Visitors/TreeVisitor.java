@@ -91,6 +91,7 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import javax.swing.tree.DefaultMutableTreeNode;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 
 /**
  * Implements the Triangle Visitor interface, which is used to
@@ -276,6 +277,22 @@ public class TreeVisitor implements Visitor {
     public Object visitLocalProcFuncDeclaration(Triangle.AbstractSyntaxTrees.LocalProcFuncDeclaration ast, Object o) {
         return(createBinary("Local Proc Funcs Declaration", ast.D1, ast.D2));
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition if RecursiveDeclaration
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        return(createUnary("Recursive Declaration", ast.PF));
+    }
+    
+    
+    
     //Método de Visit implementado
     @Override
     public Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o) {
