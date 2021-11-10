@@ -90,6 +90,7 @@ import Triangle.CodeGenerator.UnknownAddress;
 import Triangle.CodeGenerator.UnknownRoutine;
 import Triangle.CodeGenerator.UnknownValue;
 import javax.swing.table.DefaultTableModel;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 
 /**
  * Implements the Triangle Visitor interface, which is used to
@@ -411,6 +412,20 @@ public class TableVisitor implements Visitor {
     public Object visitLocalProcFuncDeclaration(LocalProcFuncDeclaration ast, Object o) {
         ast.D1.visit(this, null);
         ast.D2.visit(this, null);
+        return(null);
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition if RecursiveDeclaration
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        ast.PF.visit(this, null);
         return(null);
     }
     

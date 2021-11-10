@@ -99,6 +99,8 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import Triangle.SyntacticAnalyzer.SourcePosition;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+
 
 public final class Checker implements Visitor {
 
@@ -1156,6 +1158,20 @@ public final class Checker implements Visitor {
      
         return null;
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition if RecursiveDeclaration
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
+        return null;
+    }
+    
 
     @Override
     public Object visitRangeVarDecl(RangeVarDecl ast, Object o) {

@@ -102,6 +102,7 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
+import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 
 public final class Encoder implements Visitor {
 
@@ -1065,6 +1066,19 @@ public final class Encoder implements Visitor {
     @Override
     public Object visitLocalProcFuncDeclaration(LocalProcFuncDeclaration ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition if RecursiveDeclaration
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    @Override
+    public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o){
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
