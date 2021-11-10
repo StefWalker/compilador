@@ -191,6 +191,7 @@ public final class Checker implements Visitor {
     IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),
                                            ast.position);
     ast.type = new ArrayTypeDenoter(il, elemType, ast.position);
+    StdEnvironment.arrayType = new ArrayTypeDenoter(il, elemType, ast.position);
     return ast.type;
   }
 
@@ -1123,7 +1124,6 @@ public final class Checker implements Visitor {
             if (ast.I.duplicated)
                 reporter.reportError ("identifier \"%\" already declared", ast.I.I.spelling, ast.position);
             
-            ast.I.visit(this, null);
             ast.C.visit(this, null);
         idTable.closeScope();
         return null;
