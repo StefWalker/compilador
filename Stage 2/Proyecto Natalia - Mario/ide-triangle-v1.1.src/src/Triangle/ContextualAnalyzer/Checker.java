@@ -1087,8 +1087,8 @@ public final class Checker implements Visitor {
                 reporter.reportError("identifier \"%\" already declared", ast.R.I.spelling, ast.position);
             
             TypeDenoter eType2 = (TypeDenoter) ast.E.visit(this, null);
-            if(! eType2.equals(StdEnvironment.booleanType))
-                reporter.reportError("Boolean expression expected here", "", ast.E.position);
+            if(! eType2.equals(StdEnvironment.integerType))
+                reporter.reportError("Integer expression expected here", "", ast.E.position);
           
             ast.C.visit(this, null);
         idTable.closeScope();
