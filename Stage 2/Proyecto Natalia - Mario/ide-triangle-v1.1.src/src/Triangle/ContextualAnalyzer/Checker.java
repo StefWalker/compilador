@@ -25,6 +25,12 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCHAR;
+import Triangle.AbstractSyntaxTrees.CaseLiteralINT;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRangeCase;
+import Triangle.AbstractSyntaxTrees.CaseWhen;
+import Triangle.AbstractSyntaxTrees.Cases;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
@@ -33,6 +39,7 @@ import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -76,6 +83,9 @@ import Triangle.AbstractSyntaxTrees.RepeatForRangeWhile;
 import Triangle.AbstractSyntaxTrees.RepeatIn;
 import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.SelectCommand;
+import Triangle.AbstractSyntaxTrees.SequentialCase;
+import Triangle.AbstractSyntaxTrees.SequentialCaseRange;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -99,6 +109,7 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import Triangle.SyntacticAnalyzer.SourcePosition;
+import Utilities.SelectData;
 
 public final class Checker implements Visitor {
 
@@ -1153,7 +1164,6 @@ public final class Checker implements Visitor {
         idTable = tempTable; //idTable has a copy of itself as local
         ast.D2.visit(this, null);
         idTable.endLocalDeclaration();
-     
         return null;
     }
 
@@ -1168,6 +1178,18 @@ public final class Checker implements Visitor {
         
         return ast.E.type;
     }
+    
+    
+    @Override
+    public Object visitSelectCommand(SelectCommand ast, Object o) {
+        TypeDenoter expressionType = (TypeDenoter) ast.EXP.visit(this, null);
+        if( ! expressionType.equals( StdEnvironment.charType) && ! expressionType.equals( StdEnvironment.integerType) ){
+            reporter.reportError("Integer or Char expression expected here", "", ast.EXP.position);
+        }
+        SelectData expressionData = new SelectData(expressionType);
+        ast.COM.visit(this, expressionData);
+        return null;
+    }
 
     @Override
     public Object visitInVarDecl(InVarDecl ast, Object o) {
@@ -1179,4 +1201,147 @@ public final class Checker implements Visitor {
         return ast.E.type;
     }
 
+    @Override
+    public Object visitCases(Cases ast, Object typeExpression) {
+        ast.CASE1.visit(this, typeExpression);
+        if(ast.CASE2 != null)
+            ast.CASE2.visit(this, typeExpression);
+        return null;
+    }
+
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        ast.COM.visit(this, o);
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialCase(SequentialCase ast, Object typeExpression) {
+        ast.C1.visit(this, typeExpression);
+        ast.C2.visit(this, typeExpression);
+        return null;
+    }
+    
+    @Override
+    public Object visitCaseWhen(CaseWhen ast, Object typeExpression) {
+        ast.CASELIT.visit(this, typeExpression);
+        ast.COM.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object typeExpression) {
+        ast.CASERANGE.visit(this, typeExpression);
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialCaseRange(SequentialCaseRange ast, Object typeExpression) {
+        ast.C1.visit(this, typeExpression);
+        ast.C2.visit(this, typeExpression);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseLiteralCHAR(CaseLiteralCHAR ast, Object o) {
+        return StdEnvironment.charType;
+    }
+
+    @Override
+    public Object visitCaseLiteralINT(CaseLiteralINT ast, Object o) {
+        return StdEnvironment.integerType;
+    }
+
+    @Override
+public Object visitCaseRangeCase(CaseRangeCase ast, Object selectData) {
+        SelectData valuesData = (SelectData) selectData;
+        TypeDenoter typeExpression = ((SelectData) selectData).getType();
+        TypeDenoter typeCaseLit1  = (TypeDenoter) ast.CASELIT.visit(this, null);
+        TypeDenoter typeCaseLit2 = null;
+        if( ast.CASELIT2 != null )
+              typeCaseLit2 = (TypeDenoter) ast.CASELIT2.visit(this, null);
+        if( typeExpression.equals(StdEnvironment.charType) ){
+            if( ! typeCaseLit1.equals(typeExpression) ){
+                 reporter.reportError ("Char expression expected here", "",
+				ast.CASELIT.position);
+            }
+            if( typeCaseLit2 != null && ! typeCaseLit2.equals(typeExpression) ){
+                 reporter.reportError ("Char expression expected here", "",
+				ast.CASELIT2.position);
+            }
+        }
+        else if( typeExpression.equals(StdEnvironment.integerType) ){
+            if( ! typeCaseLit1.equals(typeExpression) ){
+                 reporter.reportError ("Integer expression expected here", "",
+				ast.CASELIT.position);
+            }
+            if(typeCaseLit2 != null && ! typeCaseLit2.equals(typeExpression) ){
+                 reporter.reportError ("Integer expression expected here", "",
+				ast.CASELIT2.position);
+            }
+        }
+            if( ast.CASELIT instanceof CaseLiteralCHAR && ast.CASELIT2 == null ){
+                if(!valuesData.exists( ((CharacterLiteral) ( ( (CaseLiteralCHAR) ast.CASELIT).CHARLIT)).spelling)){
+                    valuesData.addData( ((CharacterLiteral) ( ( (CaseLiteralCHAR) ast.CASELIT).CHARLIT)).spelling );
+                }
+                else{
+                 reporter.reportError ("Repeated Character Literal in Select Command", "",
+				ast.CASELIT.position);
+                }
+            }
+            else if( ast.CASELIT instanceof CaseLiteralINT && ast.CASELIT2 == null){
+                if(!valuesData.exists(((IntegerLiteral) ( ( (CaseLiteralINT) ast.CASELIT).INTLIT)).spelling)){
+                     valuesData.addData( ((IntegerLiteral) ( ( (CaseLiteralINT) ast.CASELIT).INTLIT)).spelling );
+                }
+                 else{
+                 reporter.reportError ("Repeated Integer Literal in Select Command", "",
+				ast.CASELIT.position);
+                }
+            }
+             
+            if(ast.CASELIT2 !=  null && typeExpression.equals(typeCaseLit2) ){
+                if( ast.CASELIT instanceof CaseLiteralCHAR){
+                    addCharactersValues(valuesData,
+                            ((CharacterLiteral) ( ( (CaseLiteralCHAR) ast.CASELIT).CHARLIT)).spelling,
+                            ((CharacterLiteral) ( ( (CaseLiteralCHAR) ast.CASELIT2).CHARLIT)).spelling,
+                            ast.CASELIT.position);
+                }
+                else if(ast.CASELIT instanceof CaseLiteralINT){
+                    addIntegerValues(valuesData,
+                            ((IntegerLiteral) ( ( (CaseLiteralINT) ast.CASELIT).INTLIT)).spelling,
+                            ((IntegerLiteral) ( ( (CaseLiteralINT) ast.CASELIT2).INTLIT)).spelling,
+                            ast.CASELIT.position);
+                }
+            }
+        return null;
+    }
+
+    private void addCharactersValues(SelectData actualValues,String value1,String value2,SourcePosition position ){
+        char value1Char = value1.charAt(1);
+        char value2Char = value2.charAt(1);
+        char counter;
+        for (int i = value1Char ; i < value2Char + 1; i++) {
+            counter = (char)i;
+            if(!actualValues.exists( "'" + Character.toString(counter) + "'" ) ){
+                actualValues.addData( "'" + Character.toString(counter) + "'" );
+            }
+            else{
+                reporter.reportError ("Repeated Character Literal in Choose Command", "", position);
+            }
+        }
+    }
+    
+    private void addIntegerValues(SelectData actualValues,String value1,String value2,SourcePosition position ){
+        int value1Int = Integer.parseInt(value1);
+        int value2Int = Integer.parseInt(value2) + 1;
+        
+        for (int i = value1Int; i < value2Int; i++) { 
+            if( actualValues.exists( Integer.toString(i) ) ){
+                 reporter.reportError ("Repeated Integer Literal in Choose Command", "", position);
+            }
+            else{
+                actualValues.addData( Integer.toString(i ) );
+            }
+        }
+    }
 }

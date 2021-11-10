@@ -14,6 +14,12 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCHAR;
+import Triangle.AbstractSyntaxTrees.CaseLiteralINT;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRangeCase;
+import Triangle.AbstractSyntaxTrees.CaseWhen;
+import Triangle.AbstractSyntaxTrees.Cases;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
@@ -21,6 +27,7 @@ import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -61,6 +68,9 @@ import Triangle.AbstractSyntaxTrees.RepeatForRangeWhile;
 import Triangle.AbstractSyntaxTrees.RepeatIn;
 import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.SelectCommand;
+import Triangle.AbstractSyntaxTrees.SequentialCase;
+import Triangle.AbstractSyntaxTrees.SequentialCaseRange;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -137,6 +147,13 @@ public class TableVisitor implements Visitor {
       ast.D.visit(this, null);
       ast.C.visit(this, null);
       
+      return(null);
+  }
+  
+  public Object visitSelectCommand(SelectCommand ast, Object o) {
+      ast.EXP.visit(this, null);
+      ast.COM.visit(this, null);
+
       return(null);
   }
   
@@ -779,10 +796,72 @@ public class TableVisitor implements Visitor {
     private DefaultTableModel model;
     // </editor-fold>
 
-    
-    
+    @Override
+    public Object visitCases(Cases ast, Object o) {
+        if(ast.CASE2 == null){
+            ast.CASE1.visit(this, null);
+        }
+        else{
+            ast.CASE1.visit(this, null);
+            ast.CASE2.visit(this, null);
+        }
+        return null;
+    }
 
-   
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        ast.COM.visit(this, null);
+        return null;
+    }
 
-   
+    @Override
+    public Object visitSequentialCase(SequentialCase ast, Object o) {
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseWhen(CaseWhen ast, Object o) {
+        ast.CASELIT.visit(this, null);
+        ast.COM.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+        ast.CASERANGE.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseRangeCase(CaseRangeCase ast, Object o) {
+        if(ast.CASELIT2 == null){
+            ast.CASELIT.visit(this, null);
+        }
+        else{
+            ast.CASELIT.visit(this, null);
+            ast.CASELIT2.visit(this, null);
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialCaseRange(SequentialCaseRange ast, Object o) {
+        ast.C1.visit(this, null);
+        ast.C2.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseLiteralCHAR(CaseLiteralCHAR ast, Object o) {
+        ast.CHARLIT.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitCaseLiteralINT(CaseLiteralINT ast, Object o) {
+        ast.INTLIT.visit(this, null);
+        return null;
+    }
 }

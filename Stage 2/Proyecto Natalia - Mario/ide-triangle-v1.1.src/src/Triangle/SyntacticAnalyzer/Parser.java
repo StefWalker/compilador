@@ -24,6 +24,15 @@ import Triangle.AbstractSyntaxTrees.AssignCommand;
 import Triangle.AbstractSyntaxTrees.BinaryExpression;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.Case;
+import Triangle.AbstractSyntaxTrees.CaseLiteral;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCHAR;
+import Triangle.AbstractSyntaxTrees.CaseLiteralINT;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRange;
+import Triangle.AbstractSyntaxTrees.CaseRangeCase;
+import Triangle.AbstractSyntaxTrees.CaseWhen;
+import Triangle.AbstractSyntaxTrees.Cases;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
 import Triangle.AbstractSyntaxTrees.Command;
@@ -32,6 +41,7 @@ import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.Declaration;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyFormalParameterSequence;
@@ -74,6 +84,9 @@ import Triangle.AbstractSyntaxTrees.RepeatForRangeWhile;
 import Triangle.AbstractSyntaxTrees.RepeatIn;
 import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.SelectCommand;
+import Triangle.AbstractSyntaxTrees.SequentialCase;
+import Triangle.AbstractSyntaxTrees.SequentialCaseRange;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -350,6 +363,18 @@ public class Parser {
       }
       break;
       
+    case Token.SELECT: 
+      {
+        acceptIt();
+        Expression eAST = parseExpression();
+        accept(Token.FROM);
+        Command casesAST = parseCases();
+        accept(Token.END);
+        finish(commandPos);
+        commandAST = new SelectCommand(eAST, casesAST, commandPos);
+      }
+      break;
+      
     
     /*
     Ya no forma parte de la gramática  
@@ -559,6 +584,113 @@ public class Parser {
     return commandAST;
   }
   
+  
+      Cases parseCases() throws SyntaxError {
+        Case caseAST = null;
+        ElseCase elseCaseAST = null;
+        SourcePosition casePos = new SourcePosition();
+        start(casePos);
+        caseAST = parseCase();
+        finish(casePos);
+        while (currentToken.kind == Token.WHEN) {
+            Case case2AST = parseCase();
+            finish(casePos);
+            caseAST = new SequentialCase(caseAST, case2AST, casePos);
+        }
+
+        if (currentToken.kind == Token.ELSE) {
+            elseCaseAST = parseElseCase();
+            finish(casePos);
+        }
+        Cases casesAST = new Cases(caseAST, elseCaseAST, casePos);
+        return casesAST;
+    }
+    
+      Case parseCase() throws SyntaxError {
+        Case caseAST = null;
+        SourcePosition casePos = new SourcePosition();
+        start(casePos);
+        accept(Token.WHEN);
+        CaseLiterals caseLitAST = parseCaseLiterals();
+        accept(Token.THEN);
+        Command cmdAST = parseCommand();
+        finish(casePos);
+        caseAST = new CaseWhen(caseLitAST, cmdAST, casePos);
+        return caseAST;
+    }
+    
+      ElseCase parseElseCase() throws SyntaxError {
+        ElseCase elseCaseAST = null;
+        SourcePosition elseCasePos = new SourcePosition();
+        start(elseCasePos);
+        accept(Token.ELSE);
+        Command cmdAST = parseCommand();
+        finish(elseCasePos);
+        elseCaseAST = new ElseCase(cmdAST, elseCasePos);
+        return elseCaseAST;
+    }
+      
+      CaseLiterals parseCaseLiterals() throws SyntaxError {
+        CaseLiterals caseLiteralsAST = null;
+        SourcePosition caseLiteralsPos = new SourcePosition();
+        start(caseLiteralsPos);
+        CaseRange caseRangeAST = parseCaseRange();
+        finish(caseLiteralsPos);
+        while (currentToken.kind == Token.UPRSLASH) {
+            acceptIt();
+            CaseRange caseRange2AST = parseCaseRange();
+            finish(caseLiteralsPos);
+            caseRangeAST = new SequentialCaseRange(caseRangeAST, caseRange2AST, caseLiteralsPos);
+        }
+
+        caseLiteralsAST = new CaseLiterals(caseRangeAST, caseLiteralsPos);
+        return caseLiteralsAST;
+    }
+      
+      CaseRange parseCaseRange() throws SyntaxError {
+        CaseLiteral caseLiteral2AST = null;
+
+        SourcePosition caseRangePos = new SourcePosition();
+        start(caseRangePos);
+        CaseLiteral caseLiteralAST = parseCaseLiteral();
+
+        if (currentToken.kind == Token.DOUBLEDOT) {
+            acceptIt();
+            caseLiteral2AST = parseCaseLiteral();
+        }
+        finish(caseRangePos);
+        CaseRange caseRangeAST = new CaseRangeCase(caseLiteralAST, caseLiteral2AST, caseRangePos);
+        return caseRangeAST;
+    }
+      
+    CaseLiteral parseCaseLiteral() throws SyntaxError {
+        CaseLiteral caseLiteralAST = null;
+        SourcePosition caseLiteralPos = new SourcePosition();
+        start(caseLiteralPos);
+
+        switch (currentToken.kind) {
+
+            case Token.INTLITERAL: {
+                IntegerLiteral ilAST = parseIntegerLiteral();
+                finish(caseLiteralPos);
+                caseLiteralAST = new CaseLiteralINT(ilAST, caseLiteralPos);
+            }
+            break;
+            case Token.CHARLITERAL: {
+                CharacterLiteral clAST = parseCharacterLiteral();
+                finish(caseLiteralPos);
+                caseLiteralAST = new CaseLiteralCHAR(clAST, caseLiteralPos);
+            }
+            break;
+            default:
+                syntacticError("\"%\" cannot start a case-literal",
+                        currentToken.spelling);
+                break;
+        }
+        finish(caseLiteralPos);
+        return caseLiteralAST;
+    }
+      
   
 ///////////////////////////////////////////////////////////////////////////////
 //

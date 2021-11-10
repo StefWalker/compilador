@@ -14,6 +14,12 @@ import Triangle.AbstractSyntaxTrees.BinaryOperatorDeclaration;
 import Triangle.AbstractSyntaxTrees.BoolTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CallCommand;
 import Triangle.AbstractSyntaxTrees.CallExpression;
+import Triangle.AbstractSyntaxTrees.CaseLiteralCHAR;
+import Triangle.AbstractSyntaxTrees.CaseLiteralINT;
+import Triangle.AbstractSyntaxTrees.CaseLiterals;
+import Triangle.AbstractSyntaxTrees.CaseRangeCase;
+import Triangle.AbstractSyntaxTrees.CaseWhen;
+import Triangle.AbstractSyntaxTrees.Cases;
 import Triangle.AbstractSyntaxTrees.CharTypeDenoter;
 import Triangle.AbstractSyntaxTrees.CharacterExpression;
 import Triangle.AbstractSyntaxTrees.CharacterLiteral;
@@ -21,6 +27,7 @@ import Triangle.AbstractSyntaxTrees.ConstActualParameter;
 import Triangle.AbstractSyntaxTrees.ConstDeclaration;
 import Triangle.AbstractSyntaxTrees.ConstFormalParameter;
 import Triangle.AbstractSyntaxTrees.DotVname;
+import Triangle.AbstractSyntaxTrees.ElseCase;
 import Triangle.AbstractSyntaxTrees.EmptyActualParameterSequence;
 import Triangle.AbstractSyntaxTrees.EmptyCommand;
 import Triangle.AbstractSyntaxTrees.EmptyExpression;
@@ -60,6 +67,9 @@ import Triangle.AbstractSyntaxTrees.RepeatForRangeWhile;
 import Triangle.AbstractSyntaxTrees.RepeatIn;
 import Triangle.AbstractSyntaxTrees.RepeatUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatWhileCommand;
+import Triangle.AbstractSyntaxTrees.SelectCommand;
+import Triangle.AbstractSyntaxTrees.SequentialCase;
+import Triangle.AbstractSyntaxTrees.SequentialCaseRange;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
@@ -118,6 +128,10 @@ public class TreeVisitor implements Visitor {
     
     public Object visitLetCommand(LetCommand ast, Object obj) {
         return(createBinary("Let Command", ast.D, ast.C));
+    }
+    
+    public Object visitSelectCommand(SelectCommand ast, Object o) {
+        return(createBinary("Call Command", ast.EXP, ast.COM));
     }
     
     public Object visitSequentialCommand(SequentialCommand ast, Object obj) {
@@ -480,7 +494,6 @@ public class TreeVisitor implements Visitor {
         DefaultMutableTreeNode t = new DefaultMutableTreeNode(caption);
         t.add((DefaultMutableTreeNode)child1.visit(this, null));
         t.add((DefaultMutableTreeNode)child2.visit(this, null));
-        
         return(t);
     }
     
@@ -521,8 +534,88 @@ public class TreeVisitor implements Visitor {
     }
     // </editor-fold>
 
+   @Override
+    public Object visitCases(Cases ast, Object o) {
+        return(createBinary("Cases", ast.CASE1, ast.CASE2));
+    }
 
-    
+    /*
+    * Entradas: el ast respectivo que se visita, y un Object
+    * Proceso: se crea un nodo con el nombre del ast que se visita,
+    * el cual contiene: Command.
+    */
+    @Override
+    public Object visitElseCase(ElseCase ast, Object o) {
+        return(createUnary("Else Case", ast.COM));
+    }
 
- 
+    /*
+    * Entradas: el ast respectivo que se visita, y un Object
+    * Proceso: se crea un nodo con el nombre del ast que se visita,
+    * el cual contiene: Case1 y Case2.
+    */
+    @Override
+    public Object visitSequentialCase(SequentialCase ast, Object o) {
+        return(createBinary("Sequential Case", ast.C1, ast.C2));
+    }
+
+    /*
+    * Entradas: el ast respectivo que se visita, y un Object
+    * Proceso: se crea un nodo con el nombre del ast que se visita,
+    * el cual contiene: CaseLiterals y Command.
+    */
+    @Override
+    public Object visitCaseWhen(CaseWhen ast, Object o) {
+        return(createBinary("Case When", ast.CASELIT, ast.COM));
+    }
+
+    /*
+    * Entradas: el ast respectivo que se visita, y un Object
+    * Proceso: se crea un nodo con el nombre del ast que se visita,
+    * el cual contiene: CaseRange.
+    */
+    @Override
+    public Object visitCaseLiterals(CaseLiterals ast, Object o) {
+        return(createUnary("Case Literals", ast.CASERANGE));
+    }
+
+    /*
+    * Entradas: el ast respectivo que se visita, y un Object
+    * Proceso: se crea un nodo con el nombre del ast que se visita,
+    * el cual contiene: CaseLiteral1 y CaseLiteral2.
+    */
+    @Override
+    public Object visitCaseRangeCase(CaseRangeCase ast, Object o) {
+        return(createBinary("Case Range Case", ast.CASELIT, ast.CASELIT2));
+    }
+
+    /*
+    * Entradas: el ast respectivo que se visita, y un Object
+    * Proceso: se crea un nodo con el nombre del ast que se visita,
+    * el cual contiene: CaseRange1 y CaseRange2.
+    */
+    @Override
+    public Object visitSequentialCaseRange(SequentialCaseRange ast, Object o) {
+        return(createBinary("Sequential Case Range", ast.C1, ast.C2));
+    }
+
+    /*
+    * Entradas: el ast respectivo que se visita, y un Object
+    * Proceso: se crea un nodo con el nombre del ast que se visita,
+    * el cual contiene: CharacterLiteral.
+    */
+    @Override
+    public Object visitCaseLiteralCHAR(CaseLiteralCHAR ast, Object o) {
+        return(createUnary("Case Literal CHAR", ast.CHARLIT));
+    }
+
+    /*
+    * Entradas: el ast respectivo que se visita, y un Object
+    * Proceso: se crea un nodo con el nombre del ast que se visita,
+    * el cual contiene: IntegerLiteral.
+    */
+    @Override
+    public Object visitCaseLiteralINT(CaseLiteralINT ast, Object o) {
+        return(createUnary("Case Literal INT", ast.INTLIT));
+    }
 }

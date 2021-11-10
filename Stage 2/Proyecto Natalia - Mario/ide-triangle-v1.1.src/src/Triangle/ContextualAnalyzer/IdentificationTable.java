@@ -73,8 +73,9 @@ public final class IdentificationTable {
 
     // Check for duplicate entry ...
     while (searching) {
-      if (entry == null || entry.level < this.level)
+      if (entry == null || entry.level < this.level){
         searching = false;
+      }
       else if (entry.id.equals(id)) {
         present = true;
         searching = false;
@@ -104,7 +105,7 @@ public final class IdentificationTable {
     while (searching) {
       if (entry == null){
         searching = false;
-      attr = retrieveLocally ? retrieveLocally(id) : null;
+        attr = retrieveLocally ? retrieveLocally(id) : null;
     }
       else if (entry.id.equals(id)) {
         present = true;

@@ -22,6 +22,7 @@ public interface Visitor {
   public abstract Object visitEmptyCommand(EmptyCommand ast, Object o);
   public abstract Object visitIfCommand(IfCommand ast, Object o);
   public abstract Object visitLetCommand(LetCommand ast, Object o);
+  public abstract Object visitSelectCommand(SelectCommand ast, Object o); 
   public abstract Object visitSequentialCommand(SequentialCommand ast, Object o);
   public abstract Object visitWhileCommand(WhileCommand ast, Object o);
   //Agregados
@@ -34,7 +35,16 @@ public interface Visitor {
   public abstract Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o);
   public abstract Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o);
   
-
+  // Cases
+  public abstract Object visitCases(Cases ast, Object o);
+  public abstract Object visitElseCase(ElseCase ast, Object o);
+  public abstract Object visitSequentialCase(SequentialCase ast, Object o);
+  public abstract Object visitCaseWhen(CaseWhen ast, Object o);
+  public abstract Object visitCaseLiterals(CaseLiterals ast, Object o);
+  public abstract Object visitCaseRangeCase(CaseRangeCase ast, Object o);
+  public abstract Object visitSequentialCaseRange(SequentialCaseRange ast, Object o);
+  public abstract Object visitCaseLiteralCHAR(CaseLiteralCHAR ast, Object o);
+  public abstract Object visitCaseLiteralINT(CaseLiteralINT ast, Object o);
 
   // Expressions
   public abstract Object visitArrayExpression(ArrayExpression ast, Object o);
