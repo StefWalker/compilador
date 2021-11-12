@@ -111,6 +111,9 @@ import Triangle.AbstractSyntaxTrees.WhileCommand;
 import Triangle.SyntacticAnalyzer.SourcePosition;
 import Utilities.SelectData;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 
 
 public final class Checker implements Visitor {
@@ -129,7 +132,9 @@ public final class Checker implements Visitor {
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);
     if (! eType.equals(vType))
       reporter.reportError ("assignment incompatibilty", "", ast.position);
-    return null;  // Si las partes internas estÃ¡n bien
+    if (! eType.visit(this,null).equals(vType)) //Marcos M�ndez Ajuste para recursiveProc
+      reporter.reportError ("assignment incompatibilty", "", ast.position);
+    return null;  // Si las partes internas están bien
   }
 
 
@@ -140,6 +145,8 @@ public final class Checker implements Visitor {
       reportUndeclared(ast.I);
     else if (binding instanceof ProcDeclaration) {
       ast.APS.visit(this, ((ProcDeclaration) binding).FPS);
+    } else if (binding instanceof RecursiveProc) { //Marcos M�ndez RecursiveProc agregado
+      ast.APS.visit(this, ((RecursiveProc) binding).FPS);
     } else if (binding instanceof ProcFormalParameter) {
       ast.APS.visit(this, ((ProcFormalParameter) binding).FPS);
     } else
@@ -163,7 +170,7 @@ public final class Checker implements Visitor {
   }
 
   public Object visitLetCommand(LetCommand ast, Object o) {
-    // AcÃ¡ no se hace nada si lo hicimos bien en el contextual
+    // Acá no se hace nada si lo hicimos bien en el contextual
     idTable.openScope();
     ast.D.visit(this, null);
     ast.C.visit(this, null);
@@ -172,7 +179,7 @@ public final class Checker implements Visitor {
   }
 
   public Object visitSequentialCommand(SequentialCommand ast, Object o) {
-     // AcÃ¡ no se hace nada si lo hicimos bien en el contextual
+     // Acá no se hace nada si lo hicimos bien en el contextual
     ast.C1.visit(this, null);
     ast.C2.visit(this, null);
     return null;
@@ -187,7 +194,7 @@ public final class Checker implements Visitor {
     return null; //Todo bien
   }
 
-  //AcÃ¡ se agregan el resto de cosas del 
+  //Acá se agregan el resto de cosas del 
   
   
   
@@ -199,10 +206,11 @@ public final class Checker implements Visitor {
 
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);
-    //ver que siempre sea entero
+    
     if(!(elemType instanceof IntTypeDenoter)) 
       reporter.reportError("Expected Integer type here", "", ast.position);
     IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),ast.position);
+    
     ast.type = new ArrayTypeDenoter(il, elemType, ast.position);
     StdEnvironment.arrayType = new ArrayTypeDenoter(il, elemType, ast.position);
     return ast.type;
@@ -248,7 +256,11 @@ public final class Checker implements Visitor {
     } else if (binding instanceof FuncFormalParameter) {
       ast.APS.visit(this, ((FuncFormalParameter) binding).FPS);
       ast.type = ((FuncFormalParameter) binding).T;
-    } else
+    }else if(binding instanceof  RecursiveFunc){ //Marcos M�ndez RecursiveFunc agregado
+      ast.APS.visit(this,((RecursiveFunc) binding).FPS);
+      ast.type = ((RecursiveFunc) binding).T;
+    }  
+    else
       reporter.reportError("\"%\" is not a function identifier",
                            ast.I.spelling, ast.I.position);
     return ast.type;
@@ -355,6 +367,17 @@ public final class Checker implements Visitor {
                             ast.I.spelling, ast.E.position);
     return null;
   }
+  
+  
+  @Override
+  public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast);
+    if(ast.duplicated){
+      reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
+    }
+    return null;
+  }
 
   public Object visitProcDeclaration(ProcDeclaration ast, Object o) {
     //Pasa el nombre y el propio arbol de proc, lo que permite la recursion
@@ -366,6 +389,15 @@ public final class Checker implements Visitor {
     ast.FPS.visit(this, null);
     ast.C.visit(this, null);
     idTable.closeScope();
+    return null;
+  }
+  
+  @Override
+  public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast); //permits recursion
+    if(ast.duplicated)
+      reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
     return null;
   }
 
@@ -511,7 +543,7 @@ public final class Checker implements Visitor {
     if (! (fp instanceof ConstFormalParameter))
       reporter.reportError ("const actual parameter not expected here", "",
                             ast.position);
-    else if (! eType.equals(((ConstFormalParameter) fp).T.visit(this,null)))
+    else if (! eType.visit(this, null).equals(((ConstFormalParameter) fp).T.visit(this,null)))
       reporter.reportError ("wrong type for const actual parameter", "",
                             ast.E.position);
     return null;
@@ -557,7 +589,7 @@ public final class Checker implements Visitor {
     if (binding == null)
       reportUndeclared (ast.I);
     else if (! (binding instanceof ProcDeclaration ||
-                binding instanceof ProcFormalParameter))
+                binding instanceof ProcFormalParameter || binding instanceof RecursiveProc))
       reporter.reportError ("\"%\" is not a procedure identifier",
                             ast.I.spelling, ast.I.position);
     else if (! (fp instanceof ProcFormalParameter))
@@ -1007,7 +1039,7 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o) {
-        //MÃ©todo implementado para "repeat" "while" Expression "do" Command "end"
+        //Método implementado para "repeat" "while" Expression "do" Command "end"
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if(! eType.equals(StdEnvironment.booleanType))
           reporter.reportError("Boolean expression expected here", "", ast.E.position);
@@ -1020,7 +1052,7 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o) {
-        //MÃ©todo implementado para "repeat" "until" Expression "do" Command "end"
+        //Método implementado para "repeat" "until" Expression "do" Command "end"
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if (! eType.equals(StdEnvironment.booleanType))
             reporter.reportError("Boolean expression expected here", "", ast.E.position);
@@ -1033,7 +1065,7 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o) {
-        //MÃ©todo implementado para "repeat" "do" Command "while" Expression "end"
+        //Método implementado para "repeat" "do" Command "while" Expression "end"
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if(! eType.equals(StdEnvironment.booleanType))
           reporter.reportError("Boolean expression expected here", "", ast.E.position);
@@ -1046,7 +1078,7 @@ public final class Checker implements Visitor {
     //-------------------
     @Override
     public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o) {
-       //MÃ©todo implementado para "repeat" "do" Command "until" Expression "end"
+       //Método implementado para "repeat" "do" Command "until" Expression "end"
         TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
         if(! eType.equals(StdEnvironment.booleanType))
           reporter.reportError("Boolean expression expected here", "", ast.E.position);
@@ -1093,7 +1125,7 @@ public final class Checker implements Visitor {
         
         if(! eType3.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expression expected here", "", ast.R.E.position);
-          idTable.openScope();
+        idTable.openScope();
             idTable.enter(ast.R.I.spelling, ast.R);
             
             if(ast.R.duplicated)
@@ -1385,5 +1417,40 @@ public Object visitCaseRangeCase(CaseRangeCase ast, Object selectData) {
                 actualValues.addData( Integer.toString(i ) );
             }
         }
+    }
+
+    @Override
+    public Object visitRecursiveFuncVar(RecursiveFunc ast, Object o) {
+        idTable.openScope();
+        ast.FPS.visit(this, null);
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        idTable.closeScope();
+        if (! ast.T.visit(this, null).equals(eType))
+            reporter.reportError ("body of function \"%\" has wrong type",
+                            ast.I.spelling, ast.E.position);
+        return null;
+    }
+
+    @Override
+    public Object visitRecursiveProcVar(RecursiveProc ast, Object o) {
+        idTable.openScope();
+        ast.FPS.visit(this, null);
+        ast.C.visit(this, null);
+        idTable.closeScope();
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+        ast.PF1.visit(this, null);
+        ast.PF2.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsVar(SequentialProcFuncs ast, Object o) {
+        ast.PF1.visitRecursive(this, null);
+        ast.PF2.visitRecursive(this, null);
+        return null;
     }
 }
