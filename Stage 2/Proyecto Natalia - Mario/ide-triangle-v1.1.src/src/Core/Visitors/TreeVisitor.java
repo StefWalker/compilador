@@ -92,6 +92,9 @@ import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import javax.swing.tree.DefaultMutableTreeNode;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 
 /**
  * Implements the Triangle Visitor interface, which is used to
@@ -251,6 +254,41 @@ public class TreeVisitor implements Visitor {
     public Object visitProcDeclaration(ProcDeclaration ast, Object obj) {
         return(createTernary("Procedure Declaration", ast.I, ast.FPS, ast.C));        
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition if RecursiveDeclaration
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    public Object visitRecursiveFunc(RecursiveFunc ast, Object obj) {
+        return(createQuaternary("Function Declaration", ast.I, ast.FPS, ast.T, ast.E));
+    }
+    
+    public Object visitRecursiveProc(RecursiveProc ast, Object obj) {
+        return(createTernary("Procedure Declaration", ast.I, ast.FPS, ast.C));        
+    }
+    
+    public Object visitRecursiveFuncVar(RecursiveFunc ast, Object obj) {
+        return(createQuaternary("Function Declaration", ast.I, ast.FPS, ast.T, ast.E));
+    }
+    
+    public Object visitRecursiveProcVar(RecursiveProc ast, Object obj) {
+        return(createTernary("Procedure Declaration", ast.I, ast.FPS, ast.C));        
+    }
+    
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+        return(createBinary("Sequential ProcFunc", ast.PF1, ast.PF2));
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsVar(SequentialProcFuncs ast, Object o) {
+        return null;
+    }
+    
     
     public Object visitSequentialDeclaration(SequentialDeclaration ast, Object obj) {
         return(createBinary("Sequential Declaration", ast.D1, ast.D2));
@@ -635,4 +673,5 @@ public class TreeVisitor implements Visitor {
     public Object visitCaseLiteralINT(CaseLiteralINT ast, Object o) {
         return(createUnary("Case Literal INT", ast.INTLIT));
     }
+
 }

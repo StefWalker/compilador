@@ -75,6 +75,13 @@ public interface Visitor {
   public abstract Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o);
   public abstract Object visitRangeVarDecl(RangeVarDecl ast, Object o);
   public abstract Object visitInVarDecl(InVarDecl ast, Object o);
+  
+  public abstract Object visitRecursiveFunc(RecursiveFunc ast, Object o);
+  public abstract Object visitRecursiveProc(RecursiveProc ast, Object o);
+  public abstract Object visitRecursiveFuncVar(RecursiveFunc ast, Object o);
+  public abstract Object visitRecursiveProcVar(RecursiveProc ast, Object o);
+  public Object visitSequentialProcFuncs(SequentialProcFuncs aThis, Object o);
+  public Object visitSequentialProcFuncsVar(SequentialProcFuncs aThis, Object o);
           
           
   // Array Aggregates
@@ -131,5 +138,6 @@ public interface Visitor {
 
   // Programs
   public abstract Object visitProgram(Program ast, Object o);
+
 
 }

@@ -61,6 +61,8 @@ import Triangle.AbstractSyntaxTrees.RangeVarDecl;
 import Triangle.AbstractSyntaxTrees.RecordExpression;
 import Triangle.AbstractSyntaxTrees.RecordTypeDenoter;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
 import Triangle.AbstractSyntaxTrees.RepeatDoUntilCommand;
 import Triangle.AbstractSyntaxTrees.RepeatDoWhileCommand;
 import Triangle.AbstractSyntaxTrees.RepeatForRange;
@@ -74,6 +76,7 @@ import Triangle.AbstractSyntaxTrees.SequentialCase;
 import Triangle.AbstractSyntaxTrees.SequentialCaseRange;
 import Triangle.AbstractSyntaxTrees.SequentialCommand;
 import Triangle.AbstractSyntaxTrees.SequentialDeclaration;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 import Triangle.AbstractSyntaxTrees.SimpleTypeDenoter;
 import Triangle.AbstractSyntaxTrees.SimpleVname;
 import Triangle.AbstractSyntaxTrees.SingleActualParameterSequence;
@@ -282,6 +285,34 @@ public class XmlVisitor implements Visitor {
         writeLineXML("</FuncDeclaration>");
         return null;
     }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition if RecursiveDeclaration
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    public Object visitRecursiveFunc(RecursiveFunc ast, Object obj) {
+        writeLineXML("<RecursiveFunc>");
+        ast.I.visit(this, null);
+        ast.FPS.visit(this, null);
+        ast.T.visit(this, null);
+        ast.E.visit(this, null);
+        writeLineXML("</RecursiveFunc>");
+        return null;
+    }
+    
+    public Object visitRecursiveFuncVar(RecursiveFunc ast, Object obj) {
+        writeLineXML("<visitRecursiveFuncVar>");
+        ast.I.visit(this, null);
+        ast.FPS.visit(this, null);
+        ast.T.visit(this, null);
+        ast.E.visit(this, null);
+        writeLineXML("</RecursiveFunc>");
+        return null;
+    }
 
     public Object visitProcDeclaration(ProcDeclaration ast, Object obj) {
         writeLineXML("<ProcDeclaration>");
@@ -289,6 +320,50 @@ public class XmlVisitor implements Visitor {
         ast.FPS.visit(this, null);
         ast.C.visit(this, null);
         writeLineXML("</ProcDeclaration>");
+        return null;
+    }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition if RecursiveDeclaration
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    public Object visitRecursiveProc(RecursiveProc ast, Object obj) {
+        writeLineXML("<RecursiveProc>");
+        ast.I.visit(this, null);
+        ast.FPS.visit(this, null);
+        ast.C.visit(this, null);
+        writeLineXML("</RecursiveProc>");
+        return null;
+    }
+    
+    public Object visitRecursiveProcVar(RecursiveProc ast, Object obj) {
+        writeLineXML("<RecursiveProc>");
+        ast.I.visit(this, null);
+        ast.FPS.visit(this, null);
+        ast.C.visit(this, null);
+        writeLineXML("</RecursiveProc>");
+        return null;
+    }
+    
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+        writeLineXML("<SequentialProcFuncs>");
+        ast.PF1.visit(this, null);
+        ast.PF2.visit(this, null);
+        writeLineXML("</SequentialProcFuncs>");
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsVar(SequentialProcFuncs ast, Object o) {
+        writeLineXML("<SequentialProcFuncs>");
+        ast.PF1.visit(this, null);
+        ast.PF2.visit(this, null);
+        writeLineXML("</SequentialProcFuncs>");
         return null;
     }
 
@@ -797,5 +872,6 @@ public class XmlVisitor implements Visitor {
         writeLineXML("</CaseLiteralINT>");
         return null;
     }
+
 
 }

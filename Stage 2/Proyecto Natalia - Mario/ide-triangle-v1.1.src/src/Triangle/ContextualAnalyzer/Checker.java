@@ -111,6 +111,9 @@ import Triangle.AbstractSyntaxTrees.WhileCommand;
 import Triangle.SyntacticAnalyzer.SourcePosition;
 import Utilities.SelectData;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 
 
 public final class Checker implements Visitor {
@@ -127,7 +130,9 @@ public final class Checker implements Visitor {
     //Si no funciona como una variable. no la podemos asignar
     if (!ast.V.variable)
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);
-    if (! eType.equals(vType))
+//    if (! eType.equals(vType))
+//      reporter.reportError ("assignment incompatibilty", "", ast.position);
+    if (! eType.visit(this,null).equals(vType)) //Marcos Méndez Ajuste para recursiveProc
       reporter.reportError ("assignment incompatibilty", "", ast.position);
     return null;  // Si las partes internas estÃ¡n bien
   }
@@ -140,6 +145,8 @@ public final class Checker implements Visitor {
       reportUndeclared(ast.I);
     else if (binding instanceof ProcDeclaration) {
       ast.APS.visit(this, ((ProcDeclaration) binding).FPS);
+    } else if (binding instanceof RecursiveProc) { //Marcos Méndez RecursiveProc agregado
+      ast.APS.visit(this, ((RecursiveProc) binding).FPS);
     } else if (binding instanceof ProcFormalParameter) {
       ast.APS.visit(this, ((ProcFormalParameter) binding).FPS);
     } else
@@ -199,8 +206,11 @@ public final class Checker implements Visitor {
 
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);
-    IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),
-                                           ast.position);
+    
+    if(!(elemType instanceof IntTypeDenoter)) 
+      reporter.reportError("Expected Integer type here", "", ast.position);
+    IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),ast.position);
+    
     ast.type = new ArrayTypeDenoter(il, elemType, ast.position);
     StdEnvironment.arrayType = new ArrayTypeDenoter(il, elemType, ast.position);
     return ast.type;
@@ -246,7 +256,11 @@ public final class Checker implements Visitor {
     } else if (binding instanceof FuncFormalParameter) {
       ast.APS.visit(this, ((FuncFormalParameter) binding).FPS);
       ast.type = ((FuncFormalParameter) binding).T;
-    } else
+    }else if(binding instanceof  RecursiveFunc){ //Marcos Méndez RecursiveFunc agregado
+      ast.APS.visit(this,((RecursiveFunc) binding).FPS);
+      ast.type = ((RecursiveFunc) binding).T;
+    }  
+    else
       reporter.reportError("\"%\" is not a function identifier",
                            ast.I.spelling, ast.I.position);
     return ast.type;
@@ -353,6 +367,17 @@ public final class Checker implements Visitor {
                             ast.I.spelling, ast.E.position);
     return null;
   }
+  
+  
+  @Override
+  public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast);
+    if(ast.duplicated){
+      reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
+    }
+    return null;
+  }
 
   public Object visitProcDeclaration(ProcDeclaration ast, Object o) {
     //Pasa el nombre y el propio arbol de proc, lo que permite la recursion
@@ -364,6 +389,15 @@ public final class Checker implements Visitor {
     ast.FPS.visit(this, null);
     ast.C.visit(this, null);
     idTable.closeScope();
+    return null;
+  }
+  
+  @Override
+  public Object visitRecursiveProc(RecursiveProc ast, Object o) {
+    idTable.enter(ast.I.spelling, ast); //permits recursion
+    if(ast.duplicated)
+      reporter.reportError ("identifier \"%\" already declared",
+                            ast.I.spelling, ast.position);
     return null;
   }
 
@@ -509,7 +543,7 @@ public final class Checker implements Visitor {
     if (! (fp instanceof ConstFormalParameter))
       reporter.reportError ("const actual parameter not expected here", "",
                             ast.position);
-    else if (! eType.equals(((ConstFormalParameter) fp).T.visit(this,null)))
+    else if (! eType.visit(this, null).equals(((ConstFormalParameter) fp).T.visit(this,null)))
       reporter.reportError ("wrong type for const actual parameter", "",
                             ast.E.position);
     return null;
@@ -555,7 +589,7 @@ public final class Checker implements Visitor {
     if (binding == null)
       reportUndeclared (ast.I);
     else if (! (binding instanceof ProcDeclaration ||
-                binding instanceof ProcFormalParameter))
+                binding instanceof ProcFormalParameter || binding instanceof RecursiveProc))
       reporter.reportError ("\"%\" is not a procedure identifier",
                             ast.I.spelling, ast.I.position);
     else if (! (fp instanceof ProcFormalParameter))
@@ -1383,5 +1417,40 @@ public Object visitCaseRangeCase(CaseRangeCase ast, Object selectData) {
                 actualValues.addData( Integer.toString(i ) );
             }
         }
+    }
+
+    @Override
+    public Object visitRecursiveFuncVar(RecursiveFunc ast, Object o) {
+        idTable.openScope();
+        ast.FPS.visit(this, null);
+        TypeDenoter eType = (TypeDenoter) ast.E.visit(this, null);
+        idTable.closeScope();
+        if (! ast.T.visit(this, null).equals(eType))
+            reporter.reportError ("body of function \"%\" has wrong type",
+                            ast.I.spelling, ast.E.position);
+        return null;
+    }
+
+    @Override
+    public Object visitRecursiveProcVar(RecursiveProc ast, Object o) {
+        idTable.openScope();
+        ast.FPS.visit(this, null);
+        ast.C.visit(this, null);
+        idTable.closeScope();
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+        ast.PF1.visit(this, null);
+        ast.PF2.visit(this, null);
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsVar(SequentialProcFuncs ast, Object o) {
+        ast.PF1.visitRecursive(this, null);
+        ast.PF2.visitRecursive(this, null);
+        return null;
     }
 }

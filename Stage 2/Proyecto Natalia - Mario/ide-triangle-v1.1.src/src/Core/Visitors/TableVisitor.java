@@ -101,6 +101,9 @@ import Triangle.CodeGenerator.UnknownRoutine;
 import Triangle.CodeGenerator.UnknownValue;
 import javax.swing.table.DefaultTableModel;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 
 /**
  * Implements the Triangle Visitor interface, which is used to
@@ -385,6 +388,39 @@ public class TableVisitor implements Visitor {
       return(null);
   }
   
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition if RecursiveDeclaration
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+    public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {              
+        return(null);
+    }
+    public Object visitRecursiveProc(RecursiveProc ast, Object o) { 
+        return(null);
+    }
+    
+    public Object visitRecursiveFuncVar(RecursiveFunc ast, Object o) {              
+        return(null);
+    }
+    public Object visitRecursiveProcVar(RecursiveProc ast, Object o) { 
+        return(null);
+    }
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+        return(null);
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsVar(SequentialProcFuncs ast, Object o) {
+        return(null);
+    }
+  
+    
+    
   public Object visitSequentialDeclaration(SequentialDeclaration ast, Object o) {   
       ast.D1.visit(this, null);
       ast.D2.visit(this, null);
@@ -879,4 +915,5 @@ public class TableVisitor implements Visitor {
         ast.INTLIT.visit(this, null);
         return null;
     }
+
 }

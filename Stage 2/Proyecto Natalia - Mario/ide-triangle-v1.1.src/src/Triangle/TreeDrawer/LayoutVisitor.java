@@ -104,6 +104,9 @@ import Triangle.AbstractSyntaxTrees.Visitor;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.WhileCommand;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 
 public class LayoutVisitor implements Visitor {
 
@@ -314,12 +317,31 @@ public class LayoutVisitor implements Visitor {
    }
 
    
-   
-   
-   
-   
-   
-   
+  public Object visitRecursiveFunc(RecursiveFunc ast, Object obj) {
+    return layoutQuaternary("RecursiveFunc.", ast.I, ast.FPS, ast.T, ast.E);
+  }
+
+  public Object visitRecursiveProc(RecursiveProc ast, Object obj) {
+    return layoutTernary("RecursiveProc.", ast.I, ast.FPS, ast.C);
+  }
+    
+  public Object visitRecursiveFuncVar(RecursiveFunc ast, Object obj) {
+    return layoutQuaternary("RecursiveFunc.", ast.I, ast.FPS, ast.T, ast.E);
+  }
+
+  public Object visitRecursiveProcVar(RecursiveProc ast, Object obj) {
+    return layoutTernary("RecursiveProc.", ast.I, ast.FPS, ast.C);
+  }
+  
+    @Override
+    public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
+        return null;
+    }
+
+    @Override
+    public Object visitSequentialProcFuncsVar(SequentialProcFuncs ast, Object o) {
+        return null;
+    }
   
 
 
@@ -713,8 +735,5 @@ public class LayoutVisitor implements Visitor {
     public Object visitCaseLiteralINT(CaseLiteralINT ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-  
-
 
 }

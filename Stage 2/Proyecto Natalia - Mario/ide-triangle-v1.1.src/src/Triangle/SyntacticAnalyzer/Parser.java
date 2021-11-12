@@ -71,6 +71,7 @@ import Triangle.AbstractSyntaxTrees.ProcActualParameter;
 import Triangle.AbstractSyntaxTrees.ProcDeclaration;
 import Triangle.AbstractSyntaxTrees.ProcFormalParameter;
 import Triangle.AbstractSyntaxTrees.ProcFuncsDeclaration;
+import Triangle.AbstractSyntaxTrees.ProcFuncs;
 import Triangle.AbstractSyntaxTrees.Program;
 import Triangle.AbstractSyntaxTrees.RangeVarDecl;
 import Triangle.AbstractSyntaxTrees.RecordAggregate;
@@ -107,6 +108,9 @@ import Triangle.AbstractSyntaxTrees.VarFormalParameter;
 import Triangle.AbstractSyntaxTrees.Vname;
 import Triangle.AbstractSyntaxTrees.VnameExpression;
 import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
+import Triangle.AbstractSyntaxTrees.RecursiveFunc;
+import Triangle.AbstractSyntaxTrees.RecursiveProc;
+import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
 
 public class Parser {
 
@@ -996,7 +1000,7 @@ public class Parser {
         Command cAST = parseCommand();
         accept(Token.END);
         finish(declarationPos);
-        declarationAST = new ProcDeclaration(iAST, fAST, cAST, declarationPos); 
+        declarationAST = new RecursiveProc(iAST, fAST, cAST, declarationPos); 
         
       }
       break;
@@ -1013,7 +1017,7 @@ public class Parser {
         accept(Token.IS);
         Expression eAST = parseExpression();
         finish(declarationPos);
-        declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,
+        declarationAST = new RecursiveFunc(iAST, fpsAST, tAST, eAST,
           declarationPos);
       }
       break;
@@ -1053,7 +1057,7 @@ public class Parser {
     case Token.RECURSIVE:
       {
         acceptIt();
-        Declaration pfAST = parseProcFuncs();
+        ProcFuncs pfAST = parseProcFuncs();
         accept(Token.END);
         finish(declarationPos);
         declarationAST = new RecursiveDeclaration(pfAST, declarationPos);;
@@ -1082,72 +1086,127 @@ public class Parser {
   
 
   // Regla añadida 
-  Declaration parseProcFunc() throws SyntaxError {  
-    Declaration declarationAST = null; 
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
+//  Declaration parseProcFunc() throws SyntaxError {  
+//    Declaration declarationAST = null; 
+//    SourcePosition declarationPos = new SourcePosition();
+//    start(declarationPos);
+//
+//    switch (currentToken.kind) {
+//
+//      case Token.PROC: {  //"proc" Identifier "(" Formal-Parameter-Sequence ")" "~" Command "end"
+//
+//        acceptIt();
+//        Identifier iAST = parseIdentifier();
+//        accept(Token.LPAREN);
+//        FormalParameterSequence fAST = parseFormalParameterSequence();
+//        accept(Token.RPAREN);
+//        accept(Token.IS); //~
+//        Command cAST = parseCommand();
+//        accept(Token.END);
+//        finish(declarationPos);
+//        declarationAST = new ProcDeclaration(iAST, fAST, cAST, declarationPos); 
+//        break;
+//      }
+//      case Token.FUNC: {  //"func" Identifier "(" Formal-Parameter-Sequence ")" ":" Type-denoter "~" Expression
+//        acceptIt();
+//        Identifier iAST = parseIdentifier();
+//        accept(Token.LPAREN);
+//        FormalParameterSequence fAST = parseFormalParameterSequence();
+//        accept(Token.RPAREN);
+//        accept(Token.COLON);
+//        TypeDenoter tAST = parseTypeDenoter();
+//        accept(Token.IS);
+//        Expression eAST = parseExpression();
+//        finish(declarationPos);
+//        declarationAST = new FuncDeclaration(iAST, fAST, tAST, eAST, declarationPos);
+//        break;
+//      }
+//
+//      default:
+//        syntacticError("\"%\" cannot start a declaration", currentToken.spelling);
+//        break;
+//
+//    }
+//    return declarationAST;
+//  }
+  
+    ProcFuncs parseProcFunc() throws SyntaxError {
+    ProcFuncs procFuncsAST = null; // in case there's a syntactic error
 
-    switch (currentToken.kind) {
-
-      case Token.PROC: {  //"proc" Identifier "(" Formal-Parameter-Sequence ")" "~" Command "end"
-
-        acceptIt();
-        Identifier iAST = parseIdentifier();
-        accept(Token.LPAREN);
-        FormalParameterSequence fAST = parseFormalParameterSequence();
-        accept(Token.RPAREN);
-        accept(Token.IS); //~
-        Command cAST = parseCommand();
-        accept(Token.END);
-        finish(declarationPos);
-        declarationAST = new ProcDeclaration(iAST, fAST, cAST, declarationPos); 
+    SourcePosition procFuncPos = new SourcePosition();
+    start(procFuncPos);
+    switch(currentToken.kind){
+      case Token.PROC:
+        {
+          acceptIt();
+          Identifier iAST = parseIdentifier();
+          accept(Token.LPAREN);
+          FormalParameterSequence fpsAST = parseFormalParameterSequence();
+          accept(Token.RPAREN);
+          accept(Token.IS);
+          Command cmdAST = parseCommand();
+          accept(Token.END);
+          finish(procFuncPos);
+          procFuncsAST = new RecursiveProc(iAST, fpsAST, cmdAST, procFuncPos);
+        }
         break;
-      }
-      case Token.FUNC: {  //"func" Identifier "(" Formal-Parameter-Sequence ")" ":" Type-denoter "~" Expression
+      case Token.FUNC:
+      {
         acceptIt();
         Identifier iAST = parseIdentifier();
         accept(Token.LPAREN);
-        FormalParameterSequence fAST = parseFormalParameterSequence();
+        FormalParameterSequence fpsAST = parseFormalParameterSequence();
         accept(Token.RPAREN);
         accept(Token.COLON);
         TypeDenoter tAST = parseTypeDenoter();
         accept(Token.IS);
         Expression eAST = parseExpression();
-        finish(declarationPos);
-        declarationAST = new FuncDeclaration(iAST, fAST, tAST, eAST, declarationPos);
-        break;
+        procFuncsAST = new RecursiveFunc(iAST, fpsAST, tAST, eAST, procFuncPos);
       }
-
+      break;
       default:
-        syntacticError("\"%\" cannot start a declaration", currentToken.spelling);
-        break;
-
+      syntacticError("\"%\" cannot start a type denoter",
+                    currentToken.spelling);
     }
-    return declarationAST;
+    return procFuncsAST;
   }
   
 
   // Regla añadida 
-  Declaration parseProcFuncs() throws SyntaxError {
-      
-    // Regla ::= Proc-Func ("|" Proc-Func)+
+//  Declaration parseProcFuncs() throws SyntaxError {
+//      
+//    // DRegla ::= Proc-Func ("|" Proc-Func)+
+//
+//    SourcePosition declarationPos = new SourcePosition();
+//    start(declarationPos);
+//    Declaration p1AST = null; 
+//    p1AST = parseProcFunc();
+//    do{
+//         accept(Token.UPRSLASH);
+//         Declaration p2AST = parseProcFunc();        
+//         finish(declarationPos);
+//         p1AST = new ProcFuncsDeclaration(p1AST, p2AST, declarationPos ); 
+//    }
+//    while(currentToken.kind == Token.UPRSLASH);
+//
+//    return p1AST;
+//    
+//  }
+  ProcFuncs parseProcFuncs() throws SyntaxError{
+    ProcFuncs ProcFuncsAST = null; // in case there's a syntactic error
 
-    SourcePosition declarationPos = new SourcePosition();
-    start(declarationPos);
-    Declaration p1AST = null; 
-    p1AST = parseProcFunc();
-    do{
-         accept(Token.UPRSLASH);
-         Declaration p2AST = parseProcFunc();        
-         finish(declarationPos);
-         p1AST = new ProcFuncsDeclaration(p1AST, p2AST, declarationPos ); 
-    }
-    while(currentToken.kind == Token.UPRSLASH);
-
-    return p1AST;
-    
+    SourcePosition propFuncsPos = new SourcePosition();
+    start(propFuncsPos);
+    ProcFuncs secondProcFuncsAST = parseProcFunc();
+    do {
+      accept(Token.UPRSLASH);
+      ProcFuncs thirdProcFuncsAST = parseProcFunc();
+      secondProcFuncsAST = new SequentialProcFuncs(secondProcFuncsAST, thirdProcFuncsAST, propFuncsPos);
+    } while (currentToken.kind == Token.UPRSLASH); //"|"
+    finish(propFuncsPos);
+    ProcFuncsAST = secondProcFuncsAST;
+    return ProcFuncsAST;
   }
-  
 
 ///////////////////////////////////////////////////////////////////////////////
 //
