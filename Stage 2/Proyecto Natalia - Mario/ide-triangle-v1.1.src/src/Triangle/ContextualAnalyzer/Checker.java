@@ -199,8 +199,10 @@ public final class Checker implements Visitor {
 
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);
-    IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),
-                                           ast.position);
+    //ver que siempre sea entero
+    if(!(elemType instanceof IntTypeDenoter)) 
+      reporter.reportError("Expected Integer type here", "", ast.position);
+    IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),ast.position);
     ast.type = new ArrayTypeDenoter(il, elemType, ast.position);
     StdEnvironment.arrayType = new ArrayTypeDenoter(il, elemType, ast.position);
     return ast.type;
@@ -1091,7 +1093,7 @@ public final class Checker implements Visitor {
         
         if(! eType3.equals(StdEnvironment.integerType))
           reporter.reportError("Integer expression expected here", "", ast.R.E.position);
-        idTable.openScope();
+          idTable.openScope();
             idTable.enter(ast.R.I.spelling, ast.R);
             
             if(ast.R.duplicated)
