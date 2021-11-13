@@ -236,10 +236,10 @@ public final class Checker implements Visitor {
         if (! e1Type.equals(e2Type))
           reporter.reportError ("incompatible argument types for \"%\"",
                                 ast.O.spelling, ast.position);
-      } else if (! e1Type.equals(bbinding.ARG1))
+      } else if (! e1Type.visit(this,null).equals(bbinding.ARG1))
           reporter.reportError ("wrong argument type for \"%\"",
                                 ast.O.spelling, ast.E1.position);
-      else if (! e2Type.equals(bbinding.ARG2))
+      else if (! e2Type.visit(this,null).equals(bbinding.ARG2))
           reporter.reportError ("wrong argument type for \"%\"",
                                 ast.O.spelling, ast.E2.position);
       ast.type = bbinding.RES;
@@ -288,9 +288,16 @@ public final class Checker implements Visitor {
                             ast.E1.position);
     TypeDenoter e2Type = (TypeDenoter) ast.E2.visit(this, null);
     TypeDenoter e3Type = (TypeDenoter) ast.E3.visit(this, null);
-    if (! e2Type.equals(e3Type))
+    
+    TypeDenoter e4Type = (TypeDenoter) e2Type.visit(this, null);
+    TypeDenoter e5Type = (TypeDenoter) e3Type.visit(this, null);
+    if (! e4Type.equals(e5Type))
       reporter.reportError ("incompatible limbs in if-expression", "", ast.position);
-    ast.type = e2Type;
+    ast.type = e4Type;
+    
+//    if (! e2Type.equals(e3Type))
+//      reporter.reportError ("incompatible limbs in if-expression", "", ast.position);
+//    ast.type = e2Type;
     return ast.type;
   }
 
@@ -1229,13 +1236,9 @@ public final class Checker implements Visitor {
     @Override
     public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) {
         
-        IdentificationTable tempTable = idTable.copy();
-        ast.D1.visit(this, null); //visit in idTable
-        tempTable.beginLocalDeclaration(idTable); //make it local
-        idTable = tempTable; //idTable has a copy of itself as local
+        ast.D1.visit(this, null);
         ast.D2.visit(this, null);
-        idTable.endLocalDeclaration();
-     
+      
         return null;
     }
 
@@ -1262,6 +1265,7 @@ public final class Checker implements Visitor {
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o) {
         ast.PF.visit(this, null);
+        ast.PF.visitRecursive(this, null);
         return null;
     }
     
