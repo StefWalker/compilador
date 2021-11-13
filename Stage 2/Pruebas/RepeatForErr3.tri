@@ -1,0 +1,15 @@
+let
+
+  var k : Boolean
+
+in
+
+  repeat for i := range 1 .. k do ! k deberí­a ser entera
+
+    k := k + 1 ; 
+
+    putint (1) ! debe imprimir 10 unos, si no hubiera otro error
+
+  end
+
+end

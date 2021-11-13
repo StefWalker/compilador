@@ -1,0 +1,15 @@
+let
+
+  var k := 10
+
+in
+
+  repeat for i := range 1 .. k do ! determinar que k se evalúa una sola vez
+
+    k := k + 1 ; 
+
+    putint (1) ! debe imprimir 10 unos
+
+  end
+
+end

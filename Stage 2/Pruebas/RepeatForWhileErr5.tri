@@ -1,0 +1,5 @@
+repeat for i := range 1 .. 10 while i < 5 do 
+    getint (var i); ! debe dar un error, variable protegida no deberí­a poder pasarse por referencia
+    putint (i) 
+end
+
