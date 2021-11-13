@@ -1242,15 +1242,18 @@ public final class Checker implements Visitor {
         return null;
     }
 
+    
     @Override
     public Object visitLocalProcFuncDeclaration(LocalProcFuncDeclaration ast, Object o) {
         
-        IdentificationTable tempTable = idTable.copy();
-        ast.D1.visit(this, null); //visit in idTable
-        tempTable.beginLocalDeclaration(idTable); //make it local
-        idTable = tempTable; //idTable has a copy of itself as local
+        idTable.pushToPublicStack();
+        ast.D1.visit(this, null);
+        
+        idTable.pushToPrivateStack();
         ast.D2.visit(this, null);
-        idTable.endLocalDeclaration();
+        
+        idTable.closePrivateStack();
+        
         return null;
     }
     

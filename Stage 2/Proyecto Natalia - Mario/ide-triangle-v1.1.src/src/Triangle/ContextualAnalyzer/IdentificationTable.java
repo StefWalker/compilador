@@ -16,6 +16,7 @@
 package Triangle.ContextualAnalyzer;
 
 import Triangle.AbstractSyntaxTrees.Declaration;
+import java.util.Stack;
 
 public final class IdentificationTable {
 
@@ -23,19 +24,16 @@ public final class IdentificationTable {
   private IdEntry latest;  // Desde acá se usa la lista enlazada
   
   //local declarations
-  private IdentificationTable currentLocalDeclaration;
-  private boolean retrieveLocally;
+  // new variables declared for local method
+  private Stack<IdEntry> stackPrivate = new Stack<IdEntry>();
+  private Stack<IdEntry> stackPublic = new Stack<IdEntry>();
 
   public IdentificationTable () {
     level = 0;   // En el nivel 0, se establece el ambiente estandar, var.indent predef.
     latest = null;
   }
 
-  private IdentificationTable(int level, IdEntry latest, IdentificationTable currentLocalDeclaration) {
-    this.level = level;
-    this.latest = latest;
-    this.currentLocalDeclaration = currentLocalDeclaration;
-  }
+
   // Opens a new level in the identification table, 1 higher than the
   // current topmost level.
 
@@ -105,7 +103,7 @@ public final class IdentificationTable {
     while (searching) {
       if (entry == null){
         searching = false;
-        attr = retrieveLocally ? retrieveLocally(id) : null;
+//        attr = retrieveLocally ? retrieveLocally(id) : null;
     }
       else if (entry.id.equals(id)) {
         present = true;
@@ -118,22 +116,41 @@ public final class IdentificationTable {
     return attr;
   }
   
-  public void beginLocalDeclaration(IdentificationTable localTable){
-    this.currentLocalDeclaration = localTable; //new private-local declaration
-    this.retrieveLocally = true;
+
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adition for local implementation
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+  
+  public void pushToPrivateStack(){
+      IdEntry privateID = this.latest;
+      
+      stackPrivate.push(privateID);
+  }
+  
+  public void pushToPublicStack(){
+      IdEntry publicID = this.latest;
+      
+      stackPublic.push(publicID);
+  }
+  
+  public void closePrivateStack(){
+      IdEntry id = this.latest;
+      IdEntry privateId = stackPrivate.pop();
+      IdEntry publicId = stackPublic.pop();
+      
+      while(id.previous  != privateId){
+          id = id.previous;
+          
+      }
+      
+      id.previous = publicId;
+ 
   }
 
-  public void endLocalDeclaration(){
-    this.currentLocalDeclaration = null; //end of private-local declaration
-    retrieveLocally = false;
-  }
-
-  public Declaration retrieveLocally(String id){
-    return currentLocalDeclaration.retrieve(id);
-  }
-
-  public IdentificationTable copy(){
-    return new IdentificationTable(this.level, this.latest, this.currentLocalDeclaration);
-  }
 
 }

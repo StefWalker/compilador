@@ -1083,53 +1083,7 @@ public class Parser {
     
       return declarationAST;
   }
-  
-
-  // Regla añadida 
-//  Declaration parseProcFunc() throws SyntaxError {  
-//    Declaration declarationAST = null; 
-//    SourcePosition declarationPos = new SourcePosition();
-//    start(declarationPos);
-//
-//    switch (currentToken.kind) {
-//
-//      case Token.PROC: {  //"proc" Identifier "(" Formal-Parameter-Sequence ")" "~" Command "end"
-//
-//        acceptIt();
-//        Identifier iAST = parseIdentifier();
-//        accept(Token.LPAREN);
-//        FormalParameterSequence fAST = parseFormalParameterSequence();
-//        accept(Token.RPAREN);
-//        accept(Token.IS); //~
-//        Command cAST = parseCommand();
-//        accept(Token.END);
-//        finish(declarationPos);
-//        declarationAST = new ProcDeclaration(iAST, fAST, cAST, declarationPos); 
-//        break;
-//      }
-//      case Token.FUNC: {  //"func" Identifier "(" Formal-Parameter-Sequence ")" ":" Type-denoter "~" Expression
-//        acceptIt();
-//        Identifier iAST = parseIdentifier();
-//        accept(Token.LPAREN);
-//        FormalParameterSequence fAST = parseFormalParameterSequence();
-//        accept(Token.RPAREN);
-//        accept(Token.COLON);
-//        TypeDenoter tAST = parseTypeDenoter();
-//        accept(Token.IS);
-//        Expression eAST = parseExpression();
-//        finish(declarationPos);
-//        declarationAST = new FuncDeclaration(iAST, fAST, tAST, eAST, declarationPos);
-//        break;
-//      }
-//
-//      default:
-//        syntacticError("\"%\" cannot start a declaration", currentToken.spelling);
-//        break;
-//
-//    }
-//    return declarationAST;
-//  }
-  
+    
   
     // Nueva implementacion creada para el metodo parseProcFuncs
     ProcFuncs parseProcFunc() throws SyntaxError {
@@ -1174,27 +1128,6 @@ public class Parser {
   }
   
 
-  // Regla añadida 
-//  Declaration parseProcFuncs() throws SyntaxError {
-//      
-//    // DRegla ::= Proc-Func ("|" Proc-Func)+
-//
-//    SourcePosition declarationPos = new SourcePosition();
-//    start(declarationPos);
-//    Declaration p1AST = null; 
-//    p1AST = parseProcFunc();
-//    do{
-//         accept(Token.UPRSLASH);
-//         Declaration p2AST = parseProcFunc();        
-//         finish(declarationPos);
-//         p1AST = new ProcFuncsDeclaration(p1AST, p2AST, declarationPos ); 
-//    }
-//    while(currentToken.kind == Token.UPRSLASH);
-//
-//    return p1AST;
-//    
-//  }
-    
   // Nueva implementacion de parseProcFuncs
   ProcFuncs parseProcFuncs() throws SyntaxError{
     ProcFuncs ProcFuncsAST = null; // En caso de error sintactico
