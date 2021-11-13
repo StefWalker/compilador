@@ -1000,7 +1000,7 @@ public class Parser {
         Command cAST = parseCommand();
         accept(Token.END);
         finish(declarationPos);
-        declarationAST = new RecursiveProc(iAST, fAST, cAST, declarationPos); 
+        declarationAST = new ProcDeclaration(iAST, fAST, cAST, declarationPos); 
         
       }
       break;
@@ -1017,7 +1017,7 @@ public class Parser {
         accept(Token.IS);
         Expression eAST = parseExpression();
         finish(declarationPos);
-        declarationAST = new RecursiveFunc(iAST, fpsAST, tAST, eAST,
+        declarationAST = new FuncDeclaration(iAST, fpsAST, tAST, eAST,
           declarationPos);
       }
       break;
