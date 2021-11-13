@@ -2,8 +2,14 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
-//Marcos Méndez
-//AST Nuevo
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Implementacion de SecuentialProcFuncs utilizada en parser 
+    //
+    ///////////////////////////////////////////////////////////////////////////////
 
 public class SequentialProcFuncs extends ProcFuncs{
   

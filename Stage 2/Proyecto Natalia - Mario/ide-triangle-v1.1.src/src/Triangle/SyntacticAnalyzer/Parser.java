@@ -1130,8 +1130,10 @@ public class Parser {
 //    return declarationAST;
 //  }
   
+  
+    // Nueva implementacion creada para el metodo parseProcFuncs
     ProcFuncs parseProcFunc() throws SyntaxError {
-    ProcFuncs procFuncsAST = null; // in case there's a syntactic error
+    ProcFuncs procFuncsAST = null; // En caso de error Sintactico
 
     SourcePosition procFuncPos = new SourcePosition();
     start(procFuncPos);
@@ -1192,8 +1194,10 @@ public class Parser {
 //    return p1AST;
 //    
 //  }
+    
+  // Nueva implementacion de parseProcFuncs
   ProcFuncs parseProcFuncs() throws SyntaxError{
-    ProcFuncs ProcFuncsAST = null; // in case there's a syntactic error
+    ProcFuncs ProcFuncsAST = null; // En caso de error sintactico
 
     SourcePosition propFuncsPos = new SourcePosition();
     start(propFuncsPos);

@@ -16,6 +16,16 @@ package Triangle.AbstractSyntaxTrees;
 
 import Triangle.SyntacticAnalyzer.SourcePosition;
 
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Nuevo metodo creado apartir de ProcDeclaration extendiendo de ProcFuncs
+    //  con nueva implementacion variable
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+
 public class RecursiveProc extends ProcFuncs {
 
   public RecursiveProc (Identifier iAST, FormalParameterSequence fpsAST,

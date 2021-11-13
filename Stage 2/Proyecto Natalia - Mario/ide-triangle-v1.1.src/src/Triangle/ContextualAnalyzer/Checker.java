@@ -122,6 +122,8 @@ public final class Checker implements Visitor {
 
   // Always returns null. Does not use the given object.
 
+    
+
   public Object visitAssignCommand(AssignCommand ast, Object o) {
     //Visitar para sacar los tipos
     TypeDenoter vType = (TypeDenoter) ast.V.visit(this, null);
@@ -132,7 +134,7 @@ public final class Checker implements Visitor {
       reporter.reportError ("LHS of assignment is not a variable", "", ast.V.position);
     if (! eType.equals(vType))
       reporter.reportError ("assignment incompatibilty", "", ast.position);
-    if (! eType.visit(this,null).equals(vType)) //Marcos MÈndez Ajuste para recursiveProc
+    if (! eType.visit(this,null).equals(vType)) // Dylan Torres, Adaptacion para el Recursive verificando la incompatibilidad de datos
       reporter.reportError ("assignment incompatibilty", "", ast.position);
     return null;  // Si las partes internas est√°n bien
   }
@@ -145,7 +147,7 @@ public final class Checker implements Visitor {
       reportUndeclared(ast.I);
     else if (binding instanceof ProcDeclaration) {
       ast.APS.visit(this, ((ProcDeclaration) binding).FPS);
-    } else if (binding instanceof RecursiveProc) { //Marcos MÈndez RecursiveProc agregado
+    } else if (binding instanceof RecursiveProc) { // Dylan Torres, Agregado para lograr la implementacion del recursive, para verificar la instancia del recursive
       ast.APS.visit(this, ((RecursiveProc) binding).FPS);
     } else if (binding instanceof ProcFormalParameter) {
       ast.APS.visit(this, ((ProcFormalParameter) binding).FPS);
@@ -207,9 +209,9 @@ public final class Checker implements Visitor {
   public Object visitArrayExpression(ArrayExpression ast, Object o) {
     TypeDenoter elemType = (TypeDenoter) ast.AA.visit(this, null);
     
-    if(!(elemType instanceof IntTypeDenoter)) 
-      reporter.reportError("Expected Integer type here", "", ast.position);
-    IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),ast.position);
+    if(!(elemType instanceof IntTypeDenoter))   
+      reporter.reportError("Expected Integer type here", "", ast.position);  // Revision de cada componente del arreglo
+    IntegerLiteral il = new IntegerLiteral(new Integer(ast.AA.elemCount).toString(),ast.position);  
     
     ast.type = new ArrayTypeDenoter(il, elemType, ast.position);
     StdEnvironment.arrayType = new ArrayTypeDenoter(il, elemType, ast.position);
@@ -256,7 +258,7 @@ public final class Checker implements Visitor {
     } else if (binding instanceof FuncFormalParameter) {
       ast.APS.visit(this, ((FuncFormalParameter) binding).FPS);
       ast.type = ((FuncFormalParameter) binding).T;
-    }else if(binding instanceof  RecursiveFunc){ //Marcos MÈndez RecursiveFunc agregado
+    }else if(binding instanceof  RecursiveFunc){ // Dylan Torres, Adicion del RecursiveFunc
       ast.APS.visit(this,((RecursiveFunc) binding).FPS);
       ast.type = ((RecursiveFunc) binding).T;
     }  
@@ -368,7 +370,14 @@ public final class Checker implements Visitor {
     return null;
   }
   
-  
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Declaration 
+    //
+    ///////////////////////////////////////////////////////////////////////////////
   @Override
   public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
     idTable.enter(ast.I.spelling, ast);
@@ -1031,7 +1040,14 @@ public final class Checker implements Visitor {
 
   }
 
-  
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Commands 
+    //
+    ///////////////////////////////////////////////////////////////////////////////
   // --------------Commands-------------------------------------------------------------
     // Yosua Blanco
     // Dilan Walker
@@ -1187,7 +1203,16 @@ public final class Checker implements Visitor {
         idTable.closeScope();
         return null;
     }
-
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Declarations 
+    //
+    ///////////////////////////////////////////////////////////////////////////////
     //-----------------------------Declarations--------------------------------------------------
     @Override
     public Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o) {
@@ -1418,7 +1443,16 @@ public Object visitCaseRangeCase(CaseRangeCase ast, Object selectData) {
             }
         }
     }
+    
 
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  Adicion de metodos variables recursivos 
+    //
+    ///////////////////////////////////////////////////////////////////////////////
     @Override
     public Object visitRecursiveFuncVar(RecursiveFunc ast, Object o) {
         idTable.openScope();
