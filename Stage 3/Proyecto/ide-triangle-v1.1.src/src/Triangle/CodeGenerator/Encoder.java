@@ -1106,10 +1106,25 @@ public final class Encoder implements Visitor {
     public Object visitProcFuncsDeclaration(ProcFuncsDeclaration ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    //////////////////////////
+    //
+    //  Yosua Andres Blanco Diaz
+    //  Dylan Stef Torres Walker 
+    //  Johel Mora Calderon
+    //  visitLocalProcFuncDeclaration
+    //
+    //////////////////////////
 
     @Override
     public Object visitLocalProcFuncDeclaration(LocalProcFuncDeclaration ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        int extraSize1, extraSize2;
+
+        extraSize1 = ((Integer) ast.D1.visit(this, frame));
+        Frame frame1 = new Frame (frame, extraSize1);
+        extraSize2 = ((Integer) ast.D2.visit(this, frame1));
+        return extraSize1 + extraSize2;
     }
     
     ///////////////////////////////////////////////////////////////////////////////
@@ -1137,7 +1152,10 @@ public final class Encoder implements Visitor {
 
     @Override
     public Object visitSelectCommand(SelectCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.EXP.visit(this, o);
+        ast.COM.visit(this,o);
+        emit(Machine.POPop, 0, 0, 1);
+        return null;
     }
 
     @Override
@@ -1194,6 +1212,5 @@ public final class Encoder implements Visitor {
     public Object visitSequentialProcFuncsVar(SequentialProcFuncs ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-
+    
 }
