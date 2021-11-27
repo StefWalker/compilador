@@ -1057,9 +1057,30 @@ public final class Encoder implements Visitor {
   
   //FASE 2
 
-    @Override
+    @Override //falta el ast.R
     public Object visitRepeatForRangeWhile(RepeatForRangeWhile ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int jumpAddr, repeatAddr;
+        Frame frame = (Frame)o;
+        
+        ast.E2.visit(this, frame);
+        ast.E1.visit(this, frame);
+        
+        jumpAddr = nextInstrAddr;
+        emit(Machine.JUMPop, 0, Machine.CBr,0);
+        repeatAddr = nextInstrAddr;
+        
+        ast.C.visit(this, frame);
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.succDisplacement);
+        
+        int evalcond = nextInstrAddr;
+        patch(jumpAddr, evalcond);
+        emit(Machine.LOADop, 2, Machine.STr, -2);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repeatAddr);
+
+        
+        emit(Machine.POPop, 0, 0, 2);
+        return null;
     }
 
     @Override
@@ -1077,24 +1098,38 @@ public final class Encoder implements Visitor {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
+    @Override 
     public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
-    @Override
+    @Override 
     public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
-    @Override
+    @Override// listo
     public Object visitRepeatDoWhileCommand(RepeatDoWhileCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame)o;
+        int repeatAddr;
+        
+        repeatAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, repeatAddr);
+        return null;
     }
 
-    @Override
+    @Override// listo
     public Object visitRepeatDoUntilCommand(RepeatDoUntilCommand ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame)o;
+        int repeatAddr;
+        
+        repeatAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, repeatAddr);
+        return null;
     }
 
     @Override
