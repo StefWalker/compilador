@@ -1057,54 +1057,94 @@ public final class Encoder implements Visitor {
   
   //FASE 2
 
-    @Override //falta el ast.R
+    @Override //listo
     public Object visitRepeatForRangeWhile(RepeatForRangeWhile ast, Object o) {
         int jumpAddr, repeatAddr;
         Frame frame = (Frame)o;
         
-        ast.E2.visit(this, frame);
-        ast.E1.visit(this, frame);
+        ast.E2.visit(this, frame);// evaluate E2
+        ast.E1.visit(this, frame);// evaluate E1
         
+        //jump to evaluate condic
         jumpAddr = nextInstrAddr;
         emit(Machine.JUMPop, 0, Machine.CBr,0);
         repeatAddr = nextInstrAddr;
         
-        ast.C.visit(this, frame);
-        emit(Machine.CALLop, 0, Machine.PBr, Machine.succDisplacement);
+        //repeate
+        int repeatAddr2;
         
+        repeatAddr2 = nextInstrAddr;
+        ast.C.visit(this, frame); // execute C
+        ast.R.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repeatAddr2 );
+        
+        //evaluate condic
         int evalcond = nextInstrAddr;
         patch(jumpAddr, evalcond);
         emit(Machine.LOADop, 2, Machine.STr, -2);
         emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
         emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repeatAddr);
 
-        
+        //exit
         emit(Machine.POPop, 0, 0, 2);
         return null;
     }
-
-    @Override
-    public Object visitRepeatForRange(RepeatForRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
+    @Override //listo 
     public Object visitRepeatForRangeUntil(RepeatForRangeUntil ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+            int jumpAddr, repeatAddr;
+            Frame frame = (Frame)o;
 
-    @Override
-    public Object visitRepeatIn(RepeatIn ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+            ast.E2.visit(this, frame);// evaluate E2
+            ast.E1.visit(this, frame);// evaluate E1
+            
 
-    @Override 
+            //jump to evaluate condic
+            jumpAddr = nextInstrAddr;
+            emit(Machine.JUMPop, 0, Machine.CBr,0);
+            repeatAddr = nextInstrAddr;
+
+            //until
+            Frame frame2 = frame;
+            int repeatAddr2;
+            
+            repeatAddr2 = nextInstrAddr;
+            ast.C.visit(this, frame2);
+            ast.R.E.visit(this, frame2);// range declaration 
+            emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, repeatAddr2);
+            
+            //evaluate condic
+            int evalcond = nextInstrAddr;
+            patch(jumpAddr, evalcond);
+            emit(Machine.LOADop, 2, Machine.STr, -2);
+            emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+            emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repeatAddr);
+
+            //exit
+            emit(Machine.POPop, 0, 0, 2);
+            return null;
+        }
+    
+    @Override// listo 
     public Object visitRepeatWhileCommand(RepeatWhileCommand ast, Object o) {
+        Frame frame = (Frame)o;
+        int repeatAddr;
+        
+        repeatAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repeatAddr);
         return null;
     }
 
-    @Override 
+    @Override// listo
     public Object visitRepeatUntilCommand(RepeatUntilCommand ast, Object o) {
+        Frame frame = (Frame)o;
+        int repeatAddr;
+        
+        repeatAddr = nextInstrAddr;
+        ast.C.visit(this, frame);
+        ast.E.visit(this, frame);
+        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, repeatAddr);
         return null;
     }
 
@@ -1116,7 +1156,7 @@ public final class Encoder implements Visitor {
         repeatAddr = nextInstrAddr;
         ast.C.visit(this, frame);
         ast.E.visit(this, frame);
-        emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, repeatAddr);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repeatAddr);
         return null;
     }
 
@@ -1131,7 +1171,16 @@ public final class Encoder implements Visitor {
         emit(Machine.JUMPIFop, Machine.falseRep, Machine.CBr, repeatAddr);
         return null;
     }
-
+    
+    @Override 
+    public Object visitRepeatForRange(RepeatForRange ast, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public Object visitRepeatIn(RepeatIn ast, Object o) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     @Override
     public Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
