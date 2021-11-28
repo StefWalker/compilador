@@ -1,0 +1,14 @@
+select 1 * (2 + 2) from
+  when range 2 .. 13 then putint (213)
+  when 24 then
+    select 2 - 1 from
+      !no importa que se repita (interseca con range 2 .. 13), pues está en select anidado
+      when 3 then putint (243) 
+      else putint (242)
+    end
+  else
+    put('E')
+end
+
+! Ok
+! imprime 213

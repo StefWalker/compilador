@@ -1,0 +1,14 @@
+let
+  var x : Integer
+in
+  x := 1 ;
+  repeat
+  until x > 7 ! Debe imprimir 1234567
+  do
+
+    putint (x);
+    x := x +1
+
+  end
+
+end

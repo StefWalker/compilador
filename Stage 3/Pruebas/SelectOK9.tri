@@ -1,0 +1,13 @@
+select 6 * (2 + 2) from
+  when range 2 .. 13 then putint (213)
+  when 24 then
+    select 2 - 1 from
+      when 1 then putint (241) ! valor 1: debe escoger esta rama
+      else putint (242)
+    end
+  else
+    put('E')
+end
+
+! Ok
+! imprime 241

@@ -1,0 +1,22 @@
+
+let
+
+  local
+    const a ~ 1
+  in
+
+    local
+      const b ~ a + 1 ! a visible aquí, b = 2
+    in
+      const c ~ b + a ! c = 3
+    end
+    ;
+    const d ~ a + c ! d = 4
+
+  end
+
+in
+
+  putint(d) ! d visible aquí­, imprime 4
+
+end

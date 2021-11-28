@@ -1,0 +1,1 @@
+put('A') ; skip ! debe imprimir A y terminar con HALT

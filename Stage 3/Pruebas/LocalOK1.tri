@@ -1,0 +1,21 @@
+! local se elabora de manera que las declaraciones secuenciales se trabajan apropiadamente
+! el Analizador contextual asegura lo concerniente a visibilidad de los identificadores
+let
+
+  local
+      var a   := 1;
+      const b ~ 1 
+
+  in
+      proc P() ~ putint(a) end; ! a visible aquí­
+      func m(): Integer ~ b + 2 ! b visible aquí­
+
+  end
+
+in
+
+  P() ; ! P visible aquí­ ! imprime 1
+  puteol () ; ! imprime salto de lí­nea
+  putint (m()) ! m visible aquí­ ! imprime 3
+
+end

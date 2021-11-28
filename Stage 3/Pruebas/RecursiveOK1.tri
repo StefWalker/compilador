@@ -1,0 +1,20 @@
+! Revisa las declaraciones mutuamente recursivas 
+! Estas son independientes una de la otra. Resultados como los de declaración secuencial.
+
+let
+
+  recursive
+
+    proc a() ~ put('A') end ! imprime A
+    |
+    func m(): Integer ~ 10 ! siempre devuelve 10
+
+  end
+
+in
+  putint (m()) ! imprime 10, revisar TAM
+  ;
+  puteol()
+  ;
+  a()
+end

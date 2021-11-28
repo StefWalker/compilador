@@ -1,0 +1,9 @@
+select 0 from 
+  when range 1 .. 3 then putint (123)
+  when 4 then
+    select 1 from
+      when 2 then putint (2) ! no importa que se repita, está en select anidado 
+      else putint (2) ! select interno no falla
+    end
+  ! select externo falla, por no tener cláusula else. Debe dar un mensaje de error apropiado
+end

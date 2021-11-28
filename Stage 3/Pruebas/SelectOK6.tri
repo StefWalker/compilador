@@ -1,0 +1,10 @@
+select 0 from 
+  when 1 then putint (1)
+  when 4 then
+    select 1 from
+      ! no importa que se repita, está en select anidado
+      when range 1 .. 3 then putint (1) 
+    end
+  else ! el else debe activarse cuando seleccionamos con algo distinto de 1 y de 4
+    put('E') ! imprime E
+end

@@ -1,0 +1,8 @@
+select 4 from 
+  when 2 then putint (2)
+  when 4 then
+    select 0 - 1 from
+      when 2 then putint (2) !no importa que se repita, está en select anidado 
+      else putint (41) ! debe escoger esta rama, imprime 41
+    end
+end

@@ -1,0 +1,2 @@
+skip ; skip ! dos skips en secuencia constituyen un programa válido 
+! solo debe generar HALT

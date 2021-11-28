@@ -1,0 +1,11 @@
+let 
+    var x := 'a'
+in
+    put(x); ! x es un caracter, imprime a
+    repeat for x in [0, 1, 2, 4, 8, 16] do 
+        putint (x) ! x es un entero del arreglo. Es local y 'opaca' la x declarado arriba, imprime 0124816
+    end
+end
+
+! OK
+! imprime a0124816

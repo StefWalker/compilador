@@ -1,0 +1,11 @@
+select 1 from
+
+  when 0 then putint (0)
+
+  when 2 then putint (2)
+
+  ! no tiene else
+  ! debe abortar con un mensaje de error apropiado
+  ! por ejemplo: "Unmatched expression value in select command"
+
+end
