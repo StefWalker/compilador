@@ -1,0 +1,77 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<LetCommand>
+<VarDeclaration>
+<Identifier value="miArray"/>
+<ArrayTypeDenoter>
+<IntegerLiteral value="4"/>
+<IntTypeDenoter/>
+</ArrayTypeDenoter>
+</VarDeclaration>
+<SequentialCommand>
+<AssignCommand>
+<SimpleVname>
+<Identifier value="miArray"/>
+</SimpleVname>
+<ArrayExpression>
+<MultipleArrayAggregate>
+<IntegerExpression>
+<IntegerLiteral value="10"/>
+</IntegerExpression>
+<MultipleArrayAggregate>
+<IntegerExpression>
+<IntegerLiteral value="20"/>
+</IntegerExpression>
+<MultipleArrayAggregate>
+<IntegerExpression>
+<IntegerLiteral value="30"/>
+</IntegerExpression>
+<SingleArrayAggregate>
+<IntegerExpression>
+<IntegerLiteral value="40"/>
+</IntegerExpression>
+</SingleArrayAggregate>
+</MultipleArrayAggregate>
+</MultipleArrayAggregate>
+</MultipleArrayAggregate>
+</ArrayExpression>
+</AssignCommand>
+<RepeatForRange>
+<SequentialCommand>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<VnameExpression>
+<SubscriptVname>
+<SimpleVname>
+<Identifier value="miArray"/>
+</SimpleVname>
+<VnameExpression>
+<SimpleVname>
+<Identifier value="i"/>
+</SimpleVname>
+</VnameExpression>
+</SubscriptVname>
+</VnameExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<CallCommand>
+<Identifier value="puteol"/>
+<EmptyActualParameterSequence/>
+</CallCommand>
+</SequentialCommand>
+<IntegerExpression>
+<IntegerLiteral value="4"/>
+</IntegerExpression>
+<RangeVarDecl>
+<IntegerExpression>
+<IntegerLiteral value="0"/>
+</IntegerExpression>
+<Identifier value="i"/>
+</RangeVarDecl>
+</RepeatForRange>
+</SequentialCommand>
+</LetCommand>
+</Program>

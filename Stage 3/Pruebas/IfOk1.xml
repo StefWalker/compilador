@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<IfCommand>
+<BinaryExpression>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+<Operator value="="/>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</BinaryExpression>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+<CallCommand>
+<Identifier value="puteol"/>
+<EmptyActualParameterSequence/>
+</CallCommand>
+</IfCommand>
+</Program>

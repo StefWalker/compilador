@@ -1174,13 +1174,39 @@ public final class Encoder implements Visitor {
     
     @Override 
     public Object visitRepeatForRange(RepeatForRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int jumpAddr, loopAddr;
+        Frame frame = (Frame) o;
+
+        ast.E.visit(this, frame); // evaluate E2
+        ast.R.E.visit(this, frame); // evaluate E1
+
+        //JUMP to evalcond
+        jumpAddr = nextInstrAddr; 
+        emit(Machine.JUMPop, 0,Machine.CBr,0);
+        loopAddr = nextInstrAddr;
+
+        //loop
+        ast.C.visit(this, frame); // execute C
+        emit(Machine.CALLop, 0, Machine.PBr, Machine.succDisplacement);
+
+        //Evalcond
+        int evalcond = nextInstrAddr;
+        patch(jumpAddr,evalcond);
+        emit(Machine.LOADop, 2, Machine.STr, -2);
+        emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+
+        //Exit
+        emit(Machine.POPop, 0, 0, 2);
+        return null;
     }
     
     @Override
     public Object visitRepeatIn(RepeatIn ast, Object o) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
+    
     @Override//listo
     public Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o) {
     Frame frame = (Frame) o;

@@ -1,0 +1,62 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<SelectCommand>
+<IntegerExpression>
+<IntegerLiteral value="1"/>
+</IntegerExpression>
+<Cases>
+<SequentialCase>
+<CaseWhen>
+<CaseLiterals>
+<CaseRangeCase>
+<CaseLiteralINT>
+<IntegerLiteral value="0"/>
+</CaseLiteralINT>
+</CaseRangeCase>
+</CaseLiterals>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<IntegerExpression>
+<IntegerLiteral value="0"/>
+</IntegerExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</CaseWhen>
+<CaseWhen>
+<CaseLiterals>
+<CaseRangeCase>
+<CaseLiteralINT>
+<IntegerLiteral value="2"/>
+</CaseLiteralINT>
+</CaseRangeCase>
+</CaseLiterals>
+<CallCommand>
+<Identifier value="putint"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<IntegerExpression>
+<IntegerLiteral value="2"/>
+</IntegerExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</CaseWhen>
+</SequentialCase>
+<ElseCase>
+<CallCommand>
+<Identifier value="put"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CharacterExpression>
+<CharacterLiteral value="'B'"/>
+</CharacterExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</ElseCase>
+</Cases>
+</SelectCommand>
+</Program>

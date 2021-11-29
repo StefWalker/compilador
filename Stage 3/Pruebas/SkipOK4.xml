@@ -1,0 +1,16 @@
+<?xml version="1.0" standalone="yes"?>
+<Program>
+<SequentialCommand>
+<EmptyCommand/>
+<CallCommand>
+<Identifier value="put"/>
+<SingleActualParameterSequence>
+<ConstActualParameter>
+<CharacterExpression>
+<CharacterLiteral value="'Z'"/>
+</CharacterExpression>
+</ConstActualParameter>
+</SingleActualParameterSequence>
+</CallCommand>
+</SequentialCommand>
+</Program>
