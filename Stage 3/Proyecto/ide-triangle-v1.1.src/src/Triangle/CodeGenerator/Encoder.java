@@ -1179,11 +1179,23 @@ public final class Encoder implements Visitor {
     
     @Override
     public Object visitRepeatIn(RepeatIn ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
-    @Override
+    @Override//listo
     public Object visitVarDeclarationExpression(VarDeclarationExpression ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Frame frame = (Frame) o;
+    int extraSize = 0;
+
+    extraSize = (Integer) ast.E.visit(this, frame);
+
+    emit(Machine.PUSHop, 0, 0, extraSize);
+    ast.entity = new KnownAddress(Machine.addressSize, frame.level, frame.size);
+    writeTableDetails(ast);
+    Integer valSize = (Integer) ast.E.visit(this, frame);
+    ObjectAddress address = ((KnownAddress) ast.entity).address;
+    emit(Machine.STOREop, valSize, displayRegister(frame.level,
+            address.level), address.displacement);
+    return new Integer(extraSize);
     }
 
     @Override
