@@ -336,11 +336,45 @@ public final class Encoder implements Visitor {
     //
     ///////////////////////////////////////////////////////////////////////////////
   public Object visitRecursiveFunc(RecursiveFunc ast, Object o) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int argsSize = 0, valSize = 0;
+
+    emit(Machine.JUMPop, 0, Machine.CBr, 0);
+    ast.entity = new KnownRoutine(Machine.closureSize, frame.level, nextInstrAddr);
+    writeTableDetails(ast);
+    if (frame.level == Machine.maxRoutineLevel)
+      reporter.reportRestriction("can't nest routines more than 7 deep");
+    else {
+      Frame frame1 = new Frame(frame.level + 1, 0);
+      argsSize = ((Integer) ast.FPS.visit(this, frame1)).intValue();
+      Frame frame2 = new Frame(frame.level + 1, Machine.linkDataSize);
+      valSize = ((Integer) ast.E.visit(this, frame2)).intValue();
+    }
+    emit(Machine.RETURNop, valSize, 0, argsSize);
+    patch(jumpAddr, nextInstrAddr);
+    return new Integer(0);
   }
   
-    public Object visitRecursiveFuncVar(RecursiveFunc ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+  public Object visitRecursiveFuncVar(RecursiveFunc ast, Object o) {
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int argsSize = 0, valSize = 0;
+
+    emit(Machine.JUMPop, 0, Machine.CBr, 0);
+    ast.entity = new KnownRoutine(Machine.closureSize, frame.level, nextInstrAddr);
+    writeTableDetails(ast);
+    if (frame.level == Machine.maxRoutineLevel)
+      reporter.reportRestriction("can't nest routines more than 7 deep");
+    else {
+      Frame frame1 = new Frame(frame.level + 1, 0);
+      argsSize = ((Integer) ast.FPS.visit(this, frame1)).intValue();
+      Frame frame2 = new Frame(frame.level + 1, Machine.linkDataSize);
+      valSize = ((Integer) ast.E.visit(this, frame2)).intValue();
+    }
+    emit(Machine.RETURNop, valSize, 0, argsSize);
+    patch(jumpAddr, nextInstrAddr);
+    return new Integer(0);
   }
 
   public Object visitProcDeclaration(ProcDeclaration ast, Object o) {
@@ -374,11 +408,47 @@ public final class Encoder implements Visitor {
     //
     ///////////////////////////////////////////////////////////////////////////////
   public Object visitRecursiveProc(RecursiveProc ast, Object o) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int argsSize = 0;
+
+    emit(Machine.JUMPop, 0, Machine.CBr, 0);
+    ast.entity = new KnownRoutine (Machine.closureSize, frame.level,
+            nextInstrAddr);
+    writeTableDetails(ast);
+    if (frame.level == Machine.maxRoutineLevel)
+      reporter.reportRestriction("can't nest routines so deeply");
+    else {
+      Frame frame1 = new Frame(frame.level + 1, 0);
+      argsSize = ((Integer) ast.FPS.visit(this, frame1)).intValue();
+      Frame frame2 = new Frame(frame.level + 1, Machine.linkDataSize);
+      ast.C.visit(this, frame2);
+    }
+    emit(Machine.RETURNop, 0, 0, argsSize);
+    patch(jumpAddr, nextInstrAddr);
+    return new Integer(0);
   }
   
   public Object visitRecursiveProcVar(RecursiveProc ast, Object o) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    Frame frame = (Frame) o;
+    int jumpAddr = nextInstrAddr;
+    int argsSize = 0;
+
+    emit(Machine.JUMPop, 0, Machine.CBr, 0);
+    ast.entity = new KnownRoutine (Machine.closureSize, frame.level,
+            nextInstrAddr);
+    writeTableDetails(ast);
+    if (frame.level == Machine.maxRoutineLevel)
+      reporter.reportRestriction("can't nest routines so deeply");
+    else {
+      Frame frame1 = new Frame(frame.level + 1, 0);
+      argsSize = ((Integer) ast.FPS.visit(this, frame1)).intValue();
+      Frame frame2 = new Frame(frame.level + 1, Machine.linkDataSize);
+      ast.C.visit(this, frame2);
+    }
+    emit(Machine.RETURNop, 0, 0, argsSize);
+    patch(jumpAddr, nextInstrAddr);
+    return new Integer(0);
   }
 
   public Object visitSequentialDeclaration(SequentialDeclaration ast, Object o) {
@@ -1243,9 +1313,9 @@ public final class Encoder implements Visitor {
         Frame frame = (Frame) o;
         int extraSize1, extraSize2;
 
-        extraSize1 = ((Integer) ast.D1.visit(this, frame));
+        extraSize1 = ((Integer) ast.D1.visit(this, frame)).intValue();
         Frame frame1 = new Frame (frame, extraSize1);
-        extraSize2 = ((Integer) ast.D2.visit(this, frame1));
+        extraSize2 = ((Integer) ast.D2.visit(this, frame1)).intValue();
         return extraSize1 + extraSize2;
     }
     
@@ -1259,7 +1329,12 @@ public final class Encoder implements Visitor {
     ///////////////////////////////////////////////////////////////////////////////
     @Override
     public Object visitRecursiveDeclaration(RecursiveDeclaration ast, Object o){
-        throw new UnsupportedOperationException("Not supported yet.");
+        Frame frame = (Frame) o;
+        int jumpAddr = nextInstrAddr;
+        int extraSize1 = (Integer) ast.PF.visit(this, frame);
+        nextInstrAddr = jumpAddr;
+        extraSize1 = (Integer) ast.PF.visitRecursive(this, frame);
+        return new Integer(extraSize1);
     }
 
     @Override
@@ -1327,12 +1402,20 @@ public final class Encoder implements Visitor {
 
     @Override
     public Object visitSequentialProcFuncs(SequentialProcFuncs ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        int extraSize1 = ((Integer) ast.PF1.visit(this, frame)).intValue();
+        Frame frame1 = new Frame(frame, extraSize1);
+        int extraSize2 = ((Integer) ast.PF2.visit(this, frame1)).intValue();
+        return new Integer(extraSize1 + extraSize2);
     }
 
     @Override
     public Object visitSequentialProcFuncsVar(SequentialProcFuncs ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Frame frame = (Frame) o;
+        int extraSize1 = ((Integer) ast.PF1.visitRecursive(this, frame)).intValue();
+        Frame frame1 = new Frame(frame, extraSize1);
+        int extraSize2 = ((Integer) ast.PF2.visitRecursive(this, frame1)).intValue();
+        return new Integer(extraSize1 + extraSize2);
     }
     
 }
