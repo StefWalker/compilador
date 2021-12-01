@@ -174,15 +174,15 @@ public final class Encoder implements Visitor {
 
   public Object visitWhileCommand(WhileCommand ast, Object o) {
     Frame frame = (Frame) o;
-    int jumpAddr, loopAddr;
+    int jumpAddr, repeatAddr;
 
     jumpAddr = nextInstrAddr;
     emit(Machine.JUMPop, 0, Machine.CBr, 0);
-    loopAddr = nextInstrAddr;
+    repeatAddr = nextInstrAddr;
     ast.C.visit(this, frame);
     patch(jumpAddr, nextInstrAddr);
     ast.E.visit(this, frame);
-    emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+    emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repeatAddr);
     return null;
   }
 
@@ -1245,7 +1245,7 @@ public final class Encoder implements Visitor {
     
     @Override 
     public Object visitRepeatForRange(RepeatForRange ast, Object o) {
-        int jumpAddr, loopAddr;
+        int jumpAddr, repeatAddr;
         Frame frame = (Frame) o;
 
         ast.E.visit(this, frame); // evaluate E2
@@ -1254,9 +1254,9 @@ public final class Encoder implements Visitor {
         //JUMP to evalcond
         jumpAddr = nextInstrAddr; 
         emit(Machine.JUMPop, 0,Machine.CBr,0);
-        loopAddr = nextInstrAddr;
+        repeatAddr = nextInstrAddr;
 
-        //loop
+        //Repeat
         ast.C.visit(this, frame); // execute C
         emit(Machine.CALLop, 0, Machine.PBr, Machine.succDisplacement);
 
@@ -1265,7 +1265,7 @@ public final class Encoder implements Visitor {
         patch(jumpAddr,evalcond);
         emit(Machine.LOADop, 2, Machine.STr, -2);
         emit(Machine.CALLop, Machine.SBr, Machine.PBr, Machine.geDisplacement);
-        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, loopAddr);
+        emit(Machine.JUMPIFop, Machine.trueRep, Machine.CBr, repeatAddr);
 
         //Exit
         emit(Machine.POPop, 0, 0, 2);
