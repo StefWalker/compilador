@@ -50,7 +50,9 @@ public final class Machine {
     JUMPop = 12,
     JUMPIop = 13,
     JUMPIFop = 14,
-    HALTop = 15;
+    HALTop = 15,
+    CASEop = 16,
+    CASEERRORop = 17;
 
 
 

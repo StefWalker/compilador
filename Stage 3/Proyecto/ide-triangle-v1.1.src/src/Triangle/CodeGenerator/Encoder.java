@@ -116,6 +116,7 @@ import Triangle.AbstractSyntaxTrees.RecursiveDeclaration;
 import Triangle.AbstractSyntaxTrees.RecursiveFunc;
 import Triangle.AbstractSyntaxTrees.RecursiveProc;
 import Triangle.AbstractSyntaxTrees.SequentialProcFuncs;
+import Utilities.SelectCode;
 
 public final class Encoder implements Visitor {
 
@@ -1357,47 +1358,294 @@ public final class Encoder implements Visitor {
 
     @Override
     public Object visitCases(Cases ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int jumpOutside = nextInstrAddr;
+        SelectCode cc = new SelectCode((Frame)o, jumpOutside);
+        ast.CASE1.visit(this, cc);
+        if(ast.CASE2 != null){
+            ast.CASE2.visit(this, cc);
+        }
+        emit(Machine.CASEERRORop, 0, 0, 0);
+        patchJumps(jumpOutside, nextInstrAddr);
+        return null;
     }
 
     @Override
     public Object visitElseCase(ElseCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.COM.visit(this, ((SelectCode)o).frame);
+        emit(Machine.JUMPop, 0, Machine.CBr,  ((SelectCode)o).address);
+        return null;
     }
 
     @Override
     public Object visitSequentialCase(SequentialCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ast.C1.visit(this,o);
+        ast.C2.visit(this, o);
+        return null;
     }
 
     @Override
-    public Object visitCaseWhen(CaseWhen ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object visitCaseWhen(CaseWhen ast, Object selectcode) {
+     Frame o = ((SelectCode) selectcode).frame;
+        int jmpOutside =((SelectCode) selectcode).address;
+        ((SelectCode)selectcode).ast = ast;
+        CharacterLiteral character1,character2;
+        IntegerLiteral integer1,integer2;
+        if(ast.CASELIT.CASERANGE instanceof SequentialCaseRange){
+            ast.CASELIT.CASERANGE.visit(this,selectcode);
+            return null;
+        }
+        CaseRangeCase cases = ((CaseRangeCase)ast.CASELIT.CASERANGE);
+        if(cases.CASELIT2 != null ){
+                if( cases.CASELIT instanceof CaseLiteralCHAR){
+                    
+                    character1  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT).CHARLIT);
+                    character2  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT2).CHARLIT);
+                    emit(Machine.LOADLop, 0, 0, (int)character1.spelling.charAt(1));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr,jumpifAddr2;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 1, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            emit(Machine.LOADLop, 0, 0, (int)character2.spelling.charAt(1));
+                            jumpifAddr2 = nextInstrAddr;
+                            emit(Machine.CASEop, 2, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            patch(jumpifAddr2, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+                else if(cases.CASELIT instanceof CaseLiteralINT){
+                           integer1  =   (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT).INTLIT);
+                           integer2  =   (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT2).INTLIT);
+                    emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer1.spelling));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr,jumpifAddr2;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 1, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer2.spelling));
+                            jumpifAddr2 = nextInstrAddr;
+                            emit(Machine.CASEop, 2, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            patch(jumpifAddr2, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+        }
+        else{
+                if( cases.CASELIT instanceof CaseLiteralCHAR){
+                    
+                    character1  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT).CHARLIT);
+                    emit(Machine.LOADLop, 0, 0, (int)character1.spelling.charAt(1));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 0, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+                else if(cases.CASELIT instanceof CaseLiteralINT){
+                           integer1 = (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT).INTLIT);
+                           emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer1.spelling));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 0, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+        }
+        return null;   
     }
 
     @Override
     public Object visitCaseLiterals(CaseLiterals ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ast.CASERANGE.visit(this, o);
     }
 
     @Override
     public Object visitCaseRangeCase(CaseRangeCase ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
-    public Object visitSequentialCaseRange(SequentialCaseRange ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Object visitSequentialCaseRange(SequentialCaseRange ast, Object selectcode) {
+        Frame o = ((SelectCode) selectcode).frame;
+        int jmpOutside =((SelectCode) selectcode).address;
+        CharacterLiteral character1,character2;
+        IntegerLiteral integer1,integer2;
+        if(ast.C1 instanceof SequentialCaseRange){
+            ast.C1.visit(this,selectcode);
+        }else{
+                CaseRangeCase cases = ((CaseRangeCase)ast.C1);
+        if(cases.CASELIT2 != null ){
+                if( cases.CASELIT instanceof CaseLiteralCHAR){
+                    
+                    character1  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT).CHARLIT);
+                    character2  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT2).CHARLIT);
+                    emit(Machine.LOADLop, 0, 0, (int)character1.spelling.charAt(1));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr,jumpifAddr2;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 1, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            emit(Machine.LOADLop, 0, 0, (int)character2.spelling.charAt(1));
+                            jumpifAddr2 = nextInstrAddr;
+                            emit(Machine.CASEop, 2, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ((SelectCode)selectcode).ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            patch(jumpifAddr2, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+                else if(cases.CASELIT instanceof CaseLiteralINT){
+                           integer1  =   (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT).INTLIT);
+                           integer2  =   (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT2).INTLIT);
+                    emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer1.spelling));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr,jumpifAddr2;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 1, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer2.spelling));
+                            jumpifAddr2 = nextInstrAddr;
+                            emit(Machine.CASEop, 2, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                             ((SelectCode)selectcode).ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            patch(jumpifAddr2, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+        }
+        else{
+                if( cases.CASELIT instanceof CaseLiteralCHAR){
+                    
+                    character1  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT).CHARLIT);
+                    emit(Machine.LOADLop, 0, 0, (int)character1.spelling.charAt(1));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 0, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ((SelectCode)selectcode).ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+                else if(cases.CASELIT instanceof CaseLiteralINT){
+                           integer1 = (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT).INTLIT);
+                           emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer1.spelling));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 0, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ((SelectCode)selectcode).ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+        }
+        }
+        if(ast.C2 instanceof SequentialCaseRange){
+            ast.C2.visit(this,selectcode);
+        }
+        else{
+              CaseRangeCase cases = ((CaseRangeCase)ast.C2);
+        if(cases.CASELIT2 != null ){
+                if( cases.CASELIT instanceof CaseLiteralCHAR){
+                    
+                    character1  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT).CHARLIT);
+                    character2  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT2).CHARLIT);
+                    emit(Machine.LOADLop, 0, 0, (int)character1.spelling.charAt(1));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr,jumpifAddr2;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 1, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            emit(Machine.LOADLop, 0, 0, (int)character2.spelling.charAt(1));
+                            jumpifAddr2 = nextInstrAddr;
+                            emit(Machine.CASEop, 2, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ((SelectCode)selectcode).ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            patch(jumpifAddr2, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+                else if(cases.CASELIT instanceof CaseLiteralINT){
+                           integer1  =   (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT).INTLIT);
+                           integer2  =   (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT2).INTLIT);
+                    emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer1.spelling));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr,jumpifAddr2;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 1, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer2.spelling));
+                            jumpifAddr2 = nextInstrAddr;
+                            emit(Machine.CASEop, 2, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                             ((SelectCode)selectcode).ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            patch(jumpifAddr2, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+        }
+        else{
+                if( cases.CASELIT instanceof CaseLiteralCHAR){
+                    
+                    character1  =   (CharacterLiteral) ( ( (CaseLiteralCHAR) cases.CASELIT).CHARLIT);
+                    emit(Machine.LOADLop, 0, 0, (int)character1.spelling.charAt(1));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 0, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ((SelectCode)selectcode).ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+                else if(cases.CASELIT instanceof CaseLiteralINT){
+                           integer1 = (IntegerLiteral) ( ( (CaseLiteralINT) cases.CASELIT).INTLIT);
+                           emit(Machine.LOADLop, 0, 0, Integer.parseInt(integer1.spelling));
+                            Frame frame = (Frame) o;
+                            int jumpifAddr;
+                            jumpifAddr = nextInstrAddr;
+                            emit(Machine.CASEop, 0, Machine.CBr, 0);
+                            emit(Machine.POPop, 0, 0, 1);
+                            ((SelectCode)selectcode).ast.COM.visit(this, frame);
+                            emit(Machine.JUMPop, 0, Machine.CBr, jmpOutside);
+                            patch(jumpifAddr, nextInstrAddr);
+                            emit(Machine.POPop, 0, 0, 1);
+                }
+        }
+        }
+        return null;
     }
 
     @Override
     public Object visitCaseLiteralCHAR(CaseLiteralCHAR ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ast.CHARLIT.visit(this, o);
     }
 
     @Override
     public Object visitCaseLiteralINT(CaseLiteralINT ast, Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return ast.INTLIT.visit(this, o);    
     }
 
     @Override
@@ -1418,4 +1666,13 @@ public final class Encoder implements Visitor {
         return new Integer(extraSize1 + extraSize2);
     }
     
+    private void patchJumps (int d1, int d2) {
+        int i = 0;
+        while(i < nextInstrAddr){
+            if(Machine.code[i].d == d1 && Machine.code[i].op == Machine.JUMPop){
+                Machine.code[i].d = d2;
+            }
+            i++;
+        }
+    }
 }
